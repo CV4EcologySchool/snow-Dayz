@@ -9,9 +9,7 @@ import os
 
 
 labels = pd.read_csv('/datadrive/data/all_labels_QC.csv')
-norway = ('/datadrive/data/scandcam/**/*.JPG')
-
-norway=('/Volumes/CatBreen/CV4ecology/scandcam/**/*')
+norway = ('/datadrive/data/scandcam/**/*')
 olympex = ('/datadrive/data/olympex/**/*')
 snoq = ('/datadrive/data/snoq/**/*')
 
