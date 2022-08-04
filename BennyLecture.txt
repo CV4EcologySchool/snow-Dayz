@@ -142,6 +142,22 @@ Pitfalls
     makes the mode a lot faster
     
 
+8. Hyperparamters
+ in linear models, it is a and b in ax+back
+ - hyperparamters, the parameters set by you 
+ - setting hyperparameters is an art and major part of training deep learning models. 
 
+ Number of epochs, batch size, optimizer, learning rate, learning rate scheduler, weight decay, etc (model architecture, loss weights, loss function, 
+ data augmentation)
+
+- best practice to use an argument parser
+    OKAY:
+        import argparse 
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--lr', type=float, default= 1e-4, help= ') ## can have much more control of the code
+    Better (benny approved)
+        - create a config file .yaml 
+        - can run different experiments 
+        - need YAML, 
 
 
