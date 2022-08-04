@@ -11,7 +11,7 @@ import os
 labels = pd.read_csv('/datadrive/data/all_labels_QC.csv')
 norway = ('/datadrive/data/scandcam/**/*.JPG')
 olympex = ('/datadrive/data/olympex/**/*.JPG')
-snoq = ('/datadrive/data/snoq/**/*.JPG')
+snoq = ('/datadrive/data/snoq/**/*.jpg')
 
 trainDest = ('/datadrive/data/weather/train')
 testDest = ('/datadrive/data/weather/test')
