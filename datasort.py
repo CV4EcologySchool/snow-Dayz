@@ -27,8 +27,9 @@ print('Found {} images in snoq folder'.format(len(glob.glob(snoq))))
 
 ## load all the data 
 def olympex_snoq_train_data(path):
-    filename = os.path.join(path,name)
     for file in glob.glob(path):
+        print(file)
+        filename = os.path.join(path,file)
         if os.path.splitext(file)[1].lower() in ('.jpg', '.jpeg'):
             name = file.split('/')[-1]
             shutil.copy2(filename, trainDest+str('/')+name)
