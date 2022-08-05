@@ -2,6 +2,7 @@
 
 print('start')
 
+
 import shutil
 import pandas as pd
 import glob 
@@ -18,6 +19,12 @@ snoq = ('/datadrive/data/snoq/**/*')
 
 trainDest = ('/datadrive/data/weather/train')
 testDest = ('/datadrive/data/weather/test')
+
+if not os.path.exists(trainDest):
+    os.makedirs(trainDest)
+
+if not os.path.exists(testDest):
+    os.makedirs(testDest)
 
 print('Path Statistics:\n')
 
@@ -71,5 +78,12 @@ norway_train_test(norway)
 
 ##use glob to get the label and file name (and merge with the )
 
+## train folder and test folder statistics
+
+train = ('/datadrive/data/weather/train/*')
+test = ('/datadrive/data/weather/test/*')
+
+print('Found {} images in train folder'.format(len(glob.glob(train))))
+print('Found {} images in test folder'.format(len(glob.glob(test))))
 
 print('done')
