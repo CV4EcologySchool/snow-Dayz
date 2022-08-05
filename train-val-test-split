@@ -107,5 +107,5 @@ print('Snow Sequences: '+str(len(snowSequencesS)))
 print('No Weather Sequences: '+str(len(noneSequencesS)))
 
 #######################
-We will 
 
+## export sequences 

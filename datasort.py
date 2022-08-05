@@ -7,8 +7,11 @@ import pandas as pd
 import glob 
 import os 
 
-
+##### sort labels into train and test
 labels = pd.read_csv('/datadrive/data/all_labels_QC.csv')
+
+####### sort images into train and test folders #####
+
 norway = ('/datadrive/data/scandcam/**/*')
 olympex = ('/datadrive/data/olympex/**/*')
 snoq = ('/datadrive/data/snoq/**/*')
@@ -24,10 +27,11 @@ print('Found {} images in snoq folder'.format(len(glob.glob(snoq))))
 
 ## load all the data 
 def olympex_snoq_train_data(path):
+    filename = os.path.join(path,name)
     for file in glob.glob(path):
         if os.path.splitext(file)[1].lower() in ('.jpg', '.jpeg'):
-            filename = file.split('/')[-1]
-            shutil.copy2(filename, trainDest+str('/')+filename)
+            name = file.split('/')[-1]
+            shutil.copy2(filename, trainDest+str('/')+name)
     
 
 ### get the image ID from the path. We will then use the filename 
@@ -63,6 +67,8 @@ def norway_train_test(path):
 olympex_snoq_train_data(olympex)
 olympex_snoq_train_data(snoq)
 norway_train_test(norway)
+
+##use glob to get the label and file name (and merge with the )
 
 
 print('done')
