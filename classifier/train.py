@@ -45,7 +45,7 @@ def load_model(cfg):
     '''
         Creates a model instance and loads the latest model state weights.
     '''
-    model_instance = CustomResNet(cfg['num_classes'])         # create an object instance of our CustomResNet18 class
+    model_instance = CustomResNet50(cfg['num_classes'])         # create an object instance of our CustomResNet18 class
 
     # load latest model state
     model_states = glob.glob('model_states/*.pt')
@@ -236,7 +236,7 @@ def main():
 
     # initialize data loaders for training and validation set
     dl_train = create_dataloader(cfg, split='train')
-    dl_val = create_dataloader(cfg, split='val')
+    dl_test = create_dataloader(cfg, split='test')
 
     # initialize model
     model, current_epoch = load_model(cfg)
@@ -251,7 +251,7 @@ def main():
         print(f'Epoch {current_epoch}/{numEpochs}')
 
         loss_train, oa_train = train(cfg, dl_train, model, optim)
-        loss_val, oa_val = validate(cfg, dl_val, model)
+        loss_val, oa_val = validate(cfg, dl_test, model)
 
         # combine stats and save
         stats = {
