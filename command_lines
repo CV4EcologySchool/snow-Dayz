@@ -1,0 +1,3 @@
+ rsync -rP /Volumes/CatBreen/CV4ecology/all_labels_QC.csv snowflake:/datadrive/data/
+    ## automatically 
+rsync -rP /Volumes/CatBreen/CV4ecology/* snowflake:/datadrive/data/  
