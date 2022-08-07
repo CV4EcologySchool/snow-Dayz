@@ -3,4 +3,4 @@ BennyLecture.txt
 .git_Cmds.swp
 SelectingModels_Sara.txt
 classifier/__pycache__/dataset.cpython-38.pyc
-classifier/__pycache__/
+classifier/__pycache__/*.pyc
