@@ -54,8 +54,10 @@ class CTDataset(Dataset):
         ## add a check to make sure it exists in the folder of interest
         list_of_images = glob.glob(os.path.join(self.data_root,'train/*'))
         print(list_of_images)
+        list_of_images = pd.Series(list_of_images)
+        list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
 
-
+        ## otherwise do a try command
 
         for file, weather in zip(meta['File'], meta['Weather']):
             if sum(list_of_images == file) > 0: ## make sure there is the file in the train folder
