@@ -43,31 +43,7 @@ class CTDataset(Dataset):
             self.data_root, labels) ############# should i set this as an input?? 
 
         meta = pd.read_csv(self.annoPath)
-        # meta = json.load(open(annoPath, 'r'))
-
-        #images = dict([[idx, file] for idx, file in enumerate(meta['File'])]) ## do enumerate or do index
-        #labels = dict([[idx, file] for idx, file in enumerate(meta['Weather'])])
-
-        ######### image sort?? 
-
-        # images = dict([[i['id'], i['file_name']] for i in meta['images']])          # image id to filename lookup
-        # labels = dict([[c['id'], idx] for idx, c in enumerate(meta['categories'])]) # custom labelclass indices that start at zero
-        
-        # # since we're doing classification, we're just taking the first annotation per image and drop the rest
         images_covered = set()      # all those images for which we have already assigned a label
-         
-        #for anno in meta['Weather']:
-         #     if (anno != "Fog"):
-        
-        #       imgID = anno['image_id'] ## i don't have image ID
-        #       if imgID in images_covered:
-        #           continue
-            
-            #     # append image-label tuple to data
-            #     imgFileName = images[imgID]
-            #     label = anno['category_id']
-            #     labelIndex = labels[label]
-
         meta = meta[meta['Weather'] != 'Fog']
         meta = meta.drop_duplicates().reset_index() ## maybe I should keep the original indices??
         
@@ -83,6 +59,33 @@ class CTDataset(Dataset):
 
         #self.data.append([imgFileName, labelIndex])
         #images_covered.add(imgID)       # make sure image is only added once to dataset
+     
+
+
+        # meta = json.load(open(annoPath, 'r'))
+
+        #images = dict([[idx, file] for idx, file in enumerate(meta['File'])]) ## do enumerate or do index
+        #labels = dict([[idx, file] for idx, file in enumerate(meta['Weather'])])
+
+        ######### image sort?? 
+
+        # images = dict([[i['id'], i['file_name']] for i in meta['images']])          # image id to filename lookup
+        # labels = dict([[c['id'], idx] for idx, c in enumerate(meta['categories'])]) # custom labelclass indices that start at zero
+        
+        # # since we're doing classification, we're just taking the first annotation per image and drop the rest
+
+        #for anno in meta['Weather']:
+         #     if (anno != "Fog"):
+        
+        #       imgID = anno['image_id'] ## i don't have image ID
+        #       if imgID in images_covered:
+        #           continue
+            
+            #     # append image-label tuple to data
+            #     imgFileName = images[imgID]
+            #     label = anno['category_id']
+            #     labelIndex = labels[label]
+
     
 
     def __len__(self):
