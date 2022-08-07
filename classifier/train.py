@@ -22,7 +22,7 @@ from model import CustomResNet50
 
 
 
-def create_dataloader(cfg, split='train', labels = '~/datadrive/data/trainLabels.csv', folder = 'train'):
+def create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train'):
     ###### added labels and folder argument
     '''
         Loads a dataset according to the provided split and wraps it in a
