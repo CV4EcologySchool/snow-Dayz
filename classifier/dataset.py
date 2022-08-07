@@ -50,13 +50,12 @@ class CTDataset(Dataset):
         #images = meta['File']
         #labels = meta['Weather']
         for file, weather in zip(meta['File'], meta['Weather']):
-            print(file, weather)
             imgFileName = file
             labelIndex = meta[meta['Weather'] == weather].index ## do we need this?
             label = meta[meta['Weather'] == weather]
             imgID = labelIndex ## they are the same thing in my dataset because I didn't generate a imgID
             self.data.append([imgFileName, weather]) ## why label index and not label?
-            images_covered.add(imgID) ## this is kind of irrelevant for my data
+            ##images_covered.add(imgID) ## this is kind of irrelevant for my data
 
         #self.data.append([imgFileName, labelIndex])
         #images_covered.add(imgID)       # make sure image is only added once to dataset
