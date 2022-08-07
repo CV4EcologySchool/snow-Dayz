@@ -22,12 +22,13 @@ from model import CustomResNet50
 
 
 
-def create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train'):
+def create_dataloader(cfg, split='train', labels = '~/datadrive/data/trainLabels.csv', folder = 'train'):
     ###### added labels and folder argument
     '''
         Loads a dataset according to the provided split and wraps it in a
         PyTorch DataLoader object.
     '''
+    #labels = os.path.join(self.data_root, labels) ## if the full path above doesn't work
     #dataset_instance = CTDataset(cfg, split)        # create an object instance of our CTDataset class
     dataset_instance = CTDataset(labels, cfg, folder, split)
 
