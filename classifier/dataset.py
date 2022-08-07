@@ -18,6 +18,7 @@ from torch.utils.data import Dataset
 from torchvision.transforms import Compose, Resize, ToTensor
 from PIL import Image
 import pandas as pd
+import glob
 
 
 class CTDataset(Dataset):
@@ -49,13 +50,21 @@ class CTDataset(Dataset):
         
         #images = meta['File']
         #labels = meta['Weather']
+
+        ## add a check to make sure it exists in the folder of interest
+        list_of_images = glob.glob(os.path.join(self.data_root,'train'))
+        print(list_of_images)
+
+
+
         for file, weather in zip(meta['File'], meta['Weather']):
-            imgFileName = file
-            labelIndex = meta[meta['Weather'] == weather].index ## do we need this?
-            label = meta[meta['Weather'] == weather]
-            imgID = labelIndex ## they are the same thing in my dataset because I didn't generate a imgID
-            self.data.append([imgFileName, weather]) ## why label index and not label?
-            ##images_covered.add(imgID) ## this is kind of irrelevant for my data
+            if sum(list_of_images == file) > 0: ## make sure there is the file in the train folder
+                imgFileName = file
+                labelIndex = meta[meta['Weather'] == weather].index ## do we need this?
+                label = meta[meta['Weather'] == weather]
+                imgID = labelIndex ## they are the same thing in my dataset because I didn't generate a imgID
+                self.data.append([imgFileName, weather]) ## why label index and not label?
+                ##images_covered.add(imgID) ## this is kind of irrelevant for my data
 
         #self.data.append([imgFileName, labelIndex])
         #images_covered.add(imgID)       # make sure image is only added once to dataset
