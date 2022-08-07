@@ -52,7 +52,7 @@ class CTDataset(Dataset):
         #labels = meta['Weather']
 
         ## add a check to make sure it exists in the folder of interest
-        list_of_images = glob.glob(os.path.join(self.data_root,'train'))
+        list_of_images = glob.glob(os.path.join(self.data_root,'train/*'))
         print(list_of_images)
 
 
