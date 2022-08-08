@@ -53,7 +53,7 @@ testsnowcover = []
 testtemperature = []
 testlocation = []
 
-
+indices1 = []
 ## sort all the data to the train folder and add to DF
 def olympex_snoq_train_data(path):
     for file in glob.glob(path):
@@ -61,23 +61,24 @@ def olympex_snoq_train_data(path):
         filename = os.path.join(path,file)
         if os.path.splitext(file)[1].lower() in ('.jpg', '.jpeg'):
             name = file.split('/')[-1]
-            #shutil.copy2(filename, trainDest+str('/')+name)
-
             ## subset df
             if len(labels[labels['File'] == name]) > 0:
                 fileIndex = labels[labels['File'] == name].index.values.tolist()[0]
-                weather = labels['Weather'][fileIndex]
-                date = labels['Date'][fileIndex]
-                time = labels['Time'][fileIndex]
-                snowcover = labels['SnowCover'][fileIndex]
-                temperature = labels ['Temperature'][fileIndex]
-                location = labels['location'][fileIndex]
-                #row = {'File': name, 'Date':date, 'Time':time, 'SnowCover':snowcover, 'Temperature':temperature, 'location':location}
-                #print(row)
-                #trainLabels.concat(row, ignore_index = True)
-                trainfiles.append(name), trainweathers.append(weather), traindate.append(date)
-                traintime.append(time), trainsnowcover.append(snowcover), traintemperature.append(temperature)
-                trainlocation.append(location)
+                indices1.append(fileIndex)
+                shutil.copy2(filename, trainDest+str('/')+name)
+
+
+#fileIndex = labels[labels['File'] == name].index.values.tolist()[0]
+# weather = labels['Weather'][fileIndex]
+# date = labels['Date'][fileIndex]
+# time = labels['Time'][fileIndex]
+#snowcover = labels['SnowCover'][fileIndex]
+# temperature = labels ['Temperature'][fileIndex]
+#location = labels['location'][fileIndex]
+#trainfiles.append(name), trainweathers.append(weather), traindate.append(date)
+#traintime.append(time), trainsnowcover.append(snowcover), traintemperature.append(temperature)
+#trainlocation.append(location)
+
 
 ### get the image ID from the path. We will then use the filename 
 ### to look up the timestamp from the label dataframe 
@@ -102,7 +103,6 @@ def norway_train_test(path):
 ##### 2018-2019 year of interest [October 1 2018 - April 2019] 
 ### ecological justification: rain vs. snow is the year we have full dataset (because of covid). I had to leave in March
             if (date >= TestDate1) & (date <= TestDate2):
-                    #shutil.copy2(filename, testDest+str('/')+name)
                     print(filename)
                     if len(labels[labels['File'] == name]) > 0:
                         fileIndex = labels[labels['File'] == name].index.values.tolist()[0]
@@ -115,10 +115,10 @@ def norway_train_test(path):
                         trainfiles.append(name), trainweathers.append(weather), traindate.append(date)
                         traintime.append(time), trainsnowcover.append(snowcover), traintemperature.append(temperature)
                         trainlocation.append(location)
+                        shutil.copy2(filename, testDest+str('/')+name)
 
 ##### 2017-2018 train data, 2019-2020 (lots of rain), and leave out 2018-2019 (sufficient)          
             else: 
-                #shutil.copy2(filename, trainDest+str('/')+name)
                 if len(labels[labels['File'] == name]) > 0:
                     fileIndex = labels[labels['File'] == name].index.values.tolist()[0]
                     weather = labels['Weather'][fileIndex]
@@ -129,7 +129,7 @@ def norway_train_test(path):
                     location = labels['location'][fileIndex]
                     testfiles.append(name), testweathers.append(weather), testdate.append(date)
                     testtime.append(time), testsnowcover.append(snowcover), testtemperature.append(temperature), testlocation.append(location)
-
+                    shutil.copy2(filename, trainDest+str('/')+name)
 
 olympex_snoq_train_data(olympex)
 olympex_snoq_train_data(snoq)
@@ -155,6 +155,72 @@ labels.head()
 trainLabels = pd.DataFrame({'File':trainfiles, 'Weather':trainweathers,'Date':traindate,'Time':traindate,'SnowCover':trainsnowcover,'Temperature':traintemperature,'location':trainlocation})
 testLabels = pd.DataFrame({'File':testfiles, 'Weather':testweathers,'Date':testdate,'Time':testdate,'SnowCover':testsnowcover,'Temperature':testtemperature,'location':testlocation})
 
-trainLabels.to_csv('/datadrive/data/trainLabels.csv')
-testLabels.to_csv('/datadrive/data/testLabels.csv')
+print('Found {} images in train labels'.format(len(trainLabels['File'])))
+print('Found {} images in test labels'.format(len(testLabels['File'])))
+print('Found {} images in all labels'.format(len(labels['File'])))
+
+
+### need this to be in root '/datadrive/data/weather' because that is going to the root for this model(the weather model)
+
+trainLabels.to_csv('/datadrive/data/weather/trainLabels.csv')
+testLabels.to_csv('/datadrive/data/weather/testLabels.csv')
              
+#########
+### 
+
+## do a check that length of 
+
+trainDest = ('/datadrive/data/weather/train/*')
+testDest = ('/datadrive/data/weather/test/*')
+trainLabels = pd.read_csv('/datadrive/data/weather/trainLabels.csv')
+testLabels = pd.read_csv('/datadrive/data/weather/testLabels.csv')
+
+
+print('Found {} images in train folder'.format(len(glob.glob(trainDest))))
+print('Found {} images in test folder'.format(len(glob.glob(testDest))))
+
+print('Found {} images in train labels'.format(len(trainLabels['File'])))
+print('Found {} images in test labels'.format(len(testLabels['File'])))
+
+
+FilesThatExist = []
+trainIndices = []
+FilesThatDontExist = []
+for file in glob.glob(trainDest):
+        #print(file)
+        #filename = os.path.join(trainDest,file)
+        #if os.path.splitext(file)[1].lower() in ('.jpg', '.jpeg'):
+        name = file.split('/')[-1]
+       #print(name)
+        if len(labels[labels['File'] == name]) >0:
+            FileIndex = labels[labels['File']==name].index.tolist()[0]
+            trainIndices.append(FileIndex)
+        else: FilesThatDontExist.append(file)
+
+
+
+testIndices = []
+for file in glob.glob(testDest):
+        #print(file)
+        #filename = os.path.join(trainDest,file)
+        #if os.path.splitext(file)[1].lower() in ('.jpg', '.jpeg'):
+        name = file.split('/')[-1]
+       #print(name)
+        if len(labels[labels['File'] == name]) >0:
+            FileIndex = labels[labels['File']==name].index.tolist()[0]
+            testIndices.append(FileIndex)
+
+
+testLabels = labels.loc[testIndices].reset_index()
+testLabels.to_csv('/datadrive/data/weather/testLabels.csv')
+testLabels = pd.read_csv('/datadrive/data/weather/testLabels.csv')
+test.head()
+
+trainLabels = labels.loc[trainIndices].reset_index()
+trainLabels.to_csv('/datadrive/data/weather/trainLabels.csv')
+trainLabels = pd.read_csv('/datadrive/data/weather/trainLabels.csv')
+
+for file in FilesThatDontExist:
+    if os.path.isfile(file):
+        os.remove(file)
+    else: print("Error: %s file not found" % file)
