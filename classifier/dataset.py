@@ -23,6 +23,15 @@ import glob
 
 class CTDataset(Dataset):
 
+    # label class name to index ordinal mapping. This stays constant for each CTDataset instance.
+    LABEL_CLASSES = {
+        'None': 0,
+        'Rain': 1,
+        'Snow': 2,
+        'Fog': 3,
+        'Other': 4
+    }
+
     def __init__(self, labels, cfg, folder, split='train'):
         '''
             Constructor. Here, we collect and index the dataset inputs and
@@ -45,7 +54,8 @@ class CTDataset(Dataset):
 
         meta = pd.read_csv(self.annoPath)
         images_covered = set()      # all those images for which we have already assigned a label
-        meta = meta[meta['Weather'] != 'Fog']
+        meta = meta[meta['Weather'] != 'Fog'] ### could also drop 'other'
+        meta = meta[meta['Weather'] != 'Other']
         meta = meta.drop_duplicates().reset_index() ## maybe I should keep the original indices??
         
         #images = meta['File']
@@ -57,15 +67,14 @@ class CTDataset(Dataset):
         list_of_images = pd.Series(list_of_images)
         list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
 
-        ## otherwise do a try command
 
         for file, weather in zip(meta['File'], meta['Weather']):
             if sum(list_of_images == file) > 0: ## make sure there is the file in the train folder
                 imgFileName = file
-                labelIndex = meta[meta['Weather'] == weather].index ## do we need this?
-                label = meta[meta['Weather'] == weather]
-                imgID = labelIndex ## they are the same thing in my dataset because I didn't generate a imgID
-                self.data.append([imgFileName, weather]) ## why label index and not label?
+                #labelIndex = meta[meta['Weather'] == weather].index ## do we need this?
+                #label = meta[meta['Weather'] == weather]
+                #imgID = labelIndex ## they are the same thing in my dataset because I didn't generate a imgID
+                self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
                 ##images_covered.add(imgID) ## this is kind of irrelevant for my data
 
         #self.data.append([imgFileName, labelIndex])
@@ -116,9 +125,11 @@ class CTDataset(Dataset):
         image_name, label = self.data[idx]              # see line 57 above where we added these two items to the self.data list
 
         # load image
+
+        #try:
         image_path = os.path.join(self.data_root, self.folder, image_name) ## should specify train folder and get image name 
         img = Image.open(image_path).convert('RGB')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
-
+        #except: pass
         # transform: see lines 31ff above where we define our transformations
         img_tensor = self.transform(img)
 
