@@ -36,24 +36,7 @@ print('Found {} images in scandcam folder'.format(len(glob.glob(norway))))
 print('Found {} images in olympex folder'.format(len(glob.glob(olympex))))
 print('Found {} images in snoq folder'.format(len(glob.glob(snoq))))
 
-#trainLabels = pd.DataFrame(columns = ['File', 'Weather','Date','Time','SnowCover','Temperature','location'])
-trainfiles = []
-trainweathers = []
-traindate = []
-traintime = []
-trainsnowcover = []
-traintemperature = []
-trainlocation = []
-#testLabels = pd.DataFrame(columns = ['File', 'Weather','Date','Time','SnowCover','Temperature','location'])
-testfiles = []
-testweathers = []
-testdate = []
-testtime = []
-testsnowcover = []
-testtemperature = []
-testlocation = []
-
-indices1 = []
+indices_train = []
 ## sort all the data to the train folder and add to DF
 def olympex_snoq_train_data(path):
     for file in glob.glob(path):
@@ -64,9 +47,11 @@ def olympex_snoq_train_data(path):
             ## subset df
             if len(labels[labels['File'] == name]) > 0:
                 fileIndex = labels[labels['File'] == name].index.values.tolist()[0]
-                indices1.append(fileIndex)
+                indices_train.append(fileIndex)
                 shutil.copy2(filename, trainDest+str('/')+name)
 
+
+## shoud be the same as the number 
 
 #fileIndex = labels[labels['File'] == name].index.values.tolist()[0]
 # weather = labels['Weather'][fileIndex]
@@ -131,6 +116,9 @@ def norway_train_test(path):
                     testtime.append(time), testsnowcover.append(snowcover), testtemperature.append(temperature), testlocation.append(location)
                     shutil.copy2(filename, trainDest+str('/')+name)
 
+
+indices_train = []
+indices_test = []
 olympex_snoq_train_data(olympex)
 olympex_snoq_train_data(snoq)
 norway_train_test(norway)

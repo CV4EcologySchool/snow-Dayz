@@ -31,6 +31,15 @@ class CTDataset(Dataset):
         'Fog': 3,
         'Other': 4
     }
+    LABEL_CLASSES_BINARY = {
+        'None': 0,
+        'Rain': 1,
+        'Snow': 1,
+        'Fog': 1,
+        'Other': 1
+    }
+
+
 
     def __init__(self, labels, cfg, folder, split='train'):
         '''
@@ -74,7 +83,9 @@ class CTDataset(Dataset):
                 #labelIndex = meta[meta['Weather'] == weather].index ## do we need this?
                 #label = meta[meta['Weather'] == weather]
                 #imgID = labelIndex ## they are the same thing in my dataset because I didn't generate a imgID
-                self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+                if cfg['num_classes'] == 2:
+                    self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                else: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
                 ##images_covered.add(imgID) ## this is kind of irrelevant for my data
 
         #self.data.append([imgFileName, labelIndex])
@@ -134,3 +145,9 @@ class CTDataset(Dataset):
         img_tensor = self.transform(img)
 
         return img_tensor, label
+
+    #def __sequences__(self, )
+    #
+    #
+    #
+    #
