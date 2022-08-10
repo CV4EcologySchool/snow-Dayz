@@ -15,6 +15,10 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.optim import SGD
+from torch.utils.tensorboard import SummaryWriter 
+
+# show model progress on tensorboard
+writer = SummaryWriter()
 
 # let's import our own classes and functions!
 from dataset import CTDataset
@@ -69,7 +73,7 @@ def load_model(cfg):
 
 
 
-def save_model(dir, epoch, model, stats):
+def save_model(dir, epoch, model, stats, args):
     # make sure save directory exists; create if not
     os.makedirs(os.join(dir, 'model_states'), exist_ok=True)
 
@@ -77,7 +81,7 @@ def save_model(dir, epoch, model, stats):
     stats['model'] = model.state_dict()
 
     # ...and save
-    torch.save(stats, open(f'model_states/{epoch}.pt', 'wb'))
+    torch.save(stats, open(f'{args.exp_dir}/{args.exp_name}/model_states/{epoch}.pt', 'wb'))
 
 
 
@@ -225,7 +229,7 @@ def main():
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
     # add command line args for experiment folder, experiment name
     parser.add_argument('--exp_dir', help='Path to experiment directory', default='experiments')
-    parser.add_argument('--exp_name', help = 'Path to experiment name', default = 'experiment_names')
+    parser.add_argument('--exp_name', help = 'Path to experiment name', default = 'experiment_name')
     args = parser.parse_args()
 
     #example command line usage:  
@@ -233,6 +237,11 @@ def main():
 
     # if folder experiment folder/name DNE, make folder and copy args.config to the folder using os
    # if folder not in 
+    if not os.path.exists(args.exp_dir):
+        os.makedirs(args.exp_dir) 
+
+    if not os.path.exists(os.path.join(args.exp_dir, args.exp_name)):
+        os.makedirs(os.path.join(args.exp_dir, args.exp_name)) 
 
     # load config
     print(f'Using config "{args.config}"')

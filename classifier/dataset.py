@@ -21,6 +21,7 @@ from PIL import Image
 import pandas as pd
 import glob
 import sequenceGenerator
+import random
 
 
 class CTDataset(Dataset):
@@ -67,6 +68,8 @@ class CTDataset(Dataset):
         meta = meta[meta['Weather'] != 'Other']
         meta = meta.drop_duplicates().reset_index() ## maybe I should keep the original indices??
         
+
+
         #images = meta['File']
         #labels = meta['Weather']
 
@@ -77,6 +80,8 @@ class CTDataset(Dataset):
 
         if self.sequenceType == 'None':
             for file, weather in zip(meta['File'], meta['Weather']):
+                if random.uniform(0.0, 1.0) <= 0.9:
+                    continue
                 if sum(list_of_images == file) > 0: ## make sure there is the file in the train folder
                     imgFileName = file
                     if cfg['num_classes'] == 2:
@@ -92,8 +97,8 @@ class CTDataset(Dataset):
                     imgFileName = file 
                     if cfg['num_classes'] == 2:
                         imgFileName = file
-                        self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-                    else: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+                        self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
+                    else: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
     ########## not sure what to do with my before and after stuff????    
 #########################################################################
@@ -123,7 +128,12 @@ class CTDataset(Dataset):
             img_tensor = self.transform(img)
         
     ######################################## not ready ##########################
+        ##import IPython ## for testing : may need to install: pip install IPython
+        ##IPython.embed() ## for testing
+
         if self.sequenceType != 'None':
+            before, image_name, after = image_name
+
             image_path1 = os.path.join(self.data_root, self.folder, before) ## should specify train folder and get image name 
             image_path2 = os.path.join(self.data_root, self.folder, image_name)
             image_path3 = os.path.join(self.data_root, self.folder, after) ####
