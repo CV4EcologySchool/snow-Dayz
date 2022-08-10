@@ -4,7 +4,7 @@
 
 # environment/computational parameters
 device: cuda
-num_workers: 2
+num_workers: 1
 
 # dataset parameters
 data_root: /datadrive/data/weather
