@@ -95,7 +95,7 @@ class CTDataset(Dataset):
                         self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
-        
+    ########## not sure what to do with my before and after stuff????    
 
     def __len__(self):
         '''
