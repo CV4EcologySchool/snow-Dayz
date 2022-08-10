@@ -122,6 +122,7 @@ class CTDataset(Dataset):
             # transform: see lines 31ff above where we define our transformations
             img_tensor = self.transform(img)
         
+    ######################################## not ready ##########################
         if self.sequenceType != 'None':
             image_path1 = os.path.join(self.data_root, self.folder, before) ## should specify train folder and get image name 
             image_path2 = os.path.join(self.data_root, self.folder, image_name)
@@ -138,6 +139,7 @@ class CTDataset(Dataset):
             img_tensor3 = self.transform(img3)
             img_tensor = torch.stack([img_tensor1, img_tensor2,img_tensor3], 3) 
 
+#############################################################################
 
         return img_tensor, label
 
