@@ -49,7 +49,7 @@ class CTDataset(Dataset):
         self.data_root = cfg['data_root']
         self.split = split
         self.folder = folder
-        self.sequenceType = cfg['sequence']
+        self.sequenceType = cfg['sequenceType']
         self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
             ToTensor()                          # ...and convert them to torch.Tensor.
