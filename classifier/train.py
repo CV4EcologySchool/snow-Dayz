@@ -284,7 +284,7 @@ def main():
             'oa_train': oa_train,
             'oa_val': oa_val
         }
-        save_model(current_epoch, model, stats, args)
+        save_model(current_epoch, model, stats, save_path)
     
 
     # That's all, folks!
