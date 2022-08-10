@@ -81,10 +81,9 @@ def save_model(dir, epoch, model, stats, args):
     stats['model'] = model.state_dict()
 
     # ...and save
-    torch.save(stats, open(f'{args.exp_dir}/{args.exp_name}/model_states/{epoch}.pt', 'wb'))
+    torch.save(stats, open(f'{args.exp_dir}/{args.exp_name}/{epoch}.pt', 'wb'))
 
-
-
+##model_states
 def setup_optimizer(cfg, model):
     '''
         The optimizer is what applies the gradients to the parameters and makes
@@ -284,7 +283,7 @@ def main():
             'oa_train': oa_train,
             'oa_val': oa_val
         }
-        save_model(current_epoch, model, stats, save_path)
+        save_model(current_epoch, model, stats, args)
     
 
     # That's all, folks!
