@@ -9,7 +9,7 @@ num_workers: 4
 # dataset parameters
 data_root: /datadrive/data/weather
 num_classes: 2 ## weather vs. none
-sequenceType: 'None'
+sequenceType: '3-6hr'
 
 #pos_label: [1, 2, 3, 4]
 #neg_label: [0]

@@ -69,9 +69,9 @@ def load_model(cfg):
 
 
 
-def save_model(epoch, model, stats):
+def save_model(dir, epoch, model, stats):
     # make sure save directory exists; create if not
-    os.makedirs('model_states', exist_ok=True)
+    os.makedirs(os.join(dir, 'model_states'), exist_ok=True)
 
     # get model parameters and add to stats...
     stats['model'] = model.state_dict()
@@ -223,7 +223,16 @@ def main():
     # python ct_classifier/train.py --config configs/exp_resnet18.yaml
     parser = argparse.ArgumentParser(description='Train deep learning model.')
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
+    # add command line args for experiment folder, experiment name
+    parser.add_argument('--exp_dir', help='Path to experiment directory', default='experiments')
+    parser.add_argument('--exp_name', help = 'Path to experiment name', default = 'experiment_names')
     args = parser.parse_args()
+
+    #example command line usage:  
+    # train.py --config path/to/config --exp_dir path/to/exp_dir --exp_name path/to/exp_name
+
+    # if folder experiment folder/name DNE, make folder and copy args.config to the folder using os
+   # if folder not in 
 
     # load config
     print(f'Using config "{args.config}"')

@@ -1,10 +1,10 @@
 .DS_Store
-BennyLecture.txt
+Lectures/BennyLecture.txt
 .git_Cmds.swp
-SelectingModels_Sara.txt
+Lectures/SelectingModels_Sara.txt
 classifier/__pycache__/dataset.cpython-38.pyc
 classifier/__pycache__/*.pyc
-EliLecture.txt
+Lectures/EliLecture.txt
 command_lines.txt
-
+Lectures/OfflineEvaluationandModelAnalysis_Sara.txt
 

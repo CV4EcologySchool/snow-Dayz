@@ -5,6 +5,7 @@ num_workers: 4
 # dataset parameters
 data_root: datasets/data/weather
 num_classes: 3 ## rain vs. snow vs.  none
+sequenceType: 'None'
 
 # training hyperparameters
 image_size: [224, 224]
