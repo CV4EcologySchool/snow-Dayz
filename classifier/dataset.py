@@ -80,7 +80,7 @@ class CTDataset(Dataset):
 
         if self.sequenceType == 'None':
             for file, weather in zip(meta['File'], meta['Weather']):
-                if random.uniform(0.0, 1.0) <= 0.9:
+                if random.uniform(0.0, 1.0) <= 0.99:
                     continue
                 if sum(list_of_images == file) > 0: ## make sure there is the file in the train folder
                     imgFileName = file
