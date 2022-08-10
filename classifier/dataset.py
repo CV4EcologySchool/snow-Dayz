@@ -83,20 +83,20 @@ class CTDataset(Dataset):
                         self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
+#################### NOT READY ############################
         if self.sequenceType != 'None':
             for file, weather in zip(meta['File'], meta['Weather']):
                 if sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
                     imgFileName = file
                     before, file, after = sequenceGenerator(labels, file, sequenceType = self.sequenceType)
                     imgFileName = file 
-
                     if cfg['num_classes'] == 2:
                         imgFileName = file
                         self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
     ########## not sure what to do with my before and after stuff????    
-
+#########################################################################
     def __len__(self):
         '''
             Returns the length of the dataset.
