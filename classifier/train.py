@@ -243,9 +243,14 @@ def main():
     if not os.path.exists(os.path.join(args.exp_dir, args.exp_name)):
         os.makedirs(os.path.join(args.exp_dir, args.exp_name)) 
 
+    save_path = os.path.join(args.exp_dir, args.exp_name)
+
     # load config
     print(f'Using config "{args.config}"')
     cfg = yaml.safe_load(open(args.config, 'r'))
+
+    print(f'Saving results to "{save_path}"')
+    
 
     # check if GPU is available
     device = cfg['device']
