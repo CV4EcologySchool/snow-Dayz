@@ -17,16 +17,15 @@ which is also the image of interest.
 import pandas as pd
 import numpy as np
 
-def sequenceGenerator(labels, file, sequenceType):
+def sequenceGenerator(meta, file, sequenceType):
     
-
     ## subset dataframe for filename to get the location and other metadata
-    fileIndex = labels[labels['File'] == file].index 
-    date =  (labels['Date'][fileIndex].values.tolist())[0]
-    location = (labels['location'][fileIndex].values.tolist())[0]
+    fileIndex = meta[meta['File'] == file].index 
+    date =  (meta['Date'][fileIndex].values.tolist())[0]
+    location = (meta['location'][fileIndex].values.tolist())[0]
 
     ## subset dataframe of location
-    cameraIDsubset = labels[labels['location'] == location]
+    cameraIDsubset = meta[meta['location'] == location]
     timestamp = pd.to_datetime(date)
     
     ## turn date column into datetime column to be able to find time deltas
