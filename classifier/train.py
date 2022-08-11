@@ -75,13 +75,14 @@ def load_model(cfg):
 
 def save_model(dir, epoch, model, stats, args):
     # make sure save directory exists; create if not
-    os.makedirs(os.join(dir, 'model_states'), exist_ok=True)
-
+    dir = os.join(args.exp_dir,args.exp_name)
+    os.makedirs(dir, 'model_states', exist_ok=True) ####update here!
+#### it was just dir, 'model_states"
     # get model parameters and add to stats...
     stats['model'] = model.state_dict()
 
     # ...and save
-    torch.save(stats, open(f'{args.exp_dir}/{args.exp_name}/{epoch}.pt', 'wb'))
+    torch.save(stats, open(f'{args.exp_dir}/{args.exp_name}/model_states/{epoch}.pt', 'wb'))
 
 ##model_states
 def setup_optimizer(cfg, model):
