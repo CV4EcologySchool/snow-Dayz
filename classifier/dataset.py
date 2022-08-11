@@ -111,9 +111,9 @@ class CTDataset(Dataset):
     def __shape__(self):
         return (self.data)
 
-    def __sequenceType(self):
+    def __sequenceType__(self):
         return (self.sequenceType)
-    
+
     def __getitem__(self, idx):
         '''
             Returns a single data point at given idx.
