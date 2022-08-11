@@ -18,7 +18,7 @@ from torch.optim import SGD
 from torch.utils.tensorboard import SummaryWriter 
 
 # show model progress on tensorboard
-writer = SummaryWriter()
+#writer = SummaryWriter()
 
 # let's import our own classes and functions!
 from dataset import CTDataset
