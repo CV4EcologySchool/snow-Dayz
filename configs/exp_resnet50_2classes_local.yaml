@@ -7,7 +7,7 @@ device: cuda
 num_workers: 1
 
 # dataset parameters
-data_root: /datadrive/data/weather
+data_root: /datadrive/vmData/weather
 num_classes: 2 ## weather vs. none
 sequenceType: 'None'
 
@@ -17,7 +17,7 @@ sequenceType: 'None'
 # training hyperparameters
 image_size: [224, 224]
 num_epochs: 200
-batch_size: 1
+batch_size: 64
 learning_rate: 0.001
 weight_decay: 0.001
 
