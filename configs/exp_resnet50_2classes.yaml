@@ -7,7 +7,7 @@ device: cuda
 num_workers: 1
 
 # dataset parameters
-data_root: /datadrive/data/weather
+data_root: /datadrive/vmData/weather
 num_classes: 2 ## weather vs. none
 sequenceType: 'None'
 

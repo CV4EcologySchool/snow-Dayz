@@ -3,7 +3,7 @@ device: cuda
 num_workers: 4
 
 # dataset parameters
-data_root: datasets/data/weather
+data_root: datasets/vmData/weather
 num_classes: 3 ## rain vs. snow vs.  none
 sequenceType: 'None'
 

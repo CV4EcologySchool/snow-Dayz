@@ -57,3 +57,28 @@ Mixup//CutMix
 
 Define an augmentation pipeline 
 - 
+
+Look up at albumentaitons!! 
+
+Apply distortions in dataloader; not in storage 
+
+Best-practices loads augmentation parameters from config.yaml 
+- that way you can play 
+
+Sounds great but still in research stage 
+- train generative vision model, e.g. GAN on data and sample
+
+Adding syntehtic data does work, but it does require a lot of effort and money and multiple simulation data 
+
+When to stop augmentigng and label more data?
+- stop if augmentation doesn't majorly improve evaluation results
+- create targeted plots to evaluate usefulness of augmentation
+- plot accuracy over axis of variation, e.g. day vs. night 
+
+Takeaway: 
+- data augmentation -- 
+
+Follow up question for reading group: why don't we see data augmentation that often?
+- really learn rather than deal class imbalance? Do you present both images 
+
+So it seems like data augmentation is not for sample size boosting but just to like really refine the model 
