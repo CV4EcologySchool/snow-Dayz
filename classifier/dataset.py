@@ -20,7 +20,7 @@ from torchvision.transforms import Compose, Resize, ToTensor
 from PIL import Image
 import pandas as pd
 import glob
-import sequenceGenerator
+from sequenceGenerator import sequenceGenerator
 import random
 
 
@@ -110,6 +110,9 @@ class CTDataset(Dataset):
 
     def __shape__(self):
         return (self.data)
+
+    def __sequenceType(self):
+        return (self.sequenceType)
     
     def __getitem__(self, idx):
         '''
