@@ -75,7 +75,7 @@ def load_model(cfg):
 
 def save_model(epoch, model, stats, args): ## dir
     # make sure save directory exists; create if not
-    dir = os.join(args.exp_dir,args.exp_name)
+    dir = os.path.join(args.exp_dir,args.exp_name)
     os.makedirs(dir, 'model_states', exist_ok=True) ####update here!
 #### it was just dir, 'model_states"
     # get model parameters and add to stats...
