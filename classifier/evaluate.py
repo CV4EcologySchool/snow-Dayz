@@ -82,7 +82,8 @@ def predict(cfg, dataLoader, model):
         confidences = [] ## soft max of probabilities 
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
-        print('dataLoader', dataLoader.shape)
+        print('dataLoader')
+        print(dataLoader)
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
                 true_label = label
