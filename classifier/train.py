@@ -23,6 +23,7 @@ from torch.utils.tensorboard import SummaryWriter
 # let's import our own classes and functions!
 from dataset import CTDataset
 from model import CustomResNet50
+import ipdb
 
 
 
@@ -129,6 +130,7 @@ def train(cfg, dataLoader, model, optimizer):
         data, labels = data.to(device), labels.to(device)
 
         # forward pass
+        ipdb.set_trace()
         prediction = model(data)
 
         # reset gradients to zero

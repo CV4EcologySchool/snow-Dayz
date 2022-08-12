@@ -90,11 +90,10 @@ def predict(cfg, dataLoader, model):
                 prediction = model(data) ## the full probabilty
                 #print(prediction.shape) ## it is going to be [batch size #num_classes]
                 predict_label = torch.argmax(prediction, dim=1) ## the label
-                print(predict_label)
+                #print(predict_label)
                 confidence = torch.nn.Softmax(prediction)
 
                 predictions.append(prediction)
-
                 true_label = true_label.numpy()
                 print(true_label)
                 true_labels.append(true_label) ## get it out of tensor and into list, 
@@ -191,7 +190,7 @@ def main():
     # get recall score
     ### this is just a way to get two decimal places 
     F1score = f1_score(true_labels, predicted_labels)
-    print("Recall of model is {:0.2f}".format(F1score))
+    print("F1score of model is {:0.2f}".format(F1score))
     #####################################################
 
     # confusion matrix

@@ -127,6 +127,7 @@ class CTDataset(Dataset):
         # load image
         if self.sequenceType == 'None':
         #try:
+            ipdb.set_trace()
             image_path = os.path.join(self.data_root, self.folder, image_name) ## should specify train folder and get image name 
             img = Image.open(image_path).convert('RGB')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
             #except: pass
