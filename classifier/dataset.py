@@ -97,7 +97,7 @@ class CTDataset(Dataset):
 ######################### sequences #################
         if self.sequenceType != 'None':
             for file, weather in zip(meta['File'], meta['Weather']):
-                if (random.uniform(0.0, 1.0) <= 0.005) and sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
+                if (random.uniform(0.0, 1.0) <= 0.001) and sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
                     imgFileName = file
                     before, file, after = sequenceGenerator(meta, file, sequenceType = self.sequenceType)
                     imgFileName = file 
@@ -152,6 +152,7 @@ class CTDataset(Dataset):
             img1 = Image.open(image_path1).convert('L')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
             img2 = Image.open(image_path2).convert('L')
             img3 = Image.open(image_path3).convert('L')
+            print(img3.shape)
             #except: pass
 
             # transform: see lines 31ff above where we define our transformations
@@ -160,7 +161,6 @@ class CTDataset(Dataset):
             img_tensor3 = self.transform(img3)
 
             img_tensor = torch.cat([img_tensor1, img_tensor2,img_tensor3], dim = 0) ### 
-            print(img_tensor.shape)
 
 ############################################################################# kadjfldsf
 
