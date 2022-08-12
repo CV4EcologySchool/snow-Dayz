@@ -23,8 +23,8 @@ import numpy as np
 import argparse
 import os
 from glob import glob
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score, PrecisionRecallDisplay
-from sklearn.metrics import precision_score, recall_score
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score
+from sklearn.metrics import precision_score, recall_score, f1_score, PrecisionRecallDisplay
 import matplotlib.pyplot as plt
 from model import CustomResNet50
 from train import create_dataloader, load_model 
@@ -73,14 +73,16 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
 
     return model_instance, epoch
 
+########## extracting true_labels and predicted_labels for later use in the accuracy metrics
 def predict(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
-        true_labels = []
-        predictions = []
-        predicted_labels = [] 
-        confidences = []
+        predictions = [] ## predictions as tensor probabilites
+        true_labels = [] ## labels as 0, 1 .. (classes)
+        predicted_labels = [] ## labels as 0, 1 .. (classes)
+        confidences = [] ## soft max of probabilities 
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
+        print('dataLoader', dataLoader.shape)
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
                 true_label = label
@@ -104,6 +106,11 @@ def predict(cfg, dataLoader, model):
 
     return true_labels, predictions, predicted_labels, confidence, results
 
+def export_results(results, exp_name):
+    if not os.path.exists('experiments/'+(exp_name)+'/figs'):
+        os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
+
+    results.to_csv('experiments/'+(exp_name)+'/figs/'+'results.csv')
 
 def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
     # make figures folder if not there
@@ -123,6 +130,15 @@ def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
 
     # make a csv of accuracy metrics 
 
+def save_precision_recall_curve(y_true, y_pred, exp_name, epoch, split='train'):
+        #### make the path if it doesn't exist
+    if not os.path.exists('experiments/'+(exp_name)+'/figs'):
+        os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
+    
+    PRcurve = PrecisionRecallDisplay.from_predictions(y_true, y_pred)
+    PRcurve.savefig(f'/experiments/'+(exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+
+
 def main():
     # Argument parser for command-line arguments:
     # python code/train.py --output model_runs
@@ -139,7 +155,7 @@ def main():
     print(f'Using config "{args.config}"')
     cfg = yaml.safe_load(open(args.config, 'r'))
 
-    # setup dataloader
+    # setup dataloader validation
     dl_val = create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train')
 
     # load model and predict from model
@@ -151,27 +167,32 @@ def main():
     acc = accuracy_score(true_labels, predicted_labels)
     print("Accuracy of model is {:0.2f}".format(acc))
 
+    ######################### put this all in a function ##############
     # get precision score
     ### this is just a way to get two decimal places 
-    precision = accuracy_score(true_labels, predicted_labels)
-    print("Precision of model is {:0.2f}".format(acc))
+    precision = precision_score(true_labels, predicted_labels)
+    print("Precision of model is {:0.2f}".format(precision))
 
     # get recall score
     ### this is just a way to get two decimal places 
-    recall = accuracy_score(true_labels, predicted_labels)
-    print("Recall of model is {:0.2f}".format(acc))
+    recall = recall_score(true_labels, predicted_labels)
+    print("Recall of model is {:0.2f}".format(recall))
 
     # get recall score
     ### this is just a way to get two decimal places 
-    F1score = accuracy_score(true_labels, predicted_labels)
-    print("Recall of model is {:0.2f}".format(acc))
+    F1score = f1_score(true_labels, predicted_labels)
+    print("Recall of model is {:0.2f}".format(F1score))
+    #####################################################
 
     # confusion matrix
     confmatrix = save_confusion_matrix(y_true=true_labels, y_pred=predicted_labels, exp_name = exp_name, epoch = epoch, split = 'train')
     print("confusion matrix saved")
-    # precision recall curve
+    
+    PRcurve = save_precision_recall_curve(y_true=true_labels, y_pred=predicted_labels, exp_name = exp_name, epoch = epoch, split = 'train')
+    print("precision recall curve saved")
 
     # save list of predictions
+    export_results = export_results(results, exp_name)
 
 
 if __name__ == '__main__':
