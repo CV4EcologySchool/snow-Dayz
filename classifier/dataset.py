@@ -22,6 +22,9 @@ import pandas as pd
 import glob
 from sequenceGenerator import sequenceGenerator
 import random
+from PIL import Image, ImageFile
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 class CTDataset(Dataset):
