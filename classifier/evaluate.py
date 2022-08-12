@@ -58,7 +58,6 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
             eval_epoch = epoch ### if you set the epoch in the function, if it's none it will take the max
         else:
             eval_epoch = max(model_epochs)
-
         
         # load state dict and apply weights to model
         print(f'Evaluating from epoch {eval_epoch}')
@@ -84,6 +83,8 @@ def predict(cfg, dataLoader, model):
         ### this will evaluate on each batch of data (usually 64)
         print('dataLoader')
         print(dataLoader)
+        print(len(dataLoader))
+        print(dataLoader.shape)
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
                 true_label = label
@@ -95,6 +96,7 @@ def predict(cfg, dataLoader, model):
             #print(confidence)
 
 ############ does this need to be before or after the torch.no_grad()
+                true_label = true_label.tolist()
                 true_labels.append(int(true_label))
                 predictions.append(prediction)
                 predicted_labels.append(int(predict_label))
