@@ -103,7 +103,11 @@ def predict(cfg, dataLoader, model):
                 confidences.extend(confidence)
 
     true_labels = np.array(true_labels)
+    print(true_labels)
+    print(len(true_labels))
     predicted_labels = np.array(predicted_labels)
+    print(predicted_labels)
+    print(len(predicted_labels))
     #### this should be full dataset as a dataframe
     #results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels}) #"confidence":confidence
 
@@ -163,6 +167,8 @@ def main():
     # load model and predict from model
     model, epoch = load_model(cfg, exp_name)
     true_labels, predicted_labels, confidence = predict(cfg, dl_val, model)   
+
+    print('done generating true labels')
     
     # get accuracy score
     ### this is just a way to get two decimal places 

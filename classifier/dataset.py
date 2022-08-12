@@ -134,7 +134,7 @@ class CTDataset(Dataset):
             #except: pass
             # transform: see lines 31ff above where we define our transformations
             img_tensor = self.transform(img)
-            print(img_tensor.shape)
+            #print(img_tensor.shape)
         
     ######################################## sequences ##########################
         ##import IPython ## for testing : may need to install: pip install IPython
@@ -152,7 +152,7 @@ class CTDataset(Dataset):
             img1 = Image.open(image_path1).convert('L')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
             img2 = Image.open(image_path2).convert('L')
             img3 = Image.open(image_path3).convert('L')
-            (print(img3.size))
+            #(print(img3.size))
             #except: pass
 
             # transform: see lines 31ff above where we define our transformations
