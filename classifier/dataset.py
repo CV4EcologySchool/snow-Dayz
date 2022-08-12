@@ -141,7 +141,7 @@ class CTDataset(Dataset):
         ##IPython.embed() ## for testing
         #ipdb.set_trace()
        
-        import ipdb; ipdb.set_trace()
+        IPython.embed()
         if self.sequenceType != 'None':
             before, image_name, after = image_name
 
@@ -159,7 +159,7 @@ class CTDataset(Dataset):
             img_tensor2 = self.transform(img2)
             img_tensor3 = self.transform(img3)
 
-            img_tensor = torch.stack([img_tensor1, img_tensor2,img_tensor3], dim = 0) ### 
+            img_tensor = torch.cat([img_tensor1, img_tensor2,img_tensor3], dim = 0) ### 
             print(img_tensor.shape)
 
 ############################################################################# kadjfldsf

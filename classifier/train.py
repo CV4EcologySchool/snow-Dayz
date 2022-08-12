@@ -130,7 +130,6 @@ def train(cfg, dataLoader, model, optimizer):
         data, labels = data.to(device), labels.to(device)
 
         # forward pass
-        ipdb.set_trace()
         prediction = model(data)
 
         # reset gradients to zero
