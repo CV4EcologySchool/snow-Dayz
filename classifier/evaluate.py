@@ -115,7 +115,7 @@ def main():
     cfg = yaml.safe_load(open(args.config, 'r'))
 
     # setup dataloader
-    dl_val = create_dataloader(cfg, split=args.split, batch=1)
+    dl_val = create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train')
 
     # load model and predict from model
     model, epoch = load_model(cfg)
