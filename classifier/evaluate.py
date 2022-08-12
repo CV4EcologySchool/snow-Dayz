@@ -82,39 +82,39 @@ def predict(cfg, dataLoader, model):
         test = []
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
-        print(len(dataLoader)) ## number of total divisions n/batchsize
+        #print(len(dataLoader)) ## number of total divisions n/batchsize
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
-                print(idx)
+                #print(idx)
                 true_label = label
                 prediction = model(data) ## the full probabilty
                 #print(prediction.shape) ## it is going to be [batch size #num_classes]
                 predict_label = torch.argmax(prediction, dim=1) ## the label
                 print(predict_label)
                 confidence = torch.nn.Softmax(prediction)
-            #print(confidence)
 
-############ does this need to be before or after the torch.no_grad()
+                predictions.append(prediction)
+
                 true_label_list = true_label.tolist()
                 print(true_label)
-                true_labels.append(true_label_list) ## get it out of tensor and into list, 
+                true_labels.extend(true_label_list) ## get it out of tensor and into list, 
                 ### might be able to do this as a np array?
                 print('true_labels',true_labels)
-                test.append(int(true_label))
-                print('test',test)
-                #predict_label = predict_label.tolist().tovalue
-                #predicted_labels.append(predict_label)
+                #test.append(int(true_label))
+                #print('test',test)
 
-                #predicted_labels.append(predictions)
-                #confidence = confidence.tolist()
-                #confidences.append(confidence)
+                predict_label = predict_label.tolist()
+                predicted_labels.extend(predict_label)
+
+                confidence = confidence.tolist()
+                confidences.extend(confidence)
 
     print(true_labels)
     print(test)
     #### this should be full dataset as a dataframe
     results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels, "confidence":confidences})
 
-    return true_labels, predictions, predicted_labels, confidence, results
+    return predictions, true_labels, predicted_labels, confidences, results
 
 def export_results(results, exp_name):
     if not os.path.exists('experiments/'+(exp_name)+'/figs'):
@@ -170,7 +170,7 @@ def main():
 
     # load model and predict from model
     model, epoch = load_model(cfg, exp_name)
-    predictions, predicted_labels, true_labels, results = predict(cfg, dl_val, model)   
+    predictions, true_labels, predicted_labels, confidence, results = predict(cfg, dl_val, model)   
     
     # get accuracy score
     ### this is just a way to get two decimal places 
