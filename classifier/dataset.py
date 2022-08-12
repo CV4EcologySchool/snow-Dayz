@@ -146,6 +146,9 @@ class CTDataset(Dataset):
             before, image_name, after = image_name
 
             image_path1 = os.path.join(self.data_root, self.folder, before) ## should specify train folder and get image name 
+            print(image_path1)
+            print(self.data_root)
+            print(self.folder)
             image_path2 = os.path.join(self.data_root, self.folder, image_name)
             image_path3 = os.path.join(self.data_root, self.folder, after) ####
 

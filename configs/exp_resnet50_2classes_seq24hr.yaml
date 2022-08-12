@@ -8,7 +8,7 @@ num_workers: 4
 
 # dataset parameters
 data_root: /datadrive/vmData/weather
-train_folder: 'train'
+#train_folder: 'train'
 num_classes: 2 ## weather vs. none
 sequenceType: '12-24hr'
 
