@@ -27,7 +27,7 @@ import ipdb
 
 
 
-def create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train_resized'):
+def create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train'):
     ###### added labels and folder argument
     '''
         Loads a dataset according to the provided split and wraps it in a
