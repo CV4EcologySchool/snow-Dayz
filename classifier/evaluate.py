@@ -10,7 +10,7 @@ What is my model doing?
 4. make a confusion matrix!! 
 5. plot recision recall for each class
 6. Find the most confusing images 
-    - 
+    - how do I do this without an index?
 Catherine Breen
 2022
 
@@ -97,14 +97,18 @@ def predict(cfg, dataLoader, model):
 ############ does this need to be before or after the torch.no_grad()
                 true_label = true_label.tolist()
                 print(true_label)
-                true_labels.append(true_label)
+                true_labels.append(true_label[0]) ## get it out of tensor and into list, 
+                ### might be able to do this as a np array?
                 print(true_labels)
-                predictions.append(prediction)
-                predicted_labels.append(int(predict_label))
-                true_labels.append(int(label))
-                print(true_labels)
-                confidences.append(int(confidence))
 
+                #predict_label = predict_label.tolist().tovalue
+                #predicted_labels.append(predict_label)
+
+                #predicted_labels.append(predictions)
+                #confidence = confidence.tolist()
+                #confidences.append(confidence)
+
+    print(true_labels)
     #### this should be full dataset as a dataframe
     results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels, "confidence":confidences})
 
@@ -120,7 +124,7 @@ def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
     # make figures folder if not there
 
     #### make the path if it doesn't exist
-    if not os.path.exists('experiments/'+(exp_name)+'/figs'):
+    if not os.path.exists('experiments/'+(exp_name)+'/figs'):  
         os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
 
     confmatrix = confusion_matrix(y_true, y_pred)
