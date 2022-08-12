@@ -17,8 +17,8 @@ sequenceType: '6-12hr'
 
 # training hyperparameters
 image_size: [224, 224]
-num_epochs: 10
-batch_size: 64
+num_epochs: 256
+batch_size: 256
 learning_rate: 0.001
 weight_decay: 0.001
 
