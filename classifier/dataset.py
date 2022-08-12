@@ -132,6 +132,7 @@ class CTDataset(Dataset):
             #except: pass
             # transform: see lines 31ff above where we define our transformations
             img_tensor = self.transform(img)
+            print(img_tensor.shape)
         
     ######################################## sequences ##########################
         ##import IPython ## for testing : may need to install: pip install IPython
@@ -154,6 +155,7 @@ class CTDataset(Dataset):
             img_tensor2 = self.transform(img2)
             img_tensor3 = self.transform(img3)
             img_tensor = torch.stack([img_tensor1, img_tensor2,img_tensor3], 3) 
+            print(img_tensor.shape)
 
 #############################################################################
 
