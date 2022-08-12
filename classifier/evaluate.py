@@ -79,6 +79,7 @@ def predict(cfg, dataLoader, model):
         true_labels = [] ## labels as 0, 1 .. (classes)
         predicted_labels = [] ## labels as 0, 1 .. (classes)
         confidences = [] ## soft max of probabilities 
+        test = []
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
         print('dataLoader')
@@ -95,12 +96,13 @@ def predict(cfg, dataLoader, model):
             #print(confidence)
 
 ############ does this need to be before or after the torch.no_grad()
-                true_label = true_label.tolist()
+                true_label_list = true_label.tolist()
                 print(true_label)
-                true_labels.append(true_label) ## get it out of tensor and into list, 
+                true_labels.append(true_label_list) ## get it out of tensor and into list, 
                 ### might be able to do this as a np array?
                 print(true_labels)
-
+                test.append(int(true_label))
+                print(test)
                 #predict_label = predict_label.tolist().tovalue
                 #predicted_labels.append(predict_label)
 
@@ -109,6 +111,7 @@ def predict(cfg, dataLoader, model):
                 #confidences.append(confidence)
 
     print(true_labels)
+    print(test)
     #### this should be full dataset as a dataframe
     results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels, "confidence":confidences})
 
