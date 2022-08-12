@@ -105,6 +105,7 @@ def predict(cfg, dataLoader, model):
 
                 predict_label = predict_label.tolist()
                 predicted_labels.extend(predict_label)
+                print('predicted_labels', predicted_labels)
 
                 confidence = confidence.tolist()
                 confidences.extend(confidence)
