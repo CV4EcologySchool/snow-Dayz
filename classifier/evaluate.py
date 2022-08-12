@@ -30,6 +30,8 @@ from model import CustomResNet50
 from train import create_dataloader, load_model 
 import pandas as pd
 import random
+import IPython
+
 
 ## We need the cfg (model configuration), model 
 ### could make this a class rather than a function
@@ -82,6 +84,7 @@ def predict(cfg, dataLoader, model):
         test = []
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
+        IPython.embed()
         print(len(dataLoader)) ## number of total divisions n/batchsize
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
