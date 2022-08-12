@@ -83,8 +83,7 @@ def predict(cfg, dataLoader, model):
         ### this will evaluate on each batch of data (usually 64)
         print('dataLoader')
         print(dataLoader)
-        print(len(dataLoader))
-        print(dataLoader.shape)
+        print(len(dataLoader)) ## number of total divisions n/batchsize
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
                 true_label = label
