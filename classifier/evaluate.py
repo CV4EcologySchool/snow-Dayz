@@ -83,14 +83,14 @@ def predict(cfg, dataLoader, model):
     return predictions, predict_labels, labels, confidence
 
 
-def save_confusion_matrix(y_true, y_pred, args, epoch, split='train'):
+def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
     # make figures folder if not there
     os.makedirs({args.exp_dir}/{args.exp_name}+'/figs', exist_ok=True)
 
     confmatrix = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confmatrix)
     disp.plot()
-    plt.savefig(f'/experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    plt.savefig(f'/experiments/'+(exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
     return confmatrix
 
 ## we will calculate overall precision, recall, and F1 score
@@ -102,13 +102,13 @@ def main():
     # Argument parser for command-line arguments:
     # python code/train.py --output model_runs
     parser = argparse.ArgumentParser(description='Train deep learning model.')
-    parser.add_argument('--exp_folder', required=True, help='Path to experiment folder')
+    parser.add_argument('--exp_name', required=True, help='Path to experiment folder')
     parser.add_argument('--split', help='Data split', default ='train')
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
     args = parser.parse_args()
 
     # set model directory
-    exp_folder = args.exp_folder
+    exp_name = args.exp_name
 
     # reload config, that has to be set in the path
     print(f'Using config "{args.config}"')
@@ -118,7 +118,7 @@ def main():
     dl_val = create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train')
 
     # load model and predict from model
-    model, epoch = load_model(cfg)
+    model, epoch = load_model(cfg, exp_name)
     predictions, predict_labels, labels = predict(cfg, dl_val, model)   
     
     # get accuracy score
@@ -142,7 +142,7 @@ def main():
     print("Recall of model is {:0.2f}".format(acc))
 
     # confusion matrix
-    cm = save_confusion_matrix(labels, predict_labels, outdir, epoch, args.split)
+    cm = save_confusion_matrix(labels, predict_labels, exp_name, epoch, args.split)
 
     # precision recall curve
 
