@@ -90,7 +90,7 @@ def save_confusion_matrix(y_true, y_pred, args, epoch, split='train'):
     confmatrix = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confmatrix)
     disp.plot()
-    plt.savefig('/experiments/'{args.exp_name}+'/figs/confusion_matrix_epoch'+str(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    plt.savefig(f'/experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
     return confmatrix
 
 ## we will calculate overall precision, recall, and F1 score
