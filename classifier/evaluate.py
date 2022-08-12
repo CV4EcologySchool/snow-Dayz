@@ -41,7 +41,9 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
     model_instance = CustomResNet50(cfg['num_classes'])         # create an object instance of our CustomResNet18 class
 
     # load latest model state
-    model_states = glob(exp_name+'/model_states/*.pt')
+    model_states = glob('experiments/'+exp_name+'/model_states/*.pt')
+    print('model_states')
+    print(model_states)
 
     if len(model_states) > 0:
         # at least one save state found; get latest
@@ -56,15 +58,15 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
         # load state dict and apply weights to model
         print(f'Evaluating from epoch {start_epoch}')
         state = torch.load(open(f'{exp_name}/model_states/{start_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
-        model_instance.load_state_dict(state['model'])
-
+        model = model_instance.load_state_dict(state['model'])
+        print(model)
         ### how do I get to a model?? 
 
     else:
         # no save state found; start anew
         print('No model found')
 
-    return model_instance, epoch
+    return model, epoch
 
 def predict(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
