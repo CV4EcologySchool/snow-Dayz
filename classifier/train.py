@@ -23,8 +23,6 @@ from torch.utils.tensorboard import SummaryWriter
 # let's import our own classes and functions!
 from dataset import CTDataset
 from model import CustomResNet50
-import ipdb
-
 
 
 def create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train'):
