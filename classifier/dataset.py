@@ -47,7 +47,7 @@ class CTDataset(Dataset):
         'Other': 1
     }
 
-    def __init__(self, labels, cfg, folder='train', split='train', sequenceType='None'):
+    def __init__(self, labels, cfg, folder='train_resized', split='train', sequenceType='None'):
         '''
             Constructor. Here, we collect and index the dataset inputs and
             labels.
@@ -79,7 +79,7 @@ class CTDataset(Dataset):
         #labels = meta['Weather']
 
         ## add a check to make sure it exists in the folder of interest
-        list_of_images = glob.glob(os.path.join(self.data_root,'train/*'))
+        list_of_images = glob.glob(os.path.join(self.data_root,'train_resized/*')) ####UPDATED
         list_of_images = pd.Series(list_of_images)
         list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
 
