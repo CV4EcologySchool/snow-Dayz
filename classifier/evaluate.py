@@ -201,8 +201,9 @@ def main():
     PRcurve = save_precision_recall_curve(y_true=true_labels, y_pred=predicted_labels, exp_name = exp_name, epoch = epoch, split = 'train')
     print("precision recall curve saved")
 
+    IPython.embed()
     # save list of predictions
-    export_results = export_results(results, exp_name)
+   # export_results = export_results(results, exp_name)
 
 
 if __name__ == '__main__':
