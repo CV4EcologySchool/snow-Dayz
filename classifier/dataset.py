@@ -47,14 +47,14 @@ class CTDataset(Dataset):
         'Other': 1
     }
 
-    def __init__(self, labels, cfg, split='train', sequenceType='None'):
+    def __init__(self, labels, cfg, split='train', sequenceType='None', folder='train'):
         '''
             Constructor. Here, we collect and index the dataset inputs and
             labels.
         '''
         self.data_root = cfg['data_root']
         self.split = split
-        self.folder = cfg['train_folder']
+        self.folder = folder
         self.sequenceType = cfg['sequenceType']
         self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
