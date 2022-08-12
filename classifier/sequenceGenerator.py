@@ -82,7 +82,7 @@ def sequenceGenerator(meta, file, sequenceType):
         cameraIDsubset = cameraIDsubset.sort_values(by='Date',ascending=True)
         print(cameraIDsubset)
         cameraIDsubset = cameraIDsubset.reset_index()
-        print(cameraIDsubset)
+        print(pd.DataFrame(cameraIDsubset).reset_index())
         ### find the file 
         slidingIndex = cameraIDsubset[cameraIDsubset['File'] == file].index.tolist()[0]  ### gets the value from the index
         print('slidingIndex', slidingIndex)
