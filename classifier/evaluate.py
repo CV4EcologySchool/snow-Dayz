@@ -167,8 +167,8 @@ def main():
     print("Recall of model is {:0.2f}".format(acc))
 
     # confusion matrix
-    conf_matrix = save_confusion_matrix(y_true=true_labels, y_pred=predicted_labels, exp_name, epoch, args.split)
-
+    confmatrix = save_confusion_matrix(y_true=true_labels, y_pred=predicted_labels, exp_name = exp_name, epoch = epoch, split = 'train')
+    print("confusion matrix saved")
     # precision recall curve
 
     # save list of predictions
