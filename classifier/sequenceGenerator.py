@@ -82,7 +82,6 @@ def sequenceGenerator(meta, file, sequenceType):
         ### find the file 
         slidingIndex = cameraIDsubset[cameraIDsubset['File'] == file].index.tolist()[0]  ### gets the value from the index
         print('slidingIndex', slidingIndex)
-        print(slidingIndex[0])
         if slidingIndex != 0:
             slidingBefore = cameraIDsubset['File'][int(slidingIndex-1)].values.tolist() ## image right before, so use -1
         else: slidingBefore = file ## just use the same image 2x
