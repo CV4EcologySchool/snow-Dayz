@@ -108,7 +108,7 @@ def main():
     # Argument parser for command-line arguments:
     # python code/train.py --output model_runs
     parser = argparse.ArgumentParser(description='Train deep learning model.')
-    parser.add_argument('--exp_name', required=True, help='Path to experiment folder')
+    parser.add_argument('--exp_name', required=True, help='Path to experiment folder', default = "experiment_name")
     parser.add_argument('--split', help='Data split', default ='train')
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
     args = parser.parse_args()
