@@ -84,6 +84,7 @@ def save_model(epoch, model, stats, args): ## dir
 
     # ...and save
     torch.save(stats, open(f'{args.exp_dir}/{args.exp_name}/model_states/{epoch}.pt', 'wb'))
+    
 
 ##model_states
 def setup_optimizer(cfg, model):
@@ -106,8 +107,9 @@ def train(cfg, dataLoader, model, optimizer):
     device = cfg['device']
 
     # put model on device
-    model.to(device)
-    
+    model.to(device) ##### ask should I be doing model.cuda??? ****
+
+
     # put the model into training mode
     # this is required for some layers that behave differently during training
     # and validation (examples: Batch Normalization, Dropout, etc.)
@@ -262,7 +264,7 @@ def main():
 
     # initialize data loaders for training and validation set
     dl_train = create_dataloader(cfg, split='train')
-    dl_test = create_dataloader(cfg, split='test')
+    dl_test = create_dataloader(cfg, split='test', folder='train')
 
     # initialize model
     model, current_epoch = load_model(cfg)

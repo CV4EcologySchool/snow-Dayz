@@ -96,7 +96,9 @@ def predict(cfg, dataLoader, model):
 
 ############ does this need to be before or after the torch.no_grad()
                 true_label = true_label.tolist()
-                true_labels.append(int(true_label))
+                print(true_label)
+                true_labels.append(true_label)
+                print(true_labels)
                 predictions.append(prediction)
                 predicted_labels.append(int(predict_label))
                 true_labels.append(int(label))
