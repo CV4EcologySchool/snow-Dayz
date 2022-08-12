@@ -235,6 +235,8 @@ def main():
     # add command line args for experiment folder, experiment name
     parser.add_argument('--exp_dir', help='Path to experiment directory', default='experiments')
     parser.add_argument('--exp_name', help = 'Path to experiment name', default = 'experiment_name')
+    parser.add_argument('--train_folder', help = 'Path to train folder', default = 'train')
+    #
     args = parser.parse_args()
 
     #example command line usage:  
@@ -265,8 +267,8 @@ def main():
         cfg['device'] = 'cpu'
 
     # initialize data loaders for training and validation set
-    dl_train = create_dataloader(cfg, split='train')
-    dl_test = create_dataloader(cfg, split='test', folder='train_resized')
+    dl_train = create_dataloader(cfg, split='train', folder=args.train_folder)
+    dl_test = create_dataloader(cfg, split='test', folder=args.train_folder)
 
     # initialize model
     model, current_epoch = load_model(cfg)
