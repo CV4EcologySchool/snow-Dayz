@@ -81,7 +81,6 @@ def predict(cfg, dataLoader, model):
         true_labels = [] ## labels as 0, 1 .. (classes)
         predicted_labels = [] ## labels as 0, 1 .. (classes)
         confidences = [] ## soft max of probabilities 
-        test = []
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
         #IPython.embed()
@@ -105,21 +104,16 @@ def predict(cfg, dataLoader, model):
             confidences.extend(confidence)
 
     true_labels = np.array(true_labels)
-    print(true_labels)
-    print(len(true_labels))
+    #print(true_labels)
+   # print(len(true_labels))
     predicted_labels = np.array(predicted_labels)
-    print(predicted_labels)
-    print(len(predicted_labels))
+    #print(predicted_labels)
+    #print(len(predicted_labels))
     #### this should be full dataset as a dataframe
     #results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels}) #"confidence":confidence
 
     return true_labels, predicted_labels, confidences
 
-def export_results(cfg, results, exp_name):
-    if not os.path.exists('experiments/'+(exp_name)+'/figs'):
-        os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
-
-    results.to_csv('experiments/'+(exp_name)+'/figs/'+'results.csv')
 
 def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
     # make figures folder if not there
@@ -201,9 +195,10 @@ def main():
     PRcurve = save_precision_recall_curve(y_true=true_labels, y_pred=predicted_labels, exp_name = exp_name, epoch = epoch, split = 'train')
     print("precision recall curve saved")
 
-    IPython.embed()
     # save list of predictions
-   # export_results = export_results(results, exp_name)
+    results = pd.DataFrame({'trueLabels':true_labels, 'predictedLabels':predicted_labels})
+    results.to_csv('experiments/'+(exp_name)+'/figs/'+'results.csv')
+    print("results csv saved")
 
 
 if __name__ == '__main__':
