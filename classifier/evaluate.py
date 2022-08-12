@@ -34,18 +34,18 @@ from train import create_dataloader, load_model
 ### could make this a class rather than a function
 ### could make it a class of predictions ### 
 
-def load_model(cfg, outputdir, epoch=None):
+def load_model(cfg, exp_name, epoch=None):
     '''
         Creates a model instance and loads the latest model state weights.
     '''
     model_instance = CustomResNet50(cfg['num_classes'])         # create an object instance of our CustomResNet18 class
 
     # load latest model state
-    model_states = glob(outputdir+'/model_states/*.pt')
+    model_states = glob(exp_name+'/model_states/*.pt')
 
     if len(model_states) > 0:
         # at least one save state found; get latest
-        model_epochs = [int(m.replace(outputdir+'/model_states/','').replace('.pt','')) for m in model_states]
+        model_epochs = [int(m.replace({exp_name}+'/model_states/','').replace('.pt','')) for m in model_states]
         if epoch:
             start_epoch = epoch
         else:
@@ -53,7 +53,7 @@ def load_model(cfg, outputdir, epoch=None):
 
         # load state dict and apply weights to model
         print(f'Evaluating from epoch {start_epoch}')
-        state = torch.load(open(f'{outputdir}/model_states/{start_epoch}.pt', 'rb'), map_location='cpu')
+        state = torch.load(open(f'{exp_name}/model_states/{start_epoch}.pt', 'rb'), map_location='cpu')
         model_instance.load_state_dict(state['model'])
 
         #import IPython
@@ -90,11 +90,11 @@ def save_confusion_matrix(y_true, y_pred, args, epoch, split='train'):
     confmatrix = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confmatrix)
     disp.plot()
-    plt.savefig({args.exp_dir}/{args.exp_name}+'/figs/confusion_matrix_epoch'+str(epoch)+'_'+split+'.png', facecolor="white")
+    plt.savefig({'experiments/'{args.exp_name}+'/figs/confusion_matrix_epoch'+str(epoch)+'_'+split+'.png', facecolor="white")
     return confmatrix
 
 ## we will calculate overall precision, recall, and F1 score
-def save_accuracy_metrics(y_true, y_pred, args, epoch, split):
+#def save_accuracy_metrics(y_true, y_pred, args, epoch, split):
 
     # make a csv of accuracy metrics 
 
@@ -103,14 +103,14 @@ def main():
     # python code/train.py --output model_runs
     parser = argparse.ArgumentParser(description='Train deep learning model.')
     parser.add_argument('--exp_folder', required=True, help='Path to experiment folder')
-    parser.add_argument('--split', help='Data split')
+    parser.add_argument('--split', help='Data split', default ='train')
     args = parser.parse_args()
 
     # set model directory
-    outdir = args.output
+    exp_folder = args.exp_folder
 
     # get config from model directory
-    config = glob(outdir+'*.yaml')[0]
+    config = glob(exp_folder+'*.yaml')[0]
 
     # load config
     print(f'Using config "{config}"')
@@ -130,13 +130,18 @@ def main():
 
     # get precision score
     ### this is just a way to get two decimal places 
-    acc = accuracy_score(labels, predict_labels)
-    print("Accuracy of model is {:0.2f}".format(acc))
+    precision = accuracy_score(labels, predict_labels)
+    print("Precision of model is {:0.2f}".format(acc))
 
     # get recall score
     ### this is just a way to get two decimal places 
-    acc = accuracy_score(labels, predict_labels)
-    print("Accuracy of model is {:0.2f}".format(acc))
+    recall = accuracy_score(labels, predict_labels)
+    print("Recall of model is {:0.2f}".format(acc))
+
+    # get recall score
+    ### this is just a way to get two decimal places 
+    F1score = accuracy_score(labels, predict_labels)
+    print("Recall of model is {:0.2f}".format(acc))
 
     # confusion matrix
     cm = save_confusion_matrix(labels, predict_labels, outdir, epoch, args.split)
