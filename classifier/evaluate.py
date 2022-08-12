@@ -75,15 +75,15 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
 
 def predict(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
+        true_labels = []
         predictions = []
-        predict_labels = [] 
-        labels = []
+        predicted_labels = [] 
         confidences = []
         ##### may need to adjust this in the dataloader for the sequence:
+        ### this will evaluate on each batch of data (usually 64)
         for idx, (data, label) in enumerate(dataLoader): 
-            if random.uniform(0.0, 1.0) <= 0.1:
-                #continue
-                print(idx)
+            if random.uniform(0.0, 1.0) <= 0.01:
+                true_label = label
                 prediction = model(data) ## the full probabilty
                 print(prediction.shape) ## it is going to be [batch size #num_classes]
                 predict_label = torch.argmax(prediction, dim=1) ## the label
@@ -92,20 +92,25 @@ def predict(cfg, dataLoader, model):
             #print(confidence)
 
 ############ does this need to be before or after the torch.no_grad()
-        predictions.append(prediction)
-        predict_labels.append(int(predict_label))
-        labels.append(int(label))
-        print(labels)
-        confidences.append(int(confidence))
+                true_labels.append(int(true_label))
+                predictions.append(prediction)
+                predicted_labels.append(int(predict_label))
+                true_labels.append(int(label))
+                print(true_labels)
+                confidences.append(int(confidence))
 
-    results = pd.DataFrame({"predict_label":predict_labels, "confidence":confidences})
+    #### this should be full dataset as a dataframe
+    results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels, "confidence":confidences})
 
-    return predictions, predict_labels, labels, confidence
+    return true_labels, predictions, predicted_labels, confidence, results
 
 
 def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
     # make figures folder if not there
-    os.makedirs({args.exp_dir}/{args.exp_name}+'/figs', exist_ok=True)
+
+    #### make the path if it doesn't exist
+    if not os.path.exists('experiments/'+(exp_name)+'/figs'):
+        os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
 
     confmatrix = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confmatrix)
@@ -139,30 +144,30 @@ def main():
 
     # load model and predict from model
     model, epoch = load_model(cfg, exp_name)
-    predictions, predict_labels, labels = predict(cfg, dl_val, model)   
+    predictions, predicted_labels, true_labels, results = predict(cfg, dl_val, model)   
     
     # get accuracy score
     ### this is just a way to get two decimal places 
-    acc = accuracy_score(labels, predict_labels)
+    acc = accuracy_score(true_labels, predicted_labels)
     print("Accuracy of model is {:0.2f}".format(acc))
 
     # get precision score
     ### this is just a way to get two decimal places 
-    precision = accuracy_score(labels, predict_labels)
+    precision = accuracy_score(true_labels, predicted_labels)
     print("Precision of model is {:0.2f}".format(acc))
 
     # get recall score
     ### this is just a way to get two decimal places 
-    recall = accuracy_score(labels, predict_labels)
+    recall = accuracy_score(true_labels, predicted_labels)
     print("Recall of model is {:0.2f}".format(acc))
 
     # get recall score
     ### this is just a way to get two decimal places 
-    F1score = accuracy_score(labels, predict_labels)
+    F1score = accuracy_score(true_labels, predicted_labels)
     print("Recall of model is {:0.2f}".format(acc))
 
     # confusion matrix
-    cm = save_confusion_matrix(labels, predict_labels, exp_name, epoch, args.split)
+    conf_matrix = save_confusion_matrix(y_true=true_labels, y_pred=predicted_labels, exp_name, epoch, args.split)
 
     # precision recall curve
 
