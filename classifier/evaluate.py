@@ -75,7 +75,6 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
 
 def predict(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
-        filenIndex = []
         predictions = []
         predict_labels = [] 
         labels = []
@@ -83,13 +82,13 @@ def predict(cfg, dataLoader, model):
         ##### may need to adjust this in the dataloader for the sequence:
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.1:
-                continue
-            print(idx)
-            prediction = model(data) ## the full probabilty
-            print(prediction.shape) ## it is going to be [batch size #num_classes]
-            predict_label = torch.argmax(prediction, dim=1) ## the label
-            print(predict_label)
-            confidence = torch.nn.Softmax(prediction)
+                #continue
+                print(idx)
+                prediction = model(data) ## the full probabilty
+                print(prediction.shape) ## it is going to be [batch size #num_classes]
+                predict_label = torch.argmax(prediction, dim=1) ## the label
+                print(predict_label)
+                confidence = torch.nn.Softmax(prediction)
             #print(confidence)
 
 ############ does this need to be before or after the torch.no_grad()
