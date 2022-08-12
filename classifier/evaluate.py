@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 from model import CustomResNet50
 from train import create_dataloader, load_model 
 import pandas as pd
-
+import random
 
 ## We need the cfg (model configuration), model 
 ### could make this a class rather than a function
@@ -82,11 +82,11 @@ def predict(cfg, dataLoader, model):
         confidences = []
         ##### may need to adjust this in the dataloader for the sequence:
         for idx, (data, label) in enumerate(dataLoader): 
-            ## fileName = dataLoader.__get_item__() doesn't appear a way to get file names?? 
-            #fileIndex=  ## image_name, label = self.data[idx] 
+            if random.uniform(0.0, 1.0) <= 0.1:
+                continue
             print(idx)
             prediction = model(data) ## the full probabilty
-            print(prediction.shape)
+            print(prediction.shape) ## it is going to be [batch size #num_classes]
             predict_label = torch.argmax(prediction, dim=1) ## the label
             print(predict_label)
             confidence = torch.nn.Softmax(prediction)
@@ -96,6 +96,7 @@ def predict(cfg, dataLoader, model):
         predictions.append(prediction)
         predict_labels.append(int(predict_label))
         labels.append(int(label))
+        print(labels)
         confidences.append(int(confidence))
 
     results = pd.DataFrame({"predict_label":predict_labels, "confidence":confidences})
