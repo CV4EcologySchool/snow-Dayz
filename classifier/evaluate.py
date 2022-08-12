@@ -110,7 +110,9 @@ def main():
     exp_folder = args.exp_folder
 
     # get config from model directory
-    config = glob(exp_folder+'*.yaml')[0]
+    config = glob(exp_folder+'*.yaml')
+    print('config')
+    print(config)
 
     # load config
     print(f'Using config "{config}"')
