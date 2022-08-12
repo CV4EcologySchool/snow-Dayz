@@ -1,0 +1,44 @@
+Cleaning up modeled data
+Tarun
+
+
+
+Weak Supervision 
+* a way to get cheap data
+- cheaper sources of labels that are noiser or heuristic 
+- heuristic methods: background subtraction, water shed
+    - heat maps -- takes peaks and valleys
+    - 
+
+- Using existing models 
+    - NEON crown using LiDAR tree estimation model for pre-training
+    - get a bunch of noisy labels and then label them as an expert 
+
+- Cheaper annotations
+    - detect animasl (with megadetector)
+    - automate the bounding box to detect animals and then label the rest 
+
+- Look at something that does the easier problem
+- combine multiple sources: use snorkel!!
+
+How do you report weak supervision in your methods? 
+- labeled cloudy modis values 
+- how many images are around day 3 or 4? becuase thats the day that it tends to really start to differ
+- weather stations
+
+Self-supervision
+ - non contrastive methods: image in-painting, rotation, colorization
+ - contrastive methods (pulling together similiar representations and pushing away dissimiliar representations)
+ - SimCLR
+ - SeCo
+ 
+ Non contrastive methods - rotation 
+ - unsupervissed models learn an encoder from a linear classifier, using linear layers in the encoder
+ - they still don't do as well as supervised methods
+
+  Contrastive methods -- SimCLR
+  - make two pairs one image is not data augmentation and then oter the data point is augmented
+  
+  Contrastive methods - SeCo
+  - seasonal contrast: unsupervised pre-training uncurated remote sensing data
+  - 

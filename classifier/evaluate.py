@@ -95,15 +95,15 @@ def predict(cfg, dataLoader, model):
 
                 predictions.append(prediction)
 
-                true_label_list = true_label.tolist()
+                true_label = true_label.numpy()
                 print(true_label)
-                true_labels.extend(true_label_list) ## get it out of tensor and into list, 
+                true_labels.append(true_label) ## get it out of tensor and into list, 
                 ### might be able to do this as a np array?
                 print('true_labels',true_labels)
                 #test.append(int(true_label))
                 #print('test',test)
 
-                predict_label = predict_label.tolist()
+                predict_label = predict_label.numpy()
                 predicted_labels.extend(predict_label)
                 print('predicted_labels', predicted_labels)
 
@@ -111,9 +111,8 @@ def predict(cfg, dataLoader, model):
                 confidences.extend(confidence)
 
     print(true_labels)
-    print(test)
     #### this should be full dataset as a dataframe
-    results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels, "confidence":confidences})
+    results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels}) #"confidence":confidence
 
     return predictions, true_labels, predicted_labels, confidences, results
 
