@@ -24,6 +24,7 @@ from sequenceGenerator import sequenceGenerator
 import random
 from PIL import Image, ImageFile
 import ipdb
+import IPython
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -138,7 +139,9 @@ class CTDataset(Dataset):
     ######################################## sequences ##########################
         ##import IPython ## for testing : may need to install: pip install IPython
         ##IPython.embed() ## for testing
-        ipdb.set_trace()
+        #ipdb.set_trace()
+        IPython.embed()
+        
         if self.sequenceType != 'None':
             before, image_name, after = image_name
 
