@@ -104,19 +104,15 @@ def main():
     parser = argparse.ArgumentParser(description='Train deep learning model.')
     parser.add_argument('--exp_folder', required=True, help='Path to experiment folder')
     parser.add_argument('--split', help='Data split', default ='train')
+    parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
     args = parser.parse_args()
 
     # set model directory
     exp_folder = args.exp_folder
 
-    # get config from model directory
-    config = glob(exp_folder+'*.yaml')
-    print('config')
-    print(config)
-
-    # load config
-    print(f'Using config "{config}"')
-    cfg = yaml.safe_load(open(config, 'r'))
+    # reload config, that has to be set in the path
+    print(f'Using config "{args.config}"')
+    cfg = yaml.safe_load(open(args.config, 'r'))
 
     # setup dataloader
     dl_val = create_dataloader(cfg, split=args.split, batch=1)
