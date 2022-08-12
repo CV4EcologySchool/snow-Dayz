@@ -42,7 +42,7 @@ class CTDataset(Dataset):
         'Other': 1
     }
 
-    def __init__(self, labels, cfg, folder, split='train', sequenceType='None'):
+    def __init__(self, labels, cfg, folder='train', split='train', sequenceType='None'):
         '''
             Constructor. Here, we collect and index the dataset inputs and
             labels.
@@ -88,7 +88,7 @@ class CTDataset(Dataset):
                         self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
-#################### NOT READY ############################
+######################### sequences #################
         if self.sequenceType != 'None':
             for file, weather in zip(meta['File'], meta['Weather']):
                 if sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
@@ -100,8 +100,7 @@ class CTDataset(Dataset):
                         self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
-    ########## not sure what to do with my before and after stuff????    
-#########################################################################
+
     def __len__(self):
         '''
             Returns the length of the dataset.
@@ -130,7 +129,7 @@ class CTDataset(Dataset):
             # transform: see lines 31ff above where we define our transformations
             img_tensor = self.transform(img)
         
-    ######################################## not ready ##########################
+    ######################################## sequences ##########################
         ##import IPython ## for testing : may need to install: pip install IPython
         ##IPython.embed() ## for testing
 
