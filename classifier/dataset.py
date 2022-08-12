@@ -97,7 +97,7 @@ class CTDataset(Dataset):
 ######################### sequences #################
         if self.sequenceType != 'None':
             for file, weather in zip(meta['File'], meta['Weather']):
-                if sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
+                if (random.uniform(0.0, 1.0) <= 0.005) and sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
                     imgFileName = file
                     before, file, after = sequenceGenerator(meta, file, sequenceType = self.sequenceType)
                     imgFileName = file 
