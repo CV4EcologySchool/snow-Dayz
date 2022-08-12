@@ -97,7 +97,7 @@ def predict(cfg, dataLoader, model):
 ############ does this need to be before or after the torch.no_grad()
                 true_label = true_label.tolist()
                 print(true_label)
-                true_labels.append(true_label[0]) ## get it out of tensor and into list, 
+                true_labels.append(true_label) ## get it out of tensor and into list, 
                 ### might be able to do this as a np array?
                 print(true_labels)
 
