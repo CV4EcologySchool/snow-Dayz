@@ -141,7 +141,7 @@ class CTDataset(Dataset):
         ##IPython.embed() ## for testing
         #ipdb.set_trace()
        
-        IPython.embed()
+        #IPython.embed()
         if self.sequenceType != 'None':
             before, image_name, after = image_name
 
