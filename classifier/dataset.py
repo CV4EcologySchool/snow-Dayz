@@ -23,6 +23,7 @@ import glob
 from sequenceGenerator import sequenceGenerator
 import random
 from PIL import Image, ImageFile
+import ipdb
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
