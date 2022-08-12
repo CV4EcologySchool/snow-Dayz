@@ -12,8 +12,11 @@ if not os.path.exists(newPath):
     os.makedirs(newPath)
 
 for file in files: 
-    filename = file.spilt('/')[-1] ### last item
+    file = file
+    test = file[32:len(file)] #.spilt('/') ### last item
+    print(test)
  # Opens a image in RGB mode
+    filename = test
     im = Image.open(str(file))
     newsize = (500, 500)
     im1 = im.resize(newsize)
