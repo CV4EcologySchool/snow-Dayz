@@ -39,6 +39,7 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
         Creates a model instance and loads the latest model state weights.
     '''
     # this is an empty model that we will load our model into
+    print(exp_name)
     model_instance = CustomResNet50(cfg['num_classes'])         # create an object instance of our CustomResNet18 class
 
     # load all model states
@@ -48,7 +49,7 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
     if len(model_states) > 0:
         # at least one save state found; get latest
 
-        model_epochs = [int(m.replace((exp_name)+'/model_states/','').replace('.pt','')) for m in model_states]
+        model_epochs = [int(m.replace('experiments/'+ (exp_name)+'/model_states/','').replace('.pt','')) for m in model_states]
         print(model_epochs) ## for debugging
         ##### if statement that 
         if epoch:
