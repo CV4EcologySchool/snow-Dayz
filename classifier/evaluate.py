@@ -65,7 +65,6 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
         print(f'Evaluating from epoch {eval_epoch}')
         state = torch.load(open(f'experiments/{exp_name}/model_states/{eval_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
         model = model_instance.load_state_dict(state['model'])
-        print(model)
         ### how do I get to a model?? 
 
     else:
@@ -84,7 +83,7 @@ def predict(cfg, dataLoader, model):
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
         #IPython.embed()
-        print(len(dataLoader)) ## number of total divisions n/batchsize
+        #print(len(dataLoader)) ## number of total divisions n/batchsize
         for idx, (data, label) in enumerate(dataLoader): 
                 #print(idx)
             true_label = label.numpy()
