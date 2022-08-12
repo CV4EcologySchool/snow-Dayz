@@ -82,14 +82,13 @@ def predict(cfg, dataLoader, model):
         test = []
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
-        print('dataLoader')
-        print(dataLoader)
         print(len(dataLoader)) ## number of total divisions n/batchsize
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
+                print(idx)
                 true_label = label
                 prediction = model(data) ## the full probabilty
-                print(prediction.shape) ## it is going to be [batch size #num_classes]
+                #print(prediction.shape) ## it is going to be [batch size #num_classes]
                 predict_label = torch.argmax(prediction, dim=1) ## the label
                 print(predict_label)
                 confidence = torch.nn.Softmax(prediction)
@@ -100,9 +99,9 @@ def predict(cfg, dataLoader, model):
                 print(true_label)
                 true_labels.append(true_label_list) ## get it out of tensor and into list, 
                 ### might be able to do this as a np array?
-                print(true_labels)
+                print('true_labels',true_labels)
                 test.append(int(true_label))
-                print(test)
+                print('test',test)
                 #predict_label = predict_label.tolist().tovalue
                 #predicted_labels.append(predict_label)
 
