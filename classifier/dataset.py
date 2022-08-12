@@ -47,7 +47,7 @@ class CTDataset(Dataset):
         'Other': 1
     }
 
-    def __init__(self, labels, cfg, split='train', sequenceType='None', folder='train'):
+    def __init__(self, labels, cfg, split='train', folder='train'):
         '''
             Constructor. Here, we collect and index the dataset inputs and
             labels.
