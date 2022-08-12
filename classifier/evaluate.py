@@ -51,15 +51,17 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
 
         model_epochs = [int(m.replace('experiments/'+ (exp_name)+'/model_states/','').replace('.pt','')) for m in model_states]
         print(model_epochs) ## for debugging
-        ##### if statement that 
+        ##### if statement that if you set the epoch in your function to evaluate from there
+        ##### otherwise start at the most recent epoch
         if epoch:
-            start_epoch = epoch
+            eval_epoch = epoch ### if you set the epoch in the function, if it's none it will take the max
         else:
-            start_epoch = max(model_epochs)
+            eval_epoch = max(model_epochs)
 
+        
         # load state dict and apply weights to model
-        print(f'Evaluating from epoch {start_epoch}')
-        state = torch.load(open(f'{exp_name}/model_states/{start_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
+        print(f'Evaluating from epoch {eval_epoch}')
+        state = torch.load(open(f'experiments/{exp_name}/model_states/{eval_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
         model = model_instance.load_state_dict(state['model'])
         print(model)
         ### how do I get to a model?? 
