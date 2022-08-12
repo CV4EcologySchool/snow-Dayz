@@ -86,34 +86,28 @@ def predict(cfg, dataLoader, model):
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
                 #print(idx)
-                true_label = label
+                true_label = label.numpy()
+                true_labels.extend(true_label)
+
                 prediction = model(data) ## the full probabilty
-                #print(prediction.shape) ## it is going to be [batch size #num_classes]
-                predict_label = torch.argmax(prediction, dim=1) ## the label
-                #print(predict_label)
-                confidence = torch.nn.Softmax(prediction)
-
                 predictions.append(prediction)
-                true_label = true_label.numpy()
-                print(true_label)
-                true_labels.append(true_label) ## get it out of tensor and into list, 
-                ### might be able to do this as a np array?
-                print('true_labels',true_labels)
-                #test.append(int(true_label))
-                #print('test',test)
-
-                predict_label = predict_label.numpy()
+                #print(prediction.shape) ## it is going to be [batch size #num_classes]
+                
+                ## predictions
+                predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
                 predicted_labels.extend(predict_label)
-                print('predicted_labels', predicted_labels)
+                #print(predict_label)
 
-                confidence = confidence.tolist()
+                confidence = torch.nn.Softmax(dim=1)(prediction).numpy()
+                confidence = confidence[:,1]
                 confidences.extend(confidence)
 
-    print(true_labels)
+    true_labels = np.array(true_labels)
+    predicted_labels = np.array(predicted_labels)
     #### this should be full dataset as a dataframe
-    results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels}) #"confidence":confidence
+    #results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels}) #"confidence":confidence
 
-    return predictions, true_labels, predicted_labels, confidences, results
+    return true_labels, predicted_labels, confidences
 
 def export_results(results, exp_name):
     if not os.path.exists('experiments/'+(exp_name)+'/figs'):
@@ -130,8 +124,7 @@ def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
 
     confmatrix = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confmatrix)
-    disp.plot()
-    plt.savefig(f'/experiments/'+(exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    disp.savefig(f'/experiments/'+(exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
     return confmatrix
 
 ## we will calculate overall precision, recall, and F1 score
@@ -169,7 +162,7 @@ def main():
 
     # load model and predict from model
     model, epoch = load_model(cfg, exp_name)
-    predictions, true_labels, predicted_labels, confidence, results = predict(cfg, dl_val, model)   
+    true_labels, predicted_labels, confidence = predict(cfg, dl_val, model)   
     
     # get accuracy score
     ### this is just a way to get two decimal places 
