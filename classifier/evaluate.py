@@ -87,23 +87,22 @@ def predict(cfg, dataLoader, model):
         IPython.embed()
         print(len(dataLoader)) ## number of total divisions n/batchsize
         for idx, (data, label) in enumerate(dataLoader): 
-            if random.uniform(0.0, 1.0) <= 0.01:
                 #print(idx)
-                true_label = label.numpy()
-                true_labels.extend(true_label)
+            true_label = label.numpy()
+            true_labels.extend(true_label)
 
-                prediction = model(data) ## the full probabilty
-                predictions.append(prediction)
-                #print(prediction.shape) ## it is going to be [batch size #num_classes]
-                
-                ## predictions
-                predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
-                predicted_labels.extend(predict_label)
-                #print(predict_label)
+            prediction = model(data) ## the full probabilty
+            predictions.append(prediction)
+            #print(prediction.shape) ## it is going to be [batch size #num_classes]
+            
+            ## predictions
+            predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
+            predicted_labels.extend(predict_label)
+            #print(predict_label)
 
-                confidence = torch.nn.Softmax(dim=1)(prediction).numpy()
-                confidence = confidence[:,1]
-                confidences.extend(confidence)
+            confidence = torch.nn.Softmax(dim=1)(prediction).numpy()
+            confidence = confidence[:,1]
+            confidences.extend(confidence)
 
     true_labels = np.array(true_labels)
     print(true_labels)
