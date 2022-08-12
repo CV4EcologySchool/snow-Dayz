@@ -41,4 +41,9 @@ Self-supervision
   
   Contrastive methods - SeCo
   - seasonal contrast: unsupervised pre-training uncurated remote sensing data
-  - 
+  - u
+
+
+  Definitely okay to do post processing! on results if you notice that it is always messing up somewhere
+
+  

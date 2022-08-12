@@ -109,7 +109,7 @@ def predict(cfg, dataLoader, model):
 
     return true_labels, predicted_labels, confidences
 
-def export_results(results, exp_name):
+def export_results(cfg, results, exp_name):
     if not os.path.exists('experiments/'+(exp_name)+'/figs'):
         os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
 
@@ -124,7 +124,7 @@ def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
 
     confmatrix = confusion_matrix(y_true, y_pred)
     disp = ConfusionMatrixDisplay(confmatrix)
-    disp.savefig(f'/experiments/'+(exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    #disp.savefig(f'/experiments/'+(exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
     return confmatrix
 
 ## we will calculate overall precision, recall, and F1 score
@@ -138,7 +138,7 @@ def save_precision_recall_curve(y_true, y_pred, exp_name, epoch, split='train'):
         os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
     
     PRcurve = PrecisionRecallDisplay.from_predictions(y_true, y_pred)
-    PRcurve.savefig(f'/experiments/'+(exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    #PRcurve.savefig(f'/experiments/'+(exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
 
 
 def main():
