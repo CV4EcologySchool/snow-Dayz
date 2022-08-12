@@ -84,11 +84,12 @@ def predict(cfg, dataLoader, model):
         for idx, (data, label) in enumerate(dataLoader): 
             ## fileName = dataLoader.__get_item__() doesn't appear a way to get file names?? 
             #fileIndex=  ## image_name, label = self.data[idx] 
+            print(idx)
             prediction = model(data) ## the full probabilty
             predict_label = torch.argmax(prediction, dim=1) ## the label
             print(predict_label)
             confidence = torch.nn.Softmax(prediction)
-            print(confidence)
+            #print(confidence)
 
 ############ does this need to be before or after the torch.no_grad()
         predictions.append(prediction)
