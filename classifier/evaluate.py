@@ -86,6 +86,7 @@ def predict(cfg, dataLoader, model):
             #fileIndex=  ## image_name, label = self.data[idx] 
             print(idx)
             prediction = model(data) ## the full probabilty
+            print(prediction.shape)
             predict_label = torch.argmax(prediction, dim=1) ## the label
             print(predict_label)
             confidence = torch.nn.Softmax(prediction)
