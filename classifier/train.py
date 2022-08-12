@@ -266,7 +266,7 @@ def main():
 
     # initialize data loaders for training and validation set
     dl_train = create_dataloader(cfg, split='train')
-    dl_test = create_dataloader(cfg, split='test', folder='train')
+    dl_test = create_dataloader(cfg, split='test', folder='train_resized')
 
     # initialize model
     model, current_epoch = load_model(cfg)
