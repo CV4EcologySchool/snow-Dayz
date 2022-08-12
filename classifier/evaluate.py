@@ -34,7 +34,7 @@ from train import create_dataloader, load_model
 ### could make this a class rather than a function
 ### could make it a class of predictions ### 
 
-def load_model(cfg, exp_name, epoch=None):
+def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in function? 
     '''
         Creates a model instance and loads the latest model state weights.
     '''
@@ -46,6 +46,8 @@ def load_model(cfg, exp_name, epoch=None):
     if len(model_states) > 0:
         # at least one save state found; get latest
         model_epochs = [int(m.replace({exp_name}+'/model_states/','').replace('.pt','')) for m in model_states]
+        
+        ##### if statement that 
         if epoch:
             start_epoch = epoch
         else:
@@ -53,15 +55,16 @@ def load_model(cfg, exp_name, epoch=None):
 
         # load state dict and apply weights to model
         print(f'Evaluating from epoch {start_epoch}')
-        state = torch.load(open(f'{exp_name}/model_states/{start_epoch}.pt', 'rb'), map_location='cpu')
+        state = torch.load(open(f'{exp_name}/model_states/{start_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
         model_instance.load_state_dict(state['model'])
 
-        #import IPython
-        #IPython.embed()
+        ### how do I get to a model?? 
 
     else:
         # no save state found; start anew
         print('No model found')
+
+    return model_instance, epoch
 
 def predict(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
