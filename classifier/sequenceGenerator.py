@@ -77,12 +77,12 @@ def sequenceGenerator(meta, file, sequenceType):
 
 
     if sequenceType == 'sliding':
-        print(file)
+        #print(file)
         cameraIDsubset['Date'] = pd.to_datetime(cameraIDsubset['Date']) 
         cameraIDsubset = cameraIDsubset.sort_values(by='Date',ascending=True)
         cameraIDsubset = cameraIDsubset.drop(['level_0'], axis=1)
         cameraIDsubset = pd.DataFrame(cameraIDsubset).reset_index()
-        print(cameraIDsubset)
+        #print(cameraIDsubset)
         ### find the file 
         slidingIndex = cameraIDsubset[cameraIDsubset['File'] == file].index.tolist()[0]  ### gets the value from the index
         print('slidingIndex', slidingIndex)
@@ -97,9 +97,9 @@ def sequenceGenerator(meta, file, sequenceType):
             slidingAfter = cameraIDsubset['File'][slidingIndex+1] #.values.tolist()
         else: slidingAfter = file ## just use the same image 2x
         finalBefore = slidingBefore
-        print(finalBefore)
+        #print(finalBefore)
         finalAfter = slidingAfter
-        print(finalAfter)
+        #print(finalAfter)
 
     
     #print({filename:[finalBefore,finalAfter]})
