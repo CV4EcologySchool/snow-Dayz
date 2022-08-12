@@ -82,7 +82,7 @@ def predict(cfg, dataLoader, model):
         test = []
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
-        #print(len(dataLoader)) ## number of total divisions n/batchsize
+        print(len(dataLoader)) ## number of total divisions n/batchsize
         for idx, (data, label) in enumerate(dataLoader): 
             if random.uniform(0.0, 1.0) <= 0.01:
                 #print(idx)
