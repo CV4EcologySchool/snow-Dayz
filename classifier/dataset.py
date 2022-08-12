@@ -82,7 +82,7 @@ class CTDataset(Dataset):
             for file, weather in zip(meta['File'], meta['Weather']):
                 #if random.uniform(0.0, 1.0) <= 0.99:
                     #continue
-                if (random.uniform(0.0, 1.0) <= 0.1) and (sum(list_of_images == file) > 0): ## make sure there is the file in the train folder
+                if (random.uniform(0.0, 1.0) <= 0.01) and (sum(list_of_images == file) > 0): ## make sure there is the file in the train folder
                     imgFileName = file
                     if cfg['num_classes'] == 2:
                         self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
