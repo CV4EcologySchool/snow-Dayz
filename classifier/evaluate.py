@@ -28,6 +28,7 @@ from sklearn.metrics import precision_score, recall_score
 import matplotlib.pyplot as plt
 from model import CustomResNet50
 from train import create_dataloader, load_model 
+import pandas as pd
 
 
 ## We need the cfg (model configuration), model 
@@ -74,20 +75,28 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
 
 def predict(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
+        filenIndex = []
         predictions = []
         predict_labels = [] 
         labels = []
         confidences = []
         ##### may need to adjust this in the dataloader for the sequence:
         for idx, (data, label) in enumerate(dataLoader): 
+            ## fileName = dataLoader.__get_item__() doesn't appear a way to get file names?? 
+            #fileIndex=  ## image_name, label = self.data[idx] 
             prediction = model(data) ## the full probabilty
             predict_label = torch.argmax(prediction, dim=1) ## the label
+            print(predict_label)
             confidence = torch.nn.Softmax(prediction)
+            print(confidence)
 
+############ does this need to be before or after the torch.no_grad()
         predictions.append(prediction)
         predict_labels.append(int(predict_label))
         labels.append(int(label))
         confidences.append(int(confidence))
+
+    results = pd.DataFrame({"predict_label":predict_labels, "confidence":confidences})
 
     return predictions, predict_labels, labels, confidence
 
