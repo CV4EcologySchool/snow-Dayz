@@ -248,10 +248,10 @@ def main():
    # if folder not in 
    ######################################################### this is technically in twice (make directory is in save model)
     if not os.path.exists(os.path.join(cfg['data_root'], args.exp_dir)):
-        os.makedirs(args.exp_dir) 
+        os.makedirs(args.exp_dir, exist_ok=True) 
 
     if not os.path.exists(os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)):
-        os.makedirs(os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)) 
+        os.makedirs(os.path.join(cfg['data_root'], args.exp_dir, args.exp_name), exist_ok=True) 
 
     save_path = os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)
     print(save_path)
