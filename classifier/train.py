@@ -82,7 +82,7 @@ def save_model(cfg, epoch, model, stats, args): ## dir
     stats['model'] = model.state_dict()
 
     # ...and save
-    torch.save(stats, open(f'{dir} + /{epoch}.pt', 'wb')) ## {args.exp_dir}/{args.exp_name}/model_states
+    torch.save(stats, open(f'{dir}/{epoch}.pt', 'wb')) ## {args.exp_dir}/{args.exp_name}/model_states
     
 
 ##model_states
