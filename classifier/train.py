@@ -72,17 +72,17 @@ def load_model(cfg):
 
 
 
-def save_model(epoch, model, stats, args): ## dir
+def save_model(cfg, epoch, model, stats, args): ## dir
     # make sure save directory exists; create if not
-    dir = os.path.join(args.exp_dir,args.exp_name)
-    full_save_path = os.path.join(dir, 'model_states')
-    os.makedirs(full_save_path, exist_ok=True) ####update here!
+    dir = os.path.join(cfg['data_root'],args.exp_dir,args.exp_name, 'model_states')
+   # full_save_path = os.path.join(dir, 'model_states')
+    os.makedirs(dir, exist_ok=True) ####update here!
 #### it was just dir, 'model_states"
     # get model parameters and add to stats...
     stats['model'] = model.state_dict()
 
     # ...and save
-    torch.save(stats, open(f'{args.exp_dir}/{args.exp_name}/model_states/{epoch}.pt', 'wb'))
+    torch.save(stats, open(f'{dir} + /{epoch}.pt', 'wb')) ## {args.exp_dir}/{args.exp_name}/model_states
     
 
 ##model_states
@@ -289,7 +289,7 @@ def main():
             'oa_train': oa_train,
             'oa_val': oa_val
         }
-        save_model(current_epoch, model, stats, args)
+        save_model(cfg, current_epoch, model, stats, args)
     
 
     # That's all, folks!
