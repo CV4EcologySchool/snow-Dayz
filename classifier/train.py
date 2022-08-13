@@ -239,20 +239,22 @@ def main():
     #example command line usage:  
     # train.py --config path/to/config --exp_dir path/to/exp_dir --exp_name path/to/exp_name
 
-    # if folder experiment folder/name DNE, make folder and copy args.config to the folder using os
-   # if folder not in 
-    if not os.path.exists(args.exp_dir):
-        os.makedirs(args.exp_dir) 
-
-    if not os.path.exists(os.path.join(args.exp_dir, args.exp_name)):
-        os.makedirs(os.path.join(args.exp_dir, args.exp_name)) 
-
-    save_path = os.path.join(args.exp_dir, args.exp_name)
-    print(save_path)
-
     # load config
     print(f'Using config "{args.config}"')
     cfg = yaml.safe_load(open(args.config, 'r'))
+
+
+   # if folder experiment folder/name DNE, make folder and copy args.config to the folder using os
+   # if folder not in 
+   ######################################################### this is technically in twice (make directory is in save model)
+    if not os.path.exists(cfg['data_root'], args.exp_dir):
+        os.makedirs(args.exp_dir) 
+
+    if not os.path.exists(os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)):
+        os.makedirs(os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)) 
+
+    save_path = os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)
+    print(save_path)
 
     print(f'Saving results to "{save_path}"')
     
