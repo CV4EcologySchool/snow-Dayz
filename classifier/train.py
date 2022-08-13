@@ -247,7 +247,7 @@ def main():
    # if folder experiment folder/name DNE, make folder and copy args.config to the folder using os
    # if folder not in 
    ######################################################### this is technically in twice (make directory is in save model)
-    if not os.path.exists(cfg['data_root'], args.exp_dir):
+    if not os.path.exists(os.path.join(cfg['data_root'], args.exp_dir)):
         os.makedirs(args.exp_dir) 
 
     if not os.path.exists(os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)):
