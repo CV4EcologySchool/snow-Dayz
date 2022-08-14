@@ -149,6 +149,7 @@ def main():
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
     args = parser.parse_args()
 
+    epoch = '128'
     # set model directory
     exp_name = args.exp_name
 
