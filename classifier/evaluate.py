@@ -113,7 +113,7 @@ def predict(cfg, dataLoader, model):
     return true_labels, predicted_labels, confidences
 
 
-def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch, split='train'):
+def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128', split='train'):
     # make figures folder if not there
 
     matrix_path = cfg['data_root']+'experiments/'+(args.exp_name)+'/figs'
@@ -131,7 +131,7 @@ def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch, split
 
     # make a csv of accuracy metrics 
 
-def save_precision_recall_curve(true_labels, predicted_labels, exp_name, epoch, split='train'):
+def save_precision_recall_curve(true_labels, predicted_labels, exp_name, epoch='128', split='train'):
         #### make the path if it doesn't exist
     if not os.path.exists('experiments/'+(exp_name)+'/figs'):
         os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
