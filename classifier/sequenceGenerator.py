@@ -90,7 +90,7 @@ def sequenceGenerator(meta, file, sequenceType):
             slidingBefore = cameraIDsubset['File'][slidingIndex-1] #.values.tolist() ## image right before, so use -1
         else: slidingBefore = file ## just use the same image 2x
         if slidingIndex != len(cameraIDsubset)-1: ## because len will be 226 but index goes up to 225
-            print(slidingIndex)
+            #print(slidingIndex)
             #print(cameraIDsubset['File'])
             #print(cameraIDsubset['File'][1])
             #print('filename',cameraIDsubset['File'][slidingIndex+1])
