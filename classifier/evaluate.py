@@ -71,7 +71,7 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
         # no save state found; start anew
         print('No model found')
 
-    return model_instance, epoch
+    return model, epoch
 
 ########## extracting true_labels and predicted_labels for later use in the accuracy metrics
 def predict(cfg, dataLoader, model):
@@ -103,9 +103,8 @@ def predict(cfg, dataLoader, model):
             confidences.extend(confidence)
 
     true_labels = np.array(true_labels)
-    #print(true_labels)
-   # print(len(true_labels))
     predicted_labels = np.array(predicted_labels)
+    confidences = np.array(confidences)
     #print(predicted_labels)
     #print(len(predicted_labels))
     #### this should be full dataset as a dataframe
@@ -114,16 +113,17 @@ def predict(cfg, dataLoader, model):
     return true_labels, predicted_labels, confidences
 
 
-def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
+def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch, split='train'):
     # make figures folder if not there
 
+    matrix_path = cfg['data_root']+'experiments/'+(args.exp_name)+'/figs'
     #### make the path if it doesn't exist
-    if not os.path.exists('experiments/'+(exp_name)+'/figs'):  
-        os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
+    if not os.path.exists(matrix_path):  
+        os.makedirs(matrix_path, exist_ok=True)
 
-    confmatrix = confusion_matrix(y_true, y_pred)
+    confmatrix = confusion_matrix(true_labels, predicted_labels)
     disp = ConfusionMatrixDisplay(confmatrix)
-    #disp.savefig(f'/experiments/'+(exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    disp.savefig(f'cfg['data_root'] + /experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
     return confmatrix
 
 ## we will calculate overall precision, recall, and F1 score
@@ -131,12 +131,12 @@ def save_confusion_matrix(y_true, y_pred, exp_name, epoch, split='train'):
 
     # make a csv of accuracy metrics 
 
-def save_precision_recall_curve(y_true, y_pred, exp_name, epoch, split='train'):
+def save_precision_recall_curve(true_labels, predicted_labels, exp_name, epoch, split='train'):
         #### make the path if it doesn't exist
     if not os.path.exists('experiments/'+(exp_name)+'/figs'):
         os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
     
-    PRcurve = PrecisionRecallDisplay.from_predictions(y_true, y_pred)
+    PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, predicted_labels)
     #PRcurve.savefig(f'/experiments/'+(exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
 
 
@@ -188,7 +188,7 @@ def main():
     #####################################################
 
     # confusion matrix
-    confmatrix = save_confusion_matrix(y_true=true_labels, y_pred=predicted_labels, exp_name = exp_name, epoch = epoch, split = 'train')
+    confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
     print("confusion matrix saved")
     
     PRcurve = save_precision_recall_curve(y_true=true_labels, y_pred=predicted_labels, exp_name = exp_name, epoch = epoch, split = 'train')
