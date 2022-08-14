@@ -123,7 +123,8 @@ def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128',
 
     confmatrix = confusion_matrix(true_labels, predicted_labels)
     disp = ConfusionMatrixDisplay(confmatrix)
-    disp.savefig(f'cfg['data_root'] + /experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    disp.savefig(f'cfg['data_root'] + /experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+'_'+ str(split) +'.png', facecolor="white")
+       ## took out epoch)
     return confmatrix
 
 ## we will calculate overall precision, recall, and F1 score
