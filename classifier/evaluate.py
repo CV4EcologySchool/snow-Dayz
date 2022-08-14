@@ -132,13 +132,13 @@ def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128',
 
     # make a csv of accuracy metrics 
 
-def save_precision_recall_curve(true_labels, predicted_labels, exp_name, epoch='128', split='train'):
+def save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch='128', split='train'):
         #### make the path if it doesn't exist
-    if not os.path.exists('experiments/'+(exp_name)+'/figs'):
-        os.makedirs('experiments/'+(exp_name)+'/figs', exist_ok=True)
+    if not os.path.exists('experiments/'+(args.exp_name)+'/figs'):
+        os.makedirs('experiments/'+(args.exp_name)+'/figs', exist_ok=True)
     
     PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, predicted_labels)
-    #PRcurve.savefig(f'/experiments/'+(exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    PRcurve.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
 
 
 def main():
@@ -162,8 +162,9 @@ def main():
     dl_val = create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train')
 
     # load model and predict from model
+    IPython.embed()
     model, epoch = load_model(cfg, exp_name)
-    true_labels, predicted_labels, confidence = predict(cfg, dl_val, model)   
+    true_labels, predicted_labels, confidences = predict(cfg, dl_val, model)   
 
     print('done generating true labels')
     
@@ -193,11 +194,11 @@ def main():
     confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
     print("confusion matrix saved")
     
-    PRcurve = save_precision_recall_curve(y_true=true_labels, y_pred=predicted_labels, exp_name = exp_name, epoch = epoch, split = 'train')
+    PRcurve = save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
     print("precision recall curve saved")
 
     # save list of predictions
-    results = pd.DataFrame({'trueLabels':true_labels, 'predictedLabels':predicted_labels})
+    results = pd.DataFrame({'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
     results.to_csv('experiments/'+(exp_name)+'/figs/'+'results.csv')
     print("results csv saved")
 
