@@ -56,11 +56,11 @@ Ablation studies
 
 Ask Eli or Sara: 
 +++++++++++++++++++++++++++++++++++++++++
-X : sequences 
-Y: more internet data
+X : sequences cleaning          ~
+Y: more internet data 
 Z: curriculum learning 
-ZZ: multiple classes
-ZZZ: play with different weights
+ZZ: multiple classes  ~
+ZZZ: play with different weights  
 ++++++++++++++++++++++++++++++++++++++++
 
 Worth it to add Y? 

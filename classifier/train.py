@@ -277,7 +277,7 @@ def main():
     # set up model optimizer
     optim = setup_optimizer(cfg, model)
 
-    writer = SummaryWriter(os.path.join(save_path, 'runs'))
+    writer = SummaryWriter(log_dir=os.path.join(save_path, 'runs'))
 
     previousLoss = np.inf
 
