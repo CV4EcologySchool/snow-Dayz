@@ -95,8 +95,8 @@ def predict(cfg, dataLoader, model):
                 #print(idx)
 
             filename = dataLoader.dataset.data[idx][0]
-            
             filenames.append(filename)
+
             true_label = label.numpy()
             true_labels.extend(true_label)
 
@@ -214,6 +214,7 @@ def main():
     print("precision recall curve saved")
 
     # save list of predictions
+    IPython.embed()
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
     results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
     print("results csv saved")
