@@ -215,7 +215,7 @@ def main():
 
     # save list of predictions
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
-    results.to_csv('experiments/'+(exp_name)+'/figs/'+'results.csv')
+    results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
     print("results csv saved")
 
 
