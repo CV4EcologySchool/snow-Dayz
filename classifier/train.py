@@ -10,7 +10,7 @@ import argparse
 import yaml
 import glob
 from tqdm import trange
-
+import numpy as np 
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -133,6 +133,9 @@ def train(cfg, dataLoader, model, optimizer):
         optimizer.zero_grad()
 
         # loss
+        ## if labels == 1:
+           #     loss = criterion(prediction, labels) * 2
+           # else:  loss = criterion(prediction, labels)
         loss = criterion(prediction, labels)
 
         # backward pass (calculate gradients of current batch)
@@ -276,6 +279,8 @@ def main():
 
     writer = SummaryWriter()
 
+    previousLoss = np.inf
+
     # we have everything now: data loaders, model, optimizer; let's do the epochs!
     numEpochs = cfg['num_epochs']
     while current_epoch < numEpochs:
@@ -297,6 +302,11 @@ def main():
             'oa_train': oa_train,
             'oa_val': oa_val
         }
+        delta = previousLoss - loss_val
+        if delta < 1e-3:
+            break
+        previousLoss = loss_val
+        
         save_model(cfg, current_epoch, model, stats, args)
     
 
