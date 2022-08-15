@@ -152,7 +152,7 @@ def save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch=
     
     PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, predicted_labels)
     PRcurve.plot()
-    plt.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    plt.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/PRcurve'+str(epoch)+'_'+ str(split) +'.png', facecolor="white")
 
 
 def main():
@@ -173,7 +173,7 @@ def main():
     cfg = yaml.safe_load(open(args.config, 'r'))
 
     # setup dataloader validation
-    dl_val = create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train')
+    dl_val = create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train_resized')
 
     # load model and predict from model
     #IPython.embed()
