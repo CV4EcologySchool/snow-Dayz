@@ -44,9 +44,12 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
     # this is an empty model that we will load our model into
     print(exp_name)
     model_instance = CustomResNet50(cfg['num_classes'])         # create an object instance of our CustomResNet18 class
-
+    root = cfg['data_root']
     # load all model states
-    model_states = glob('experiments/'+exp_name+'/model_states/*.pt')
+    model_states = glob(root+'experiments/'+exp_name+'/model_states/*.pt')
+    ##glob('/datadrive/vmData/weather/experiments/exp_resnet50_2classes_seqSliding/model_states/*')
+
+    print(model_states)
 
     ## if there is more than one model state, take the most recent one
     if len(model_states) > 0:
@@ -63,7 +66,7 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
         
         # load state dict and apply weights to model
         print(f'Evaluating from epoch {eval_epoch}')
-        state = torch.load(open(f'experiments/{exp_name}/model_states/{eval_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
+        state = torch.load(open(f'{root}/experiments/{exp_name}/model_states/{eval_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
         model = model_instance.load_state_dict(state['model'])
         ### how do I get to a model?? 
 

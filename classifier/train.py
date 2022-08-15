@@ -18,7 +18,6 @@ from torch.optim import SGD
 from torch.utils.tensorboard import SummaryWriter 
 
 # show model progress on tensorboard
-#writer = SummaryWriter()
 
 # let's import our own classes and functions!
 from dataset import CTDataset
@@ -275,6 +274,8 @@ def main():
     # set up model optimizer
     optim = setup_optimizer(cfg, model)
 
+    writer = SummaryWriter()
+
     # we have everything now: data loaders, model, optimizer; let's do the epochs!
     numEpochs = cfg['num_epochs']
     while current_epoch < numEpochs:
@@ -283,6 +284,11 @@ def main():
 
         loss_train, oa_train = train(cfg, dl_train, model, optim)
         loss_val, oa_val = validate(cfg, dl_test, model)
+
+        writer.add_scalar('Loss/Train', loss_train, current_epoch)
+        writer.add_scalar('OA/Train', oa_train, current_epoch)
+        writer.add_scalar('Loss/Val', loss_val, current_epoch)
+        writer.add_scalar('OA/Val', oa_val, current_epoch)
 
         # combine stats and save
         stats = {
