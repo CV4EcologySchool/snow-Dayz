@@ -24,7 +24,7 @@ import argparse
 import os
 from glob import glob
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score
-from sklearn.metrics import precision_score, recall_score, f1_score, PrecisionRecallDisplay
+from sklearn.metrics import precision_score, recall_score, f1_score, PrecisionRecallDisplay, precision_recall_curve
 import matplotlib.pyplot as plt
 from model import CustomResNet50
 from train import create_dataloader, load_model 
@@ -37,48 +37,52 @@ import IPython
 ### could make this a class rather than a function
 ### could make it a class of predictions ### 
 
+## documentation for saving and loading models https://pytorch.org/tutorials/beginner/saving_loading_models.html
+
 def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in function? 
     '''
         Creates a model instance and loads the latest model state weights.
     '''
     # this is an empty model that we will load our model into
-    print(exp_name)
+    #print(exp_name)
     model_instance = CustomResNet50(cfg['num_classes'])         # create an object instance of our CustomResNet18 class
     root = cfg['data_root']
     # load all model states
-    model_states = glob(root+'experiments/'+exp_name+'/model_states/*.pt')
+    #exp_name
+    model_states = glob(root+'/experiments/'+exp_name+'/model_states/*.pt')
     ##glob('/datadrive/vmData/weather/experiments/exp_resnet50_2classes_seqSliding/model_states/*')
 
-    print(model_states)
+    #print(model_states)
 
     ## if there is more than one model state, take the most recent one
     if len(model_states) > 0:
         # at least one save state found; get latest
 
-        model_epochs = [int(m.replace('experiments/'+ (exp_name)+'/model_states/','').replace('.pt','')) for m in model_states]
-        print(model_epochs) ## for debugging
+        model_epochs = [int(m.replace((root)+'/experiments/'+ (exp_name)+'/model_states/','').replace('.pt','')) for m in model_states]
         ##### if statement that if you set the epoch in your function to evaluate from there
         ##### otherwise start at the most recent epoch
         if epoch:
-            eval_epoch = epoch ### if you set the epoch in the function, if it's none it will take the max
+            eval_epoch = str(epoch) ### if you set the epoch in the function, if it's none it will take the max
         else:
-            eval_epoch = max(model_epochs)
+            eval_epoch = str(max(model_epochs))
         
         # load state dict and apply weights to model
         print(f'Evaluating from epoch {eval_epoch}')
         state = torch.load(open(f'{root}/experiments/{exp_name}/model_states/{eval_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
-        model = model_instance.load_state_dict(state['model'])
+        model_instance.load_state_dict(state['model'])
+        model_instance.eval()
         ### how do I get to a model?? 
 
     else:
         # no save state found; start anew
         print('No model found')
 
-    return model, epoch
+    return model_instance, epoch
 
 ########## extracting true_labels and predicted_labels for later use in the accuracy metrics
 def predict(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
+        filenames = []
         predictions = [] ## predictions as tensor probabilites
         true_labels = [] ## labels as 0, 1 .. (classes)
         predicted_labels = [] ## labels as 0, 1 .. (classes)
@@ -89,6 +93,10 @@ def predict(cfg, dataLoader, model):
         #print(len(dataLoader)) ## number of total divisions n/batchsize
         for idx, (data, label) in enumerate(dataLoader): 
                 #print(idx)
+
+            filename = dataLoader.dataset.data[idx][0]
+            
+            filenames.append(filename)
             true_label = label.numpy()
             true_labels.extend(true_label)
 
@@ -113,20 +121,22 @@ def predict(cfg, dataLoader, model):
     #### this should be full dataset as a dataframe
     #results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels}) #"confidence":confidence
 
-    return true_labels, predicted_labels, confidences
+    return filenames, true_labels, predicted_labels, confidences
 
 
 def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128', split='train'):
     # make figures folder if not there
 
-    matrix_path = cfg['data_root']+'experiments/'+(args.exp_name)+'/figs'
+    matrix_path = cfg['data_root']+'/experiments/'+(args.exp_name)+'/figs'
     #### make the path if it doesn't exist
     if not os.path.exists(matrix_path):  
         os.makedirs(matrix_path, exist_ok=True)
 
     confmatrix = confusion_matrix(true_labels, predicted_labels)
     disp = ConfusionMatrixDisplay(confmatrix)
-    disp.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+'_'+ str(split) +'.png', facecolor="white")
+    #confmatrix.save(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+'_'+ str(split) +'.png', facecolor="white")
+    disp.plot()
+    plt.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+'_'+ str(epoch) +'.png', facecolor="white")
        ## took out epoch)
     return confmatrix
 
@@ -141,7 +151,8 @@ def save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch=
         os.makedirs('experiments/'+(args.exp_name)+'/figs', exist_ok=True)
     
     PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, predicted_labels)
-    PRcurve.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    PRcurve.plot()
+    plt.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/PRcurve'+(epoch)+'_'+ str(split) +'.png', facecolor="white")
 
 
 def main():
@@ -165,11 +176,13 @@ def main():
     dl_val = create_dataloader(cfg, split='train', labels = 'trainLabels.csv', folder = 'train')
 
     # load model and predict from model
-    IPython.embed()
+    #IPython.embed()
     model, epoch = load_model(cfg, exp_name)
-    true_labels, predicted_labels, confidences = predict(cfg, dl_val, model)   
 
-    print('done generating true labels')
+    print('generating predicted labels')
+    filenames, true_labels, predicted_labels, confidences = predict(cfg, dl_val, model)   
+
+    print('done generating predicted labels')
     
     # get accuracy score
     ### this is just a way to get two decimal places 
@@ -191,7 +204,7 @@ def main():
     ### this is just a way to get two decimal places 
     F1score = f1_score(true_labels, predicted_labels)
     print("F1score of model is {:0.2f}".format(F1score))
-    #####################################################
+    ######################################################################
 
     # confusion matrix
     confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
@@ -201,7 +214,7 @@ def main():
     print("precision recall curve saved")
 
     # save list of predictions
-    results = pd.DataFrame({'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
+    results = pd.DataFrame({'filenames':filenames, trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
     results.to_csv('experiments/'+(exp_name)+'/figs/'+'results.csv')
     print("results csv saved")
 
