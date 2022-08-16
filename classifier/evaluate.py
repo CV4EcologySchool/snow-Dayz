@@ -91,16 +91,38 @@ def predict(cfg, dataLoader, model):
         ### this will evaluate on each batch of data (usually 64)
         #IPython.embed()
         #print(len(dataLoader)) ## number of total divisions n/batchsize
-        for idx, (data, label) in enumerate(dataLoader): 
-                #print(idx)
+        # for idx, (data, label) in enumerate(dataLoader): 
 
+        #     true_label = label.numpy()
+        #     true_labels.extend(true_label)
+
+        #     prediction = model(data) ## the full probabilty
+        #     predictions.append(prediction)
+        #     #print(prediction.shape) ## it is going to be [batch size #num_classes]
+            
+        #     ## predictions
+        #     predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
+        #     predicted_labels.extend(predict_label)
+        #     #print(predict_label)
+
+        #     confidence = torch.nn.Softmax(dim=1)(prediction).numpy()
+        #     confidence = confidence[:,1]
+        #     confidences.extend(confidence)
+
+    # true_labels = np.array(true_labels)
+    # predicted_labels = np.array(predicted_labels)
+    # confidences = np.array(confidences)
+
+        for idx in range(0, len(dataLoader.dataset.data)):
+            data, label = dataLoader.dataset[idx]
             filename = dataLoader.dataset.data[idx][0]
             filenames.append(filename)
 
-            true_label = label.numpy()
-            true_labels.extend(true_label)
+            true_label = label #.numpy()
+            true_labels.append(true_label)
 
-            prediction = model(data) ## the full probabilty
+            data1 = data.unsqueeze(0)
+            prediction = model(data1) ## the full probabilty
             predictions.append(prediction)
             #print(prediction.shape) ## it is going to be [batch size #num_classes]
             
@@ -109,13 +131,10 @@ def predict(cfg, dataLoader, model):
             predicted_labels.extend(predict_label)
             #print(predict_label)
 
-            confidence = torch.nn.Softmax(dim=1)(prediction).numpy()
+            confidence = torch.nn.Softmax(dim=1)(prediction).detach().numpy() ## had to add .detach()
             confidence = confidence[:,1]
             confidences.extend(confidence)
 
-    true_labels = np.array(true_labels)
-    predicted_labels = np.array(predicted_labels)
-    confidences = np.array(confidences)
     #print(predicted_labels)
     #print(len(predicted_labels))
     #### this should be full dataset as a dataframe
