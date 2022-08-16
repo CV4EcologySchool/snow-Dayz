@@ -121,7 +121,7 @@ def predict(cfg, dataLoader, model):
             true_label = label #.numpy()
             true_labels.append(true_label)
 
-            data1 = data.unsqueeze(0)
+            data1 = data.unsqueeze(0) ## add dimension at the beginning because fake batch is 1
             prediction = model(data1) ## the full probabilty
             predictions.append(prediction)
             #print(prediction.shape) ## it is going to be [batch size #num_classes]
