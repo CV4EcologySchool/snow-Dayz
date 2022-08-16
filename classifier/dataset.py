@@ -74,7 +74,8 @@ class CTDataset(Dataset):
 
         def delete_multiple_element(list_object, indices):
             for idx in indices:
-                list_object.pop(idx)
+                if idx < len(list_object):
+                    list_object.pop(idx)
             return list_object
 
 
@@ -116,7 +117,8 @@ class CTDataset(Dataset):
                         imgFileName = file
                         self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES[weather]]) ## why label index and not label?
-
+        print(len(self.data))
+        IPython.embed()
 ############ drop identical image sequences ######################
 #### these were pullled after running sequence Generator so the indices are unique to that
         if (self.sequenceType == 'sliding') and (self.drop == 'True'): self.data = delete_multiple_element(self.data, self.seqSliding)

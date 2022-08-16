@@ -141,6 +141,8 @@ def predict(cfg, dataLoader, model):
             if cfg['num_classes'] == 2:
                 confidence1 = confidence[:,1]
                 confidences1.extend(confidence1)
+                return filenames, true_labels, predicted_labels, confidences1
+
 
             if cfg['num_classes'] == 3:
                 confidence0 = confidence[:,0]
@@ -150,14 +152,14 @@ def predict(cfg, dataLoader, model):
                 confidences0.extend(confidence0)
                 confidences1.extend(confidence1)
                 confidences2.extend(confidence2)
+                
+                return filenames, true_labels, predicted_labels, confidences0, confidences1, confidences2
    
 
     #print(predicted_labels)
     #print(len(predicted_labels))
     #### this should be full dataset as a dataframe
     #results = pd.DataFrame({"true_labels": true_labels, "predict_label":predicted_labels}) #"confidence":confidence
-
-    return filenames, true_labels, predicted_labels, confidences
 
 
 def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128', split='train'):
@@ -216,20 +218,20 @@ def main():
     #IPython.embed()
     model, epoch = load_model(cfg, exp_name, epoch=None)
 
-    print('generating predicted labels')
-    filenames, true_labels, predicted_labels, confidences = predict(cfg, dl_val, model)   
-    print('done generating predicted labels')
-    
-    # get accuracy score
-    ### this is just a way to get two decimal places 
-    acc = accuracy_score(true_labels, predicted_labels)
-    print("Accuracy of model is {:0.2f}".format(acc))
-
-    # confusion matrix
-    confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
-    print("confusion matrix saved")
-
     if cfg['num_classes'] == 2:
+        print('generating predicted labels')
+        filenames, true_labels, predicted_labels, confidences = predict(cfg, dl_val, model)   
+        print('done generating predicted labels')
+        
+        # get accuracy score
+        ### this is just a way to get two decimal places 
+        acc = accuracy_score(true_labels, predicted_labels)
+        print("Accuracy of model is {:0.2f}".format(acc))
+
+        # confusion matrix
+        confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
+        print("confusion matrix saved")
+
         ######################### put this all in a function ##############
         # get precision score
         ### this is just a way to get two decimal places 
@@ -254,12 +256,33 @@ def main():
         metrics.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'metrics.csv')
         print("metrics csv saved")
 
-    # save list of predictions
-    results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
-    results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
-    print("results csv saved")
+        # save list of predictions
+        results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
+        results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
+        print("results csv saved")
 
-    #metrics = pd.DataFrame({})
+    if cfg['num_classes'] == 3:
+        print('generating predicted labels')
+        filenames, true_labels, predicted_labels, confidences0, confidences1, confidences2 = predict(cfg, dl_val, model)   
+        print('done generating predicted labels')
+        
+        # get accuracy score
+        ### this is just a way to get two decimal places 
+        acc = accuracy_score(true_labels, predicted_labels)
+        print("Accuracy of model is {:0.2f}".format(acc))
+
+        # confusion matrix
+        confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
+        print("confusion matrix saved")
+
+        metrics = pd.DataFrame({'precision':precision, 'recall':recall, 'F1score':F1score})
+        metrics.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'metrics.csv')
+        print("metrics csv saved")
+
+        # save list of predictions
+        results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
+        results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
+        print("results csv saved")
 
 
 if __name__ == '__main__':
