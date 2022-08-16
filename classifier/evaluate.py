@@ -88,6 +88,10 @@ def predict(cfg, dataLoader, model):
         true_labels = [] ## labels as 0, 1 .. (classes)
         predicted_labels = [] ## labels as 0, 1 .. (classes)
         confidences0 = [] ## soft max of probabilities 
+        confidences1 = []
+        confidences2 = []
+        confidences3 = []
+        confidences4 = []
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
         #IPython.embed()
@@ -133,10 +137,19 @@ def predict(cfg, dataLoader, model):
             #print(predict_label)
 
             confidence = torch.nn.Softmax(dim=1)(prediction).detach().numpy() ## had to add .detach()
-            confidence0 = confidence[:,0]
-            confidence1 = confidence[:,1]
-            confidence2 = confidence[:,2]
-            confidences.extend(confidence)
+            
+            if cfg['num_classes'] == 2:
+                confidence1 = confidence[:,1]
+                confidences1.extend(confidence1)
+
+            if cfg['num_classes'] == 3:
+                confidence0 = confidence[:,0]
+                confidence1 = confidence[:,1]
+                confidence2 = confidence[:,2]
+
+                confidences0.extend(confidence0)
+                confidences1.extend(confidence1)
+                confidences2.extend(confidence2)
    
 
     #print(predicted_labels)
@@ -236,6 +249,10 @@ def main():
 
         PRcurve = save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
         print("precision recall curve saved")
+
+        metrics = pd.DataFrame({'precision':precision, 'recall':recall, 'F1score':F1score})
+        metrics.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'metrics.csv')
+        print("metrics csv saved")
 
     # save list of predictions
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
