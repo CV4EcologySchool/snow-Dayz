@@ -72,6 +72,14 @@ class CTDataset(Dataset):
         # index data into list
         self.data = []
 
+
+        def delete_multiple_element(list_object, indices):
+            indices = sorted(indices, reverse=True)
+            for idx in indices:
+                if idx < len(list_object):
+                    list_object.pop(idx)
+
+
         # load annotation file
         self.annoPath = os.path.join(
             self.data_root, labels) ############# should i set this as an input?? 
@@ -113,12 +121,10 @@ class CTDataset(Dataset):
 
 ############ drop identical image sequences ######################
 #### these were pullled after running sequence Generator so the indices are unique to that
-        if (self.sequenceType == 'sliding') and (self.drop == 'True'): self.data = self.data.drop(self.seqSliding)
-        if (self.sequenceType == '3-6hr') and (self.drop == 'True'): self.data = self.data.drop(self.seq6hr)
-        if (self.sequenceType == '6-12hr') and (self.drop == 'True'): self.data = self.data.drop(self.seq12hr)
-        if (self.sequenceType == '12-24hr') and (self.drop == 'True'): self.data = self.data.drop(self.seq24hr)
-
-
+        if (self.sequenceType == 'sliding') and (self.drop == 'True'): self.data = delete_multiple_element(self.data, self.seqSliding)
+        if (self.sequenceType == '3-6hr') and (self.drop == 'True'): self.data = delete_multiple_element(self.data, self.seq6hr)
+        if (self.sequenceType == '6-12hr') and (self.drop == 'True'): self.data = delete_multiple_element(self.data, self.seq12hr)
+        if (self.sequenceType == '12-24hr') and (self.drop == 'True'): self.data = delete_multiple_element(self.data, self.seq24hr)
 
 
     def __len__(self):

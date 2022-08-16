@@ -87,7 +87,7 @@ def predict(cfg, dataLoader, model):
         #predictions = [] ## predictions as tensor probabilites
         true_labels = [] ## labels as 0, 1 .. (classes)
         predicted_labels = [] ## labels as 0, 1 .. (classes)
-        confidences = [] ## soft max of probabilities 
+        confidences0 = [] ## soft max of probabilities 
         ##### may need to adjust this in the dataloader for the sequence:
         ### this will evaluate on each batch of data (usually 64)
         #IPython.embed()
@@ -133,8 +133,11 @@ def predict(cfg, dataLoader, model):
             #print(predict_label)
 
             confidence = torch.nn.Softmax(dim=1)(prediction).detach().numpy() ## had to add .detach()
-            confidence = confidence[:,1]
+            confidence0 = confidence[:,0]
+            confidence1 = confidence[:,1]
+            confidence2 = confidence[:,2]
             confidences.extend(confidence)
+   
 
     #print(predicted_labels)
     #print(len(predicted_labels))
