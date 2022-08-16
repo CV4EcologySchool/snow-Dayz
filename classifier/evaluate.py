@@ -238,6 +238,8 @@ def main():
     results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
     print("results csv saved")
 
+    #metrics = pd.DataFrame({})
+
 
 if __name__ == '__main__':
     main()

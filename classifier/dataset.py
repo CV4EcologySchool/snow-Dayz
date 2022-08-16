@@ -67,6 +67,7 @@ class CTDataset(Dataset):
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
             ToTensor()                          # ...and convert them to torch.Tensor.
         ])
+        self.drop = cfg['drop']
         
         # index data into list
         self.data = []
@@ -80,11 +81,6 @@ class CTDataset(Dataset):
         meta = meta[meta['Weather'] != 'Other']
         meta = meta[meta['File'] != '2015_04_05_09_00_00.jpg']
         meta = meta.drop_duplicates().reset_index() ## maybe I should keep the original indices??
-        
-
-
-        #images = meta['File']
-        #labels = meta['Weather']
 
         ## add a check to make sure it exists in the folder of interest
         list_of_images = glob.glob(os.path.join(self.data_root,'train_resized/*')) ####UPDATED
@@ -114,10 +110,13 @@ class CTDataset(Dataset):
                         imgFileName = file
                         self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES[weather]]) ## why label index and not label?
-        #if self.sequenceType == '3-6hr':
-            ## drop III indices ...
-            ## drop BII?
-            ## drop IIA?
+
+############ drop identical image sequences ######################
+#### these were pullled after running sequence Generator so the indices are unique to that
+        if (self.sequenceType == 'sliding') and (self.drop == 'True'): self.data = self.data.drop(self.seqSliding)
+        if (self.sequenceType == '3-6hr') and (self.drop == 'True'): self.data = self.data.drop(self.seq6hr)
+        if (self.sequenceType == '6-12hr') and (self.drop == 'True'): self.data = self.data.drop(self.seq12hr)
+        if (self.sequenceType == '12-24hr') and (self.drop == 'True'): self.data = self.data.drop(self.seq24hr)
 
 
 
