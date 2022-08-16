@@ -196,6 +196,7 @@ def main():
 ##create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
     # load model and predict from model
     #IPython.embed()
+    IPython.embed()
     model, epoch = load_model(cfg, exp_name)
 
     print('generating predicted labels')
@@ -233,7 +234,6 @@ def main():
     print("precision recall curve saved")
 
     # save list of predictions
-    IPython.embed()
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
     results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
     print("results csv saved")
