@@ -32,7 +32,9 @@ def create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabel
     '''
     #labels = os.path.join(self.data_root, labels) ## if the full path above doesn't work
     #dataset_instance = CTDataset(cfg, split)        # create an object instance of our CTDataset class
-    dataset_instance = CTDataset(labels, cfg, split=split, folder=folder)
+
+    if split == 'train'
+    dataset_instance = CTDataset(labels=labels, cfg=cfg, split=split, folder=folder)
 
     dataLoader = DataLoader(
             dataset=dataset_instance,
@@ -234,8 +236,10 @@ def main():
     # add command line args for experiment folder, experiment name
     parser.add_argument('--exp_dir', help='Path to experiment directory', default='experiments')
     parser.add_argument('--exp_name', help = 'Path to experiment name', default = 'experiment_name')
-    parser.add_argument('--train_folder', help = 'Path to train folder', default = 'train')
+    parser.add_argument('--train_folder', help = 'Path to train folder', default = 'train_resized')
+    parser.add_argument('-val_folder', help = 'Path to val folder', default = 'val_resized')
     parser.add_argument('--drop', help = 'Whether to drop images of identical images', default = 'False')
+ 
     #
     args = parser.parse_args()
 
@@ -269,8 +273,8 @@ def main():
         cfg['device'] = 'cpu'
 
     # initialize data loaders for training and validation set
-    dl_train = create_dataloader(cfg, split='train', folder=args.train_folder)
-    dl_test = create_dataloader(cfg, split='test', folder=args.train_folder)
+    dl_train = create_dataloader(cfg, split='train', folder=args.train_folder, labels = 'trainLabels.csv')
+    dl_test = create_dataloader(cfg, split='val', folder=args.val_folder, labels = 'valLabels.csv')
 
     # initialize model
     model, current_epoch = load_model(cfg)
@@ -284,6 +288,10 @@ def main():
 
     # we have everything now: data loaders, model, optimizer; let's do the epochs!
     numEpochs = cfg['num_epochs']
+
+    #lossEpoch = []
+    #bestLoss = max(int(lossEpoch))
+
     while current_epoch < numEpochs:
         current_epoch += 1
         print(f'Epoch {current_epoch}/{numEpochs}')
@@ -303,10 +311,10 @@ def main():
             'oa_train': oa_train,
             'oa_val': oa_val
         }
-        delta = previousLoss - loss_val
-        if delta < 1e-3:
-            break
-        previousLoss = loss_val
+       # delta = previousLoss - loss_val
+       # if delta < 1e-3:
+       #     break
+       # previousLoss = loss_val
         
         save_model(cfg, current_epoch, model, stats, args)
     

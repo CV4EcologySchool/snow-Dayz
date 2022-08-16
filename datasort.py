@@ -53,24 +53,6 @@ def olympex_snoq_train_data(path):
 
 ## shoud be the same as the number 
 
-#fileIndex = labels[labels['File'] == name].index.values.tolist()[0]
-# weather = labels['Weather'][fileIndex]
-# date = labels['Date'][fileIndex]
-# time = labels['Time'][fileIndex]
-#snowcover = labels['SnowCover'][fileIndex]
-# temperature = labels ['Temperature'][fileIndex]
-#location = labels['location'][fileIndex]
-#trainfiles.append(name), trainweathers.append(weather), traindate.append(date)
-#traintime.append(time), trainsnowcover.append(snowcover), traintemperature.append(temperature)
-#trainlocation.append(location)
-
-
-### get the image ID from the path. We will then use the filename 
-### to look up the timestamp from the label dataframe 
-
-### We look up the date it was taken looking up the index of the
-### filename
-
 TestDate1 = pd.Timestamp('2018-09-30 00:00:00')
 TestDate2 = pd.Timestamp('2019-04-01 00:00:00')
 
@@ -128,7 +110,7 @@ norway_train_test(norway)
 ## train folder and test folder statistics
 
 train = ('/datadrive/data/weather/train/*')
-test = ('/datadrive/data/weather/test/*')
+test = ('/datadrive/data/weather/test/')
 
 print('Found {} images in train folder'.format(len(glob.glob(train))))
 print('Found {} images in test folder'.format(len(glob.glob(test))))
@@ -162,7 +144,6 @@ trainDest = ('/datadrive/data/weather/train/*')
 testDest = ('/datadrive/data/weather/test/*')
 trainLabels = pd.read_csv('/datadrive/data/weather/trainLabels.csv')
 testLabels = pd.read_csv('/datadrive/data/weather/testLabels.csv')
-
 
 print('Found {} images in train folder'.format(len(glob.glob(trainDest))))
 print('Found {} images in test folder'.format(len(glob.glob(testDest))))
@@ -212,3 +193,54 @@ for file in FilesThatDontExist:
     if os.path.isfile(file):
         os.remove(file)
     else: print("Error: %s file not found" % file)
+
+
+
+########################################
+## val script
+
+TestDate1 = pd.Timestamp('2018-01-01 00:00:00')
+TestDate2 = pd.Timestamp('2019-04-01 00:00:00')
+
+origin_folder = ('/datadrive/vmData/weather/train_resized/*')
+valDest = ('/datadrive/vmData/weather/val_resized/')
+labels = pd.read_csv('/datadrive/vmData/weather/trainLabels.csv')
+labels = labels[['File', 'Weather','Date','Time','SnowCover','Temperature','location']]
+
+valfiles = []
+valweathers = []
+valdate = []
+valtime = []
+valsnowcover = []
+valtemperature = []
+vallocation = []
+
+def train_sort(path):
+    for file in glob.glob(path):
+        if os.path.splitext(file)[1].lower() in ('.jpg', '.jpeg'):
+            filename = os.path.join(path,file)
+            name = file.split('/')[-1]  
+            fileIndex = labels[labels['File'] == name].index
+            location = (labels['Date'][fileIndex].values.tolist())[0] ## gets location and turns it into a string
+            date = (labels['Date'][fileIndex].values.tolist())[0] ## gets the date and turns it into a string
+            ## convert date to proper timestamp
+            date = pd.to_datetime(date)
+##### 2018-2019 year of interest [Jan 1 2017 - April 2018] 
+### ecological justification: rain vs. snow is the year we have full dataset (because of covid). I had to leave in March
+            if (date >= TestDate1) & (date <= TestDate2):
+                if len(labels[labels['File'] == name]) > 0:
+                    fileIndex = labels[labels['File'] == name].index.values.tolist()[0]
+                    weather = labels['Weather'][fileIndex]
+                    date = labels['Date'][fileIndex]
+                    time = labels['Time'][fileIndex]
+                    snowcover = labels['SnowCover'][fileIndex]
+                    temperature = labels ['Temperature'][fileIndex]
+                    location = labels['location'][fileIndex]
+                    valfiles.append(name), valweathers.append(weather), valdate.append(date)
+                    valtime.append(time), valsnowcover.append(snowcover), valtemperature.append(temperature), vallocation.append(location)
+                    print(filename)
+                    shutil.copy2(filename, valDest+str('/')+name)
+
+train_sort(origin_folder)
+valLabels = pd.DataFrame({'File':valfiles, 'Weather':valweathers,'Date':valdate,'Time':valdate,'SnowCover':valsnowcover,'Temperature':valtemperature,'location':vallocation})
+valLabels.to_csv('/datadrive/vmData/weather/valLabels.csv')
