@@ -33,7 +33,6 @@ def create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabel
     #labels = os.path.join(self.data_root, labels) ## if the full path above doesn't work
     #dataset_instance = CTDataset(cfg, split)        # create an object instance of our CTDataset class
 
-    if split == 'train'
     dataset_instance = CTDataset(labels=labels, cfg=cfg, split=split, folder=folder)
 
     dataLoader = DataLoader(
