@@ -236,7 +236,7 @@ def main():
     parser.add_argument('--exp_dir', help='Path to experiment directory', default='experiments')
     parser.add_argument('--exp_name', help = 'Path to experiment name', default = 'experiment_name')
     parser.add_argument('--train_folder', help = 'Path to train folder', default = 'train_resized')
-    parser.add_argument('-val_folder', help = 'Path to val folder', default = 'val_resized')
+    parser.add_argument('--val_folder', help = 'Path to val folder', default = 'val_resized')
     parser.add_argument('--drop', help = 'Whether to drop images of identical images', default = 'False')
  
     #
