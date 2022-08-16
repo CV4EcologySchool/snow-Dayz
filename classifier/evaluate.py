@@ -79,11 +79,12 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
 
     return model_instance, epoch
 
+    
 ########## extracting true_labels and predicted_labels for later use in the accuracy metrics
 def predict(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
         filenames = []
-        predictions = [] ## predictions as tensor probabilites
+        #predictions = [] ## predictions as tensor probabilites
         true_labels = [] ## labels as 0, 1 .. (classes)
         predicted_labels = [] ## labels as 0, 1 .. (classes)
         confidences = [] ## soft max of probabilities 
@@ -123,7 +124,7 @@ def predict(cfg, dataLoader, model):
 
             data1 = data.unsqueeze(0) ## add dimension at the beginning because fake batch is 1
             prediction = model(data1) ## the full probabilty
-            predictions.append(prediction)
+            #predictions.append(prediction)
             #print(prediction.shape) ## it is going to be [batch size #num_classes]
             
             ## predictions
