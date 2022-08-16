@@ -196,12 +196,11 @@ def main():
 ##create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
     # load model and predict from model
     #IPython.embed()
-    IPython.embed()
-    model, epoch = load_model(cfg, exp_name)
+    #IPython.embed()
+    model, epoch = load_model(cfg, exp_name, epoch=None)
 
     print('generating predicted labels')
     filenames, true_labels, predicted_labels, confidences = predict(cfg, dl_val, model)   
-
     print('done generating predicted labels')
     
     # get accuracy score

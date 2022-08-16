@@ -107,6 +107,12 @@ class CTDataset(Dataset):
                         imgFileName = file
                         self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES[weather]]) ## why label index and not label?
+        #if self.sequenceType == '3-6hr':
+            ## drop III indices ...
+            ## drop BII?
+            ## drop IIA?
+
+
 
 
     def __len__(self):
