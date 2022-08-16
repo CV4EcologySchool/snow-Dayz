@@ -208,29 +208,30 @@ def main():
     acc = accuracy_score(true_labels, predicted_labels)
     print("Accuracy of model is {:0.2f}".format(acc))
 
-    ######################### put this all in a function ##############
-    # get precision score
-    ### this is just a way to get two decimal places 
-    precision = precision_score(true_labels, predicted_labels)
-    print("Precision of model is {:0.2f}".format(precision))
-
-    # get recall score
-    ### this is just a way to get two decimal places 
-    recall = recall_score(true_labels, predicted_labels)
-    print("Recall of model is {:0.2f}".format(recall))
-
-    # get recall score
-    ### this is just a way to get two decimal places 
-    F1score = f1_score(true_labels, predicted_labels)
-    print("F1score of model is {:0.2f}".format(F1score))
-    ######################################################################
-
     # confusion matrix
     confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
     print("confusion matrix saved")
-    
-    PRcurve = save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
-    print("precision recall curve saved")
+
+    if cfg['num_classes'] == 2:
+        ######################### put this all in a function ##############
+        # get precision score
+        ### this is just a way to get two decimal places 
+        precision = precision_score(true_labels, predicted_labels)
+        print("Precision of model is {:0.2f}".format(precision))
+
+        # get recall score
+        ### this is just a way to get two decimal places 
+        recall = recall_score(true_labels, predicted_labels)
+        print("Recall of model is {:0.2f}".format(recall))
+
+        # get recall score
+        ### this is just a way to get two decimal places 
+        F1score = f1_score(true_labels, predicted_labels)
+        print("F1score of model is {:0.2f}".format(F1score))
+        ######################################################################
+
+        PRcurve = save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
+        print("precision recall curve saved")
 
     # save list of predictions
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
