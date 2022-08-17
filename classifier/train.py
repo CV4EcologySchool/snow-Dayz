@@ -167,7 +167,7 @@ def train(cfg, dataLoader, model, optimizer):
         #IPython.embed()
 
         progressBar.set_description(
-            '[Train] Loss: {:.2f}; OA: {:.2f}%; BA: {:.2f}%'.format(
+            '[Train] Loss: {:.2f}; OA: {:.2f}%'.format(  #; BA: {:.2f}%'
                 loss_total/(idx+1),
                 100*oa_total/(idx+1),
                 #100*ba_total/(idx+1),
