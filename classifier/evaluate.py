@@ -288,7 +288,7 @@ def main():
     # load model and predict from model
     #IPython.embed()
     #IPython.embed()
-    model, epoch = load_model(cfg, args.exp_dir, args.exp_name, epoch=epoch)
+    model, epoch = load_model(cfg, args.exp_dir, args.exp_name)
 
     if cfg['num_classes'] == 2:
         print('calculating binary metrics')
