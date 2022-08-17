@@ -47,7 +47,7 @@ class CTDataset(Dataset):
         'Other': 1
     }
 
-    def __init__(self, labels, cfg, folder='train'):
+    def __init__(self, labels, cfg, folder):
         '''
             Constructor. Here, we collect and index the dataset inputs and
             labels.
@@ -86,26 +86,26 @@ class CTDataset(Dataset):
         print(list_of_images)
         if self.sequenceType == 'None':
             #######maybe instead walk through list_of_images
-            #for file, weather in zip(meta['File'], meta['Weather']):
+            for file, weather in zip(meta['File'], meta['Weather']):
                 #if random.uniform(0.0, 1.0) <= 0.99:
                     #continue
                     #(random.uniform(0.0, 1.0) <= 0.005) and
-                # if (sum(file == list_of_images) > 0): 
-                #     imgFileName = file ## make sure there is the image file in the train folder
-                #     if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-                #     elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
-                # else: continue
-            for idx, file in enumerate(list_of_images):
-                if file != 5: 
-                    print(file)
-                    imgFileName = file
-                    print(imgFileName)
-                    fileIndex = meta[meta['File'] == file].index
-                    print(fileIndex)
-                    weather =  (meta['Weather'][fileIndex].values.tolist())[0]
-                    print(weather)
+                if (sum(file == list_of_images) > 0): 
+                    imgFileName = file ## make sure there is the image file in the train folder
                     if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-                    elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]])
+                    elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+                # else: continue
+            # for file in enumerate(list_of_images):
+            #     if file != 5: 
+            #         print(file)
+            #         imgFileName = file
+            #         print(imgFileName)
+            #         fileIndex = meta[meta['File'] == file].index
+            #         print(fileIndex)
+            #         weather =  (meta['Weather'][fileIndex].values.tolist())[0]
+            #         print(weather)
+            #         if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+            #         elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]])
               
         print(len(self.data))
 
