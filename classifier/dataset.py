@@ -117,7 +117,7 @@ class CTDataset(Dataset):
             #         imgFileName = file
                 fileIndex = meta[meta['File'] == file].index
                 if len(fileIndex != 0):
-                        IPython.embed()
+                        #IPython.embed()
                         meta_merged = list_of_images.merge(meta, left_on = 5, right_on = 'File')
                         imgFileName = file 
                         before, file, after = sequenceGenerator(meta_merged, file, sequenceType = self.sequenceType)
