@@ -108,15 +108,18 @@ class CTDataset(Dataset):
               
         print(len(self.data))
 
-
 ######################### sequences #################
         if self.sequenceType != 'None':
-            for file, weather in zip(meta['File'], meta['Weather']):
-                ## (random.uniform(0.0, 1.0) <= 0.001) and 
-                if sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
-                    imgFileName = file
+            # for file, weather in zip(meta['File'], meta['Weather']):
+            #     ## (random.uniform(0.0, 1.0) <= 0.001) and 
+            #     if sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
+            #         imgFileName = file
+            imgFileName = file
+            fileIndex = meta[meta['File'] == file].index
+            if len(fileIndex != 0):
                     before, file, after = sequenceGenerator(meta, file, sequenceType = self.sequenceType)
                     imgFileName = file 
+                    weather =  (meta['Weather'][fileIndex].values.tolist())[0]
                     if cfg['num_classes'] == 2:
                         imgFileName = file
                         self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
