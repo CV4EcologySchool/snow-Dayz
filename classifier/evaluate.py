@@ -286,7 +286,7 @@ def main():
     cfg = yaml.safe_load(open(args.config, 'r'))
 
     # setup dataloader validation
-    dl_val = create_dataloader(cfg, split=args.split, folder = 'test_resized', labels = 'testLabels.csv')
+    dl_val = create_dataloader(cfg, folder = 'test_resized', labels = 'testLabels.csv')
 ##create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
     # load model and predict from model
     #IPython.embed()

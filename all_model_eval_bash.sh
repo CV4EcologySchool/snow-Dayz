@@ -1,8 +1,15 @@
 #!/bin/bash
 # eval bash, by Catherine
 
+  #  parser = argparse.ArgumentParser(description='Train deep learning model.')
+  #  parser.add_argument('--exp_dir', required=True, help='Path to experiment directory', default = "experiment_dir")
+  #  parser.add_argument('--exp_name', required=True, help='Path to experiment folder', default = "experiment_name")
+  #  parser.add_argument('--split', help='Data split', default ='train')
+  #  parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
+  #  args = parser.parse_args()
 
-python classifier/evaluate.py --exp_name exp_resnet50_3classes --split train --config configs/exp_resnet50_3classes.yaml
+
+python classifier/evaluate.py --exp_dir old_experiments_folder --exp_name exp_resnet50_2classes_None --config configs/exp_resnet50_2classes.yaml
 
 python classifier/evaluate.py --exp_name exp_resnet50_3classes_seq6hr --split train --config configs/exp_resnet50_3classes_seq6hr.yaml
 
