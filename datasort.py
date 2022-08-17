@@ -199,6 +199,12 @@ for file in FilesThatDontExist:
 ########################################
 ## val script
 
+
+import shutil
+import pandas as pd
+import glob 
+import os 
+
 TestDate1 = pd.Timestamp('2018-01-01 00:00:00')
 TestDate2 = pd.Timestamp('2019-04-01 00:00:00')
 
