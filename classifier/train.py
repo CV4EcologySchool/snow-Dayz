@@ -120,7 +120,6 @@ def train(cfg, dataLoader, model, optimizer):
 
     # running averages
     loss_total, oa_total = 0.0, 0.0                         # for now, we just log the loss and overall accuracy (OA)
-    ba_total = 0.0
 
     # iterate over dataLoader
     progressBar = trange(len(dataLoader))
@@ -154,23 +153,10 @@ def train(cfg, dataLoader, model, optimizer):
         oa = torch.mean((pred_label == labels).float()) # OA: number of correct predictions divided by batch size (i.e., average/mean)
         oa_total += oa.item()
 
-        #labels0 = sum(labels[[labels] == 0])/len(labels) 
-        #labels1 = sum(labels[[labels] == 1])/len(labels) 
-        #labels2 = sum(labels[[labels] == 2])/len(labels)     
-
-        # labels[labels]
-        #     oa*(1/3)
-#### https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html
- 
-        #ba = balanced_accuracy_score(labels.numpy(), pred_label.numpy())  ## check on whether sklearn can take numpy 
-        #ba_total += ba.item() ### basically just running recall 
-        #IPython.embed()
-
         progressBar.set_description(
-            '[Train] Loss: {:.2f}; OA: {:.2f}%'.format(  #; BA: {:.2f}%'
+            '[Train] Loss: {:.2f}; OA: {:.2f}%'.format(  
                 loss_total/(idx+1),
-                100*oa_total/(idx+1),
-                #100*ba_total/(idx+1),
+                100*oa_total/(idx+1)
             )
         )
         progressBar.update(1)

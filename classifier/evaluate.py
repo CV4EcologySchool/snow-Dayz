@@ -229,7 +229,7 @@ def binaryMetrics(cfg, dl_val, model, args, epoch):
 
     # save list of predictions
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
-    results.to_csv(cfg['data_root'] + '/' + args.exp_dir +'/'+(args.exp_name)+'/figs/'+'resultsTEST.csv')
+    results.to_csv(cfg['data_root'] + '/' + args.exp_dir +'/'+(args.exp_name)+'/figs/'+'resultsTEST'+str(epoch)+'.csv')
     print("results csv saved")
 
 def multiClassMetrics(cfg, dl_val, model, args, epoch):
