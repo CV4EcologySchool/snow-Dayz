@@ -131,7 +131,7 @@ def predict(cfg, dataLoader, model):
             prediction = model(data1) ## the full probabilty
             #predictions.append(prediction)
             #print(prediction.shape) ## it is going to be [batch size #num_classes]
-            print(prediction)
+            #print(prediction)
             ## predictions
             #IPython.embed()
             predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
