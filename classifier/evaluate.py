@@ -31,6 +31,7 @@ from train import create_dataloader, load_model
 import pandas as pd
 import random
 import IPython
+from sklearn.metrics import balanced_accuracy_score, classification_report
 
 
 ## We need the cfg (model configuration), model 
@@ -227,13 +228,13 @@ def binaryMetrics(cfg, dl_val, model, args, epoch):
     PRcurve = save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
     print("precision recall curve saved")
 
-    metrics = pd.DataFrame({'precision':precision, 'recall':recall, 'F1score':F1score})
-    metrics.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'metrics.csv')
+    metrics = pd.DataFrame({'precision':precision, 'recall':recall, 'F1score':F1score}, index=[0])
+    metrics.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'metrics.csv')
     print("metrics csv saved")
 
     # save list of predictions
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
-    results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
+    results.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'results.csv')
     print("results csv saved")
 
 def multiClassMetrics(cfg, dl_val, model, args, epoch):
@@ -246,17 +247,24 @@ def multiClassMetrics(cfg, dl_val, model, args, epoch):
     acc = accuracy_score(true_labels, predicted_labels)
     print("Accuracy of model is {:0.2f}".format(acc))
 
+    balanced_accuracy =  balanced_accuracy_score(true_labels, predicted_labels)
+    report = (classification_report(true_labels, predicted_labels, output_dict=True))
+    df = pd.DataFrame(report).transpose()
+    df.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'classification_report.csv')
+    print("classification report saved")
+
+
     # confusion matrix
     confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
     print("confusion matrix saved")
 
-    metrics = pd.DataFrame({'precision':precision, 'recall':recall, 'F1score':F1score})
-    metrics.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'metrics.csv')
+    metrics = pd.DataFrame({'accuracy':acc, 'balanced_acc':balanced_accuracy}, index=[0])
+    metrics.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'metrics.csv')
     print("metrics csv saved")
 
     # save list of predictions
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences0':confidences0, 'confidences1':confidences1, 'confidences2':confidences2})
-    results.to_csv(cfg['data_root'] + '/experiments/'+(exp_name)+'/figs/'+'results.csv')
+    results.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'results.csv')
     print("results csv saved")
 
 def main():
