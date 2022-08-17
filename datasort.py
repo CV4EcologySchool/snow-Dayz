@@ -239,7 +239,7 @@ def train_sort(path):
                     valfiles.append(name), valweathers.append(weather), valdate.append(date)
                     valtime.append(time), valsnowcover.append(snowcover), valtemperature.append(temperature), vallocation.append(location)
                     print(filename)
-                    shutil.copy2(filename, valDest+str('/')+name)
+                    shutil.move(filename, valDest+str('/')+name)
 
 train_sort(origin_folder)
 valLabels = pd.DataFrame({'File':valfiles, 'Weather':valweathers,'Date':valdate,'Time':valdate,'SnowCover':valsnowcover,'Temperature':valtemperature,'location':vallocation})

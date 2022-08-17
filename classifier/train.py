@@ -25,7 +25,7 @@ from dataset import CTDataset
 from model import CustomResNet50
 
 
-def create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
+def create_dataloader(cfg, folder = 'train', labels = 'trainLabels.csv'):
     ###### added labels and folder argument
     '''
         Loads a dataset according to the provided split and wraps it in a
@@ -34,8 +34,8 @@ def create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabel
     #labels = os.path.join(self.data_root, labels) ## if the full path above doesn't work
     #dataset_instance = CTDataset(cfg, split)        # create an object instance of our CTDataset class
 
-    dataset_instance = CTDataset(labels=labels, cfg=cfg, split=split, folder=folder)
-
+    dataset_instance = CTDataset(labels=labels, cfg=cfg, folder=folder)
+    
     dataLoader = DataLoader(
             dataset=dataset_instance,
             batch_size=cfg['batch_size'],
@@ -288,9 +288,9 @@ def main():
         cfg['device'] = 'cpu'
 
     # initialize data loaders for training and validation set
-    dl_train = create_dataloader(cfg, split='train', folder=args.train_folder, labels = 'trainLabels.csv')
+    dl_train = create_dataloader(cfg, folder=args.train_folder, labels = 'trainLabels.csv')
     print('dl_train',dl_train.__len__())
-    dl_test = create_dataloader(cfg, split='val', folder=args.val_folder, labels = 'valLabels.csv')
+    dl_test = create_dataloader(cfg, folder=args.val_folder, labels = 'valLabels.csv')
     print('dl_val',dl_test.__len__())
 
     # initialize model

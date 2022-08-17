@@ -47,13 +47,12 @@ class CTDataset(Dataset):
         'Other': 1
     }
 
-    def __init__(self, labels, cfg, split='train', folder='train'):
+    def __init__(self, labels, cfg, folder='train'):
         '''
             Constructor. Here, we collect and index the dataset inputs and
             labels.
         '''
         self.data_root = cfg['data_root']
-        self.split = split
         self.folder = folder
         self.sequenceType = cfg['sequenceType']
         self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
@@ -77,7 +76,10 @@ class CTDataset(Dataset):
 
         ## add a check to make sure it exists in the folder of interest
         list_of_images = glob.glob(os.path.join(self.data_root, self.folder,'/*')) ####UPDATED
+        print(os.path.join(self.data_root, self.folder,'/*'))
+        print(list_of_images)
         list_of_images = pd.Series(list_of_images)
+        print(list_of_images)
         list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
 
         if self.sequenceType == 'None':
