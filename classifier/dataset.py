@@ -88,7 +88,9 @@ class CTDataset(Dataset):
         print(list_of_images)
         if self.sequenceType == 'None':
             #######maybe instead walk through list_of_images
+            a = 0
             for file, weather in zip(meta['File'], meta['Weather']):
+                if a > 2: break
             #     #if random.uniform(0.0, 1.0) <= 0.99:
             #         #continue
             #         #(random.uniform(0.0, 1.0) <= 0.005) and
@@ -97,6 +99,7 @@ class CTDataset(Dataset):
                     imgFileName = file ## make sure there is the image file in the train folder
                     if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                     elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+                a+=1              
               #  else: continue
             #IPython.embed()
             #for file in list_of_images[5]:
