@@ -192,7 +192,7 @@ def save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch=
     
     PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, predicted_labels)
     PRcurve.plot()
-    plt.savefig(cfg['data_root'] + '/' + args.exp_dir + '/'+(args.exp_name)+'/figs/PRcurveTEST'+str(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    plt.savefig(cfg['data_root'] + '/' + args.exp_dir + '/'+(args.exp_name)+'/figs/PRcurveTEST'+str(epoch) +'.png', facecolor="white")
 
 def binaryMetrics(cfg, dl_val, model, args, epoch):
     print('generating binary predicted labels')
@@ -287,6 +287,7 @@ def main():
 
     # setup dataloader validation
     dl_val = create_dataloader(cfg, folder = 'test_resized', labels = 'testLabels.csv')
+
 ##create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
     # load model and predict from model
     #IPython.embed()
