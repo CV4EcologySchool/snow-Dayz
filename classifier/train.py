@@ -163,14 +163,14 @@ def train(cfg, dataLoader, model, optimizer):
 #### https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html
  
         ba = balanced_accuracy_score(labels.numpy(), pred_label.numpy())  ## check on whether sklearn can take numpy 
-        ba_total += ba.item() ### basically just running recall 
+        #ba_total += ba.item() ### basically just running recall 
         #IPython.embed()
 
         progressBar.set_description(
             '[Train] Loss: {:.2f}; OA: {:.2f}%; BA: {:.2f}%'.format(
                 loss_total/(idx+1),
                 100*oa_total/(idx+1),
-                100*ba_total/(idx+1),
+                #100*ba_total/(idx+1),
             )
         )
         progressBar.update(1)
