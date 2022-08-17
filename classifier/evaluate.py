@@ -52,7 +52,7 @@ def load_model(cfg, exp_dir, exp_name, epoch=None): ## what does epoch=None do i
     #exp_name
     model_states = glob(root+'/'+exp_dir+'/'+exp_name+'/model_states/*.pt')
     ##glob('/datadrive/vmData/weather/experiments/exp_resnet50_2classes_seqSliding/model_states/*')
-
+    IPython.embed()
     #print(model_states)
 
     ## if there is more than one model state, take the most recent one

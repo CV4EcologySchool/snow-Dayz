@@ -11,6 +11,10 @@
 
 python classifier/evaluate.py --exp_dir old_experiments_folder --exp_name exp_resnet50_2classes_None --config configs/exp_resnet50_2classes.yaml
 
+
+
+
+
 python classifier/evaluate.py --exp_name exp_resnet50_3classes_seq6hr --split train --config configs/exp_resnet50_3classes_seq6hr.yaml
 
 python classifier/evaluate.py --exp_name exp_resnet50_3classes_seq12hr --split train --config configs/exp_resnet50_3classes_seq12hr.yaml
