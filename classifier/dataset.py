@@ -83,7 +83,7 @@ class CTDataset(Dataset):
         list_of_images = pd.Series(list_of_images)
         #print(list_of_images)
         list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
-
+        print(list_of_images)
         if self.sequenceType == 'None':
             #######maybe instead walk through list_of_images
             #for file, weather in zip(meta['File'], meta['Weather']):
@@ -95,7 +95,7 @@ class CTDataset(Dataset):
                 #     if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                 #     elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
                 # else: continue
-            for file in list_of_images:
+            for idx, file in enumerate(list_of_images):
                 imgFileName = file
                 print(imgFileName)
                 fileIndex = meta[meta['File'] == file].index
