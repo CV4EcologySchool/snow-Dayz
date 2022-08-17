@@ -118,7 +118,7 @@ def predict(cfg, dataLoader, model):
     # true_labels = np.array(true_labels)
     # predicted_labels = np.array(predicted_labels)
     # confidences = np.array(confidences)
-
+        print(dataLoader.__len__())
         for idx in range(0, len(dataLoader.dataset.data)):
             data, label = dataLoader.dataset[idx]
             filename = dataLoader.dataset.data[idx][0]
@@ -133,7 +133,7 @@ def predict(cfg, dataLoader, model):
             #print(prediction.shape) ## it is going to be [batch size #num_classes]
             print(prediction)
             ## predictions
-            IPython.embed()
+            #IPython.embed()
             predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
             predicted_labels.extend(predict_label)
             #print(predict_label)
@@ -144,9 +144,6 @@ def predict(cfg, dataLoader, model):
                 confidence1 = confidence[:,1]
                 confidences1.extend(confidence1)
 
-                return filenames, true_labels, predicted_labels, confidences1
-
-
             if cfg['num_classes'] == 3:
                 confidence0 = confidence[:,0]
                 confidence1 = confidence[:,1]
@@ -155,8 +152,9 @@ def predict(cfg, dataLoader, model):
                 confidences0.extend(confidence0)
                 confidences1.extend(confidence1)
                 confidences2.extend(confidence2)
-                
-                return filenames, true_labels, predicted_labels, confidences0, confidences1, confidences2
+        
+        if cfg['num_classes'] == 2: return filenames, true_labels, predicted_labels, confidences1
+        else: return filenames, true_labels, predicted_labels, confidences0, confidences1, confidences2
    
 
     #print(predicted_labels)
