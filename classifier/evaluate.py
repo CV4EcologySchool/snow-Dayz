@@ -34,10 +34,6 @@ import IPython
 from sklearn.metrics import balanced_accuracy_score, classification_report
 
 
-## We need the cfg (model configuration), model 
-### could make this a class rather than a function
-### could make it a class of predictions ### 
-
 ## documentation for saving and loading models https://pytorch.org/tutorials/beginner/saving_loading_models.html
 
 def load_model(cfg, exp_dir, exp_name, epoch=None): ## what does epoch=None do in function? 
@@ -276,7 +272,7 @@ def main():
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
     args = parser.parse_args()
 
-    epoch = '128'
+    epoch = '1'
     # set model directory
     #exp_name = args.exp_name
 
@@ -292,7 +288,7 @@ def main():
     # load model and predict from model
     #IPython.embed()
     #IPython.embed()
-    model, epoch = load_model(cfg, args.exp_dir, args.exp_name, epoch=None)
+    model, epoch = load_model(cfg, args.exp_dir, args.exp_name, epoch=epoch)
 
     if cfg['num_classes'] == 2:
         print('calculating binary metrics')

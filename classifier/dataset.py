@@ -153,7 +153,7 @@ class CTDataset(Dataset):
 
             img_tensor = torch.cat([img_tensor1, img_tensor2,img_tensor3], dim = 0) ### 
 
-############################################################################# kadjfldsf
+############################################################################# 
 
         return img_tensor, label
 
