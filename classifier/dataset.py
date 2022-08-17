@@ -89,11 +89,10 @@ class CTDataset(Dataset):
                 #if random.uniform(0.0, 1.0) <= 0.99:
                     #continue
                     #(random.uniform(0.0, 1.0) <= 0.005) and
-                if file in list_of_images: #(sum(file == list_of_images) > 0): ## make sure there is the image file in the train folder
+                if (sum(file == list_of_images) > 0): ## make sure there is the image file in the train folder
                     imgFileName = file
-                    if cfg['num_classes'] == 2:
-                        self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-                    else: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+                    if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                    elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
         print(len(self.data))
 
 
