@@ -70,11 +70,11 @@ class CTDataset(Dataset):
 
 
         meta = pd.read_csv(self.annoPath)
-        print(meta.head())
+        #print(meta.head())
         meta = meta[meta['Weather'] != 'Fog'] ### could also drop 'other'
         meta = meta[meta['Weather'] != 'Other']
         meta = meta[meta['File'] != '2015_04_05_09_00_00.jpg']
-        meta = meta.drop_duplicates().reset_index() ## maybe I should keep the original indices??
+        meta = meta.drop_duplicates(subset=['File']).reset_index() ## maybe I should keep the original indices??
 
         ## add a check to make sure it exists in the folder of interest
         list_of_images = glob.glob(os.path.join(self.data_root, self.folder)+'/*') ####UPDATED
@@ -86,15 +86,22 @@ class CTDataset(Dataset):
 
         if self.sequenceType == 'None':
             #######maybe instead walk through list_of_images
-            for file, weather in zip(meta['File'], meta['Weather']):
+            #for file, weather in zip(meta['File'], meta['Weather']):
                 #if random.uniform(0.0, 1.0) <= 0.99:
                     #continue
                     #(random.uniform(0.0, 1.0) <= 0.005) and
-                if (sum(file == list_of_images) > 0): 
-                    imgFileName = file ## make sure there is the image file in the train folder
-                    if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-                    elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
-                else: pass
+                # if (sum(file == list_of_images) > 0): 
+                #     imgFileName = file ## make sure there is the image file in the train folder
+                #     if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                #     elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+                # else: continue
+            for file in list_of_images:
+                imgFileName = file
+                fileIndex = meta[[meta] == file].index
+                weather =  (meta['Weather'][fileIndex].values.tolist())[0]
+                if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]])
+              
         print(len(self.data))
 
 
