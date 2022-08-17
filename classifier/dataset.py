@@ -68,7 +68,9 @@ class CTDataset(Dataset):
         self.annoPath = os.path.join(
             self.data_root, labels) ############# should i set this as an input?? 
 
+        IPython.embed()
         meta = pd.read_csv(self.annoPath)
+        print(meta.head())
         meta = meta[meta['Weather'] != 'Fog'] ### could also drop 'other'
         meta = meta[meta['Weather'] != 'Other']
         meta = meta[meta['File'] != '2015_04_05_09_00_00.jpg']
