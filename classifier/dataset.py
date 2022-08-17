@@ -97,8 +97,11 @@ class CTDataset(Dataset):
                 # else: continue
             for file in list_of_images:
                 imgFileName = file
-                fileIndex = meta[[meta] == file].index
+                print(imgFileName)
+                fileIndex = meta[meta['File']] == file].index
+                print(fileIndex)
                 weather =  (meta['Weather'][fileIndex].values.tolist())[0]
+                print(weather)
                 if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                 elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]])
               
