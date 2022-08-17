@@ -11,3 +11,13 @@ python classifier/evaluate.py --exp_name exp_resnet50_3classes_seq12hr --split t
 python classifier/evaluate.py --exp_name exp_resnet50_3classes_seq24hr --split train --config configs/exp_resnet50_3classes_seq24hr.yaml
 
 python classifier/evaluate.py --exp_name exp_resnet50_3classes_seqSliding --split train --config configs/exp_resnet50_3classes_seqSliding.yaml
+
+######################
+
+##### run eval on OLD experiments
+
+
+
+rsync
+
+python classifier/evaluate.py --exp_name exp_resnet50_3classes_seqSliding --split test_resized --config configs/exp_resnet50_3classes_seqSliding.yaml

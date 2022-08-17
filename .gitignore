@@ -21,5 +21,6 @@ datadrive/vmData/weather/experiments/exp_resnet50_2classes_seq12hr/runs
 datadrive/vmData/weather/experiments/exp_resnet50_2classes_seq24hr/runs
 datadrive/vmData/weather/experiments/exp_resnet50_2classes_seqSliding/runs
 
+Lectures/ServingHostingDeployingModels.txt
 
 

@@ -40,7 +40,7 @@ from sklearn.metrics import balanced_accuracy_score, classification_report
 
 ## documentation for saving and loading models https://pytorch.org/tutorials/beginner/saving_loading_models.html
 
-def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in function? 
+def load_model(cfg, exp_dir, exp_name, epoch=None): ## what does epoch=None do in function? 
     '''
         Creates a model instance and loads the latest model state weights.
     '''
@@ -50,7 +50,7 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
     root = cfg['data_root']
     # load all model states
     #exp_name
-    model_states = glob(root+'/experiments/'+exp_name+'/model_states/*.pt')
+    model_states = glob(root+'/'+exp_dir+'/'+exp_name+'/model_states/*.pt')
     ##glob('/datadrive/vmData/weather/experiments/exp_resnet50_2classes_seqSliding/model_states/*')
 
     #print(model_states)
@@ -59,7 +59,7 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
     if len(model_states) > 0:
         # at least one save state found; get latest
 
-        model_epochs = [int(m.replace((root)+'/experiments/'+ (exp_name)+'/model_states/','').replace('.pt','')) for m in model_states]
+        model_epochs = [int(m.replace((root)+'/'+exp_dir+'/'+ (exp_name)+'/model_states/','').replace('.pt','')) for m in model_states]
         ##### if statement that if you set the epoch in your function to evaluate from there
         ##### otherwise start at the most recent epoch
         if epoch:
@@ -69,7 +69,7 @@ def load_model(cfg, exp_name, epoch=None): ## what does epoch=None do in functio
         
         # load state dict and apply weights to model
         print(f'Evaluating from epoch {eval_epoch}')
-        state = torch.load(open(f'{root}/experiments/{exp_name}/model_states/{eval_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
+        state = torch.load(open(f'{root}/{exp_dir}/{exp_name}/model_states/{eval_epoch}.pt', 'rb'), map_location='cpu')  ### what is this doing? 
         model_instance.load_state_dict(state['model'])
         model_instance.eval()
         ### how do I get to a model?? 
@@ -167,7 +167,7 @@ def predict(cfg, dataLoader, model):
 def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128', split='train'):
     # make figures folder if not there
 
-    matrix_path = cfg['data_root']+'/experiments/'+(args.exp_name)+'/figs'
+    matrix_path = cfg['data_root']+'/' + args.exp_dir +'/'+(args.exp_name)+'/figs'
     #### make the path if it doesn't exist
     if not os.path.exists(matrix_path):  
         os.makedirs(matrix_path, exist_ok=True)
@@ -176,7 +176,7 @@ def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128',
     disp = ConfusionMatrixDisplay(confmatrix)
     #confmatrix.save(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+'_'+ str(split) +'.png', facecolor="white")
     disp.plot()
-    plt.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+'_'+ str(epoch) +'.png', facecolor="white")
+    plt.savefig(cfg['data_root'] + '/' + (args.exp_dir) + '/'+(args.exp_name)+'/figs/confusion_matrix_epoch'+'_TEST'+ str(epoch) +'.png', facecolor="white")
        ## took out epoch)
     return confmatrix
 
@@ -187,12 +187,12 @@ def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128',
 
 def save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch='128', split='train'):
         #### make the path if it doesn't exist
-    if not os.path.exists('experiments/'+(args.exp_name)+'/figs'):
-        os.makedirs('experiments/'+(args.exp_name)+'/figs', exist_ok=True)
+    if not os.path.exists((args.exp_dir) +'/'+(args.exp_name)+'/figs'):
+        os.makedirs(args.exp_dir + '/'+(args.exp_name)+'/figs', exist_ok=True)
     
     PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, predicted_labels)
     PRcurve.plot()
-    plt.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/PRcurve'+str(epoch)+'_'+ str(split) +'.png', facecolor="white")
+    plt.savefig(cfg['data_root'] + '/' + args.exp_dir + '/'+(args.exp_name)+'/figs/PRcurveTEST'+str(epoch)+'_'+ str(split) +'.png', facecolor="white")
 
 def binaryMetrics(cfg, dl_val, model, args, epoch):
     print('generating binary predicted labels')
@@ -229,12 +229,12 @@ def binaryMetrics(cfg, dl_val, model, args, epoch):
     print("precision recall curve saved")
 
     metrics = pd.DataFrame({'precision':precision, 'recall':recall, 'F1score':F1score}, index=[0])
-    metrics.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'metrics.csv')
+    metrics.to_csv(cfg['data_root'] + '/'+ args.exp_dir +'/'+(args.exp_name)+'/figs/'+'metricsTEST.csv')
     print("metrics csv saved")
 
     # save list of predictions
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences':confidences})
-    results.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'results.csv')
+    results.to_csv(cfg['data_root'] + '/' + args.exp_dir +'/'+(args.exp_name)+'/figs/'+'resultsTEST.csv')
     print("results csv saved")
 
 def multiClassMetrics(cfg, dl_val, model, args, epoch):
@@ -250,7 +250,7 @@ def multiClassMetrics(cfg, dl_val, model, args, epoch):
     balanced_accuracy =  balanced_accuracy_score(true_labels, predicted_labels)
     report = (classification_report(true_labels, predicted_labels, output_dict=True))
     df = pd.DataFrame(report).transpose()
-    df.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'classification_report.csv')
+    df.to_csv(cfg['data_root'] + '/' + args.exp_dir +'/'+(args.exp_name)+'/figs/'+'classification_reportTEST.csv')
     print("classification report saved")
 
 
@@ -259,18 +259,19 @@ def multiClassMetrics(cfg, dl_val, model, args, epoch):
     print("confusion matrix saved")
 
     metrics = pd.DataFrame({'accuracy':acc, 'balanced_acc':balanced_accuracy}, index=[0])
-    metrics.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'metrics.csv')
+    metrics.to_csv(cfg['data_root'] + '/' + args.exp_dir +'/'+(args.exp_name)+'/figs/'+'metricsTEST.csv')
     print("metrics csv saved")
 
     # save list of predictions
     results = pd.DataFrame({'filenames':filenames, 'trueLabels':true_labels, 'predictedLabels':predicted_labels, 'confidences0':confidences0, 'confidences1':confidences1, 'confidences2':confidences2})
-    results.to_csv(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/'+'results.csv')
+    results.to_csv(cfg['data_root'] + '/' + args.exp_dir +'/'+(args.exp_name)+'/figs/'+'resultsTEST.csv')
     print("results csv saved")
 
 def main():
     # Argument parser for command-line arguments:
     # python code/train.py --output model_runs
     parser = argparse.ArgumentParser(description='Train deep learning model.')
+    parser.add_argument('--exp_dir', required=True, help='Path to experiment directory', default = "experiment_dir")
     parser.add_argument('--exp_name', required=True, help='Path to experiment folder', default = "experiment_name")
     parser.add_argument('--split', help='Data split', default ='train')
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
@@ -278,19 +279,19 @@ def main():
 
     epoch = '128'
     # set model directory
-    exp_name = args.exp_name
+    #exp_name = args.exp_name
 
     # reload config, that has to be set in the path
     print(f'Using config "{args.config}"')
     cfg = yaml.safe_load(open(args.config, 'r'))
 
     # setup dataloader validation
-    dl_val = create_dataloader(cfg, split='train', folder = 'train_resized', labels = 'trainLabels.csv')
+    dl_val = create_dataloader(cfg, split=args.split, folder = 'test_resized', labels = 'testLabels.csv')
 ##create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
     # load model and predict from model
     #IPython.embed()
     #IPython.embed()
-    model, epoch = load_model(cfg, exp_name, epoch=None)
+    model, epoch = load_model(cfg, args.exp_dir, args.exp_name, epoch=None)
 
     if cfg['num_classes'] == 2:
         print('calculating binary metrics')

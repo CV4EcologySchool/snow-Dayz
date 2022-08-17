@@ -6,15 +6,18 @@ import os
 import tqdm
 import pandas as pd
 
-files = glob.glob('/datadrive/vmData/weather/train/*')
-newPath = '/datadrive/vmData/weather/train_resized/'
+#files = glob.glob('/datadrive/vmData/weather/train/*')
+#newPath = '/datadrive/vmData/weather/train_resized/'
+
+files = glob.glob('/datadrive/vmData/weather/test/*')
+newPath = '/datadrive/vmData/weather/test_resized/'
  
 
 
 #if not os.path.exists(newPath):
 #    os.makedirs(newPath)
 
-files = glob.glob('/Volumes/CatBreen/CV4ecology/scandcam/Snow/*')
+#files = glob.glob('/Volumes/CatBreen/CV4ecology/scandcam/Snow/*')
 
 for file in tqdm.tqdm(files): 
     try:
@@ -27,8 +30,8 @@ for file in tqdm.tqdm(files):
             im = Image.open(str(file))
             newsize = (500, 500)
             im1 = im.resize(newsize)
-            im1.show()
+            #im1.show()
             # Shows the image in image viewer
-            #im1 = im1.save(new_filename)
+            im1 = im1.save(new_filename)
     except Exception: 
         pass
