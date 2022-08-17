@@ -164,7 +164,8 @@ def train(cfg, dataLoader, model, optimizer):
  
         ba = balanced_accuracy_score(labels.numpy(), pred_label.numpy())  ## check on whether sklearn can take numpy 
         ba_total += ba.item() ### basically just running recall 
-        IPython.embed()
+        #IPython.embed()
+
         progressBar.set_description(
             '[Train] Loss: {:.2f}; OA: {:.2f}%; BA: {:.2f}%'.format(
                 loss_total/(idx+1),
@@ -296,7 +297,7 @@ def main():
     # set up model optimizer
     optim = setup_optimizer(cfg, model)
 
-    writer = SummaryWriter(log_dir=os.path.join(save_path, 'runs'))
+    writer = SummaryWriter(comment = args.exp_name) #log_dir=os.path.join(save_path, 'runs'))
 
     previousLoss = np.inf
 
