@@ -1,8 +1,0 @@
-
-August 11 2022
-python classifier/train.py --config configs/exp_resnet50_2classes.yaml --exp_dir experiments --exp_name exp_resnet50_2clss_btcsz128_n15000
-### we commented out the random subsample of dtata so that this is the baseline model of looking for weather or no weather (2 classes)
-### batch size is 128
-
-
-

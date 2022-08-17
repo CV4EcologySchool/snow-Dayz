@@ -117,13 +117,17 @@ class CTDataset(Dataset):
             #         imgFileName = file
                 fileIndex = meta[meta['File'] == file].index
                 if len(fileIndex != 0):
+                        IPython.embed()
+                        meta_merged = list_of_images.merge(meta, left_on = 5, right_on = 'File')
                         imgFileName = file 
-                        before, file, after = sequenceGenerator(meta, file, sequenceType = self.sequenceType)
+                        before, file, after = sequenceGenerator(meta_merged, file, sequenceType = self.sequenceType)
                         weather =  (meta['Weather'][fileIndex].values.tolist())[0]
                         if cfg['num_classes'] == 2:
                             imgFileName = file
                             self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
                         else: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES[weather]]) ## why label index and not label?
+
+###### error is because there are probs some image that it wants from the meta file sort but is not there because it is not in the actual folder
 
     def __len__(self):
         '''
