@@ -194,7 +194,7 @@ def save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch=
     plt.savefig(cfg['data_root'] + '/experiments/'+(args.exp_name)+'/figs/PRcurve'+str(epoch)+'_'+ str(split) +'.png', facecolor="white")
 
 def binaryMetrics(cfg, dl_val, model):
-    print('generating predicted labels')
+    print('generating binary predicted labels')
     filenames, true_labels, predicted_labels, confidences = predict(cfg, dl_val, model)   
     print('done generating predicted labels')
         
@@ -237,7 +237,7 @@ def binaryMetrics(cfg, dl_val, model):
     print("results csv saved")
 
 def multiClassMetrics(cfg, dl_val, model):
-    print('generating predicted labels')
+    print('generating multi-class predicted labels')
     filenames, true_labels, predicted_labels, confidences0, confidences1, confidences2 = predict(cfg, dl_val, model)   
     print('done generating predicted labels')
     
