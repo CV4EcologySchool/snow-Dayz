@@ -6,6 +6,8 @@ import os
 import tqdm
 import pandas as pd
 
+#ImageFile.LOAD_TRUNCATED_IMAGES = True
+
 #files = glob.glob('/datadrive/vmData/weather/train/*')
 #newPath = '/datadrive/vmData/weather/train_resized/'
 
@@ -20,11 +22,12 @@ newPath = '/datadrive/vmData/weather/test_resized/'
 #files = glob.glob('/Volumes/CatBreen/CV4ecology/scandcam/Snow/*')
 
 for file in tqdm.tqdm(files): 
+    #print(file.split('/')[-1])
     try:
-        test = file[32:len(file)] #.spilt('/') ### last item
-        # print(test)
-    # Opens a image in RGB mode
-        filename = test
+        #test = file[32:len(file)] #.spilt('/') ### last item file.split('/')
+            # print(test)
+        # Opens a image in RGB mode
+        filename = file.split('/')[-1]
         new_filename = newPath + filename
         if not os.path.exists(new_filename):
             im = Image.open(str(file))
@@ -33,5 +36,7 @@ for file in tqdm.tqdm(files):
             #im1.show()
             # Shows the image in image viewer
             im1 = im1.save(new_filename)
-    except Exception: 
+    except Exception as e:
+        print(f"{e} {file}")
         pass
+        
