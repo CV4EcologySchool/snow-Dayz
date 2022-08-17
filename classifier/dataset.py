@@ -82,7 +82,7 @@ class CTDataset(Dataset):
         #print(list_of_images)
         list_of_images = pd.Series(list_of_images)
         #print(list_of_images)
-        list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5], header=None)
+        list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
         print(list_of_images)
         if self.sequenceType == 'None':
             #######maybe instead walk through list_of_images
@@ -96,6 +96,7 @@ class CTDataset(Dataset):
                 #     elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
                 # else: continue
             for idx, file in enumerate(list_of_images):
+                if file == 5: continue
                 imgFileName = file
                 print(imgFileName)
                 fileIndex = meta[meta['File'] == file].index
