@@ -96,17 +96,16 @@ class CTDataset(Dataset):
                 #     elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
                 # else: continue
             for idx, file in enumerate(list_of_images):
-                print(file)
-                if file != 5: continue
-                print(file)
-                imgFileName = file
-                print(imgFileName)
-                fileIndex = meta[meta['File'] == file].index
-                print(fileIndex)
-                weather =  (meta['Weather'][fileIndex].values.tolist())[0]
-                print(weather)
-                if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-                elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]])
+                if file != 5: 
+                    print(file)
+                    imgFileName = file
+                    print(imgFileName)
+                    fileIndex = meta[meta['File'] == file].index
+                    print(fileIndex)
+                    weather =  (meta['Weather'][fileIndex].values.tolist())[0]
+                    print(weather)
+                    if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                    elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]])
               
         print(len(self.data))
 
