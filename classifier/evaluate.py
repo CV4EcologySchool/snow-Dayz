@@ -32,7 +32,7 @@ import pandas as pd
 import random
 import IPython
 from sklearn.metrics import balanced_accuracy_score, classification_report
-
+import tqdm
 
 ## documentation for saving and loading models https://pytorch.org/tutorials/beginner/saving_loading_models.html
 
@@ -272,7 +272,7 @@ def main():
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
     args = parser.parse_args()
 
-    epoch = '1'
+    #epoch = '1'
     # set model directory
     #exp_name = args.exp_name
 
