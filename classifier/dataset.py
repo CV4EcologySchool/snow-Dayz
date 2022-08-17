@@ -78,8 +78,8 @@ class CTDataset(Dataset):
 
         ## add a check to make sure it exists in the folder of interest
         list_of_images = glob.glob(os.path.join(self.data_root, self.folder)+'/*') ####UPDATED
-        #print(os.path.join(self.data_root, self.folder)+'/*')
-        #print(list_of_images)
+        print(os.path.join(self.data_root, self.folder)+'/*')
+        print(len(list_of_images))
         list_of_images = pd.Series(list_of_images)
         #print(list_of_images)
         list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
