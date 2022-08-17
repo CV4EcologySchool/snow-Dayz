@@ -76,10 +76,10 @@ class CTDataset(Dataset):
 
         ## add a check to make sure it exists in the folder of interest
         list_of_images = glob.glob(os.path.join(self.data_root, self.folder)+'/*') ####UPDATED
-        print(os.path.join(self.data_root, self.folder)+'/*')
-        print(list_of_images)
+        #print(os.path.join(self.data_root, self.folder)+'/*')
+        #print(list_of_images)
         list_of_images = pd.Series(list_of_images)
-        print(list_of_images)
+        #print(list_of_images)
         list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
 
         if self.sequenceType == 'None':
@@ -87,11 +87,13 @@ class CTDataset(Dataset):
                 #if random.uniform(0.0, 1.0) <= 0.99:
                     #continue
                     #(random.uniform(0.0, 1.0) <= 0.005) and
-                if (sum(list_of_images == file) > 0): ## make sure there is the file in the train folder
+                if file in list_of_images: #(sum(file == list_of_images) > 0): ## make sure there is the image file in the train folder
                     imgFileName = file
                     if cfg['num_classes'] == 2:
                         self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                     else: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+        print(len(self.data))
+
 
 ######################### sequences #################
         if self.sequenceType != 'None':
