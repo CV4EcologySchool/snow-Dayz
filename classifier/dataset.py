@@ -76,7 +76,7 @@ class CTDataset(Dataset):
         meta = meta.drop_duplicates().reset_index() ## maybe I should keep the original indices??
 
         ## add a check to make sure it exists in the folder of interest
-        list_of_images = glob.glob(os.path.join(self.data_root,'train_resized/*')) ####UPDATED
+        list_of_images = glob.glob(os.path.join(self.data_root, self.folder,'/*')) ####UPDATED
         list_of_images = pd.Series(list_of_images)
         list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[5])
 

@@ -289,7 +289,9 @@ def main():
 
     # initialize data loaders for training and validation set
     dl_train = create_dataloader(cfg, split='train', folder=args.train_folder, labels = 'trainLabels.csv')
+    print('dl_train',dl_train.__len__())
     dl_test = create_dataloader(cfg, split='val', folder=args.val_folder, labels = 'valLabels.csv')
+    print('dl_val',dl_test.__len__())
 
     # initialize model
     model, current_epoch = load_model(cfg)
