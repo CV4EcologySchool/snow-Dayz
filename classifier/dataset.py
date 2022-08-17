@@ -98,7 +98,7 @@ class CTDataset(Dataset):
             for file in list_of_images:
                 imgFileName = file
                 print(imgFileName)
-                fileIndex = meta[meta['File']] == file].index
+                fileIndex = meta[meta['File'] == file].index
                 print(fileIndex)
                 weather =  (meta['Weather'][fileIndex].values.tolist())[0]
                 print(weather)
