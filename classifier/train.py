@@ -16,6 +16,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.optim import SGD
 from torch.utils.tensorboard import SummaryWriter 
+from sklearn.metrics import balanced_accuracy_score
 
 # show model progress on tensorboard
 
@@ -119,6 +120,7 @@ def train(cfg, dataLoader, model, optimizer):
 
     # running averages
     loss_total, oa_total = 0.0, 0.0                         # for now, we just log the loss and overall accuracy (OA)
+    ba_total = 0.0
 
     # iterate over dataLoader
     progressBar = trange(len(dataLoader))
@@ -152,10 +154,22 @@ def train(cfg, dataLoader, model, optimizer):
         oa = torch.mean((pred_label == labels).float()) # OA: number of correct predictions divided by batch size (i.e., average/mean)
         oa_total += oa.item()
 
+        #labels0 = sum(labels[[labels] == 0])/len(labels) 
+        #labels1 = sum(labels[[labels] == 1])/len(labels) 
+        #labels2 = sum(labels[[labels] == 2])/len(labels)     
+
+        # labels[labels]
+        #     oa*(1/3)
+#### https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html
+ 
+        ba = balanced_accuracy_score(labels.numpy(), pred_label.numpy())  ## check on whether sklearn can take numpy 
+        ba_total += ba.item() ### basically just running recall 
+        IPython.embed()
         progressBar.set_description(
-            '[Train] Loss: {:.2f}; OA: {:.2f}%'.format(
+            '[Train] Loss: {:.2f}; OA: {:.2f}%; BA: {:.2f}%'.format(
                 loss_total/(idx+1),
-                100*oa_total/(idx+1)
+                100*oa_total/(idx+1),
+                100*ba_total/(idx+1),
             )
         )
         progressBar.update(1)
@@ -164,6 +178,7 @@ def train(cfg, dataLoader, model, optimizer):
     progressBar.close()
     loss_total /= len(dataLoader)           # shorthand notation for: loss_total = loss_total / len(dataLoader)
     oa_total /= len(dataLoader)
+    ba_total /= len(dataLoader)
 
     return loss_total, oa_total
 
@@ -290,6 +305,8 @@ def main():
 
     #lossEpoch = []
     #bestLoss = max(int(lossEpoch))
+    best_loss_val = np.inf
+    best_loss_val_epoch = 0 # index of the epoch
 
     while current_epoch < numEpochs:
         current_epoch += 1
@@ -310,6 +327,14 @@ def main():
             'oa_train': oa_train,
             'oa_val': oa_val
         }
+                                                    
+#################### early stopping #################
+#### like Suzanne's code but looks for a plateau (over 10 epochs rather just not going down by a lot)
+        if loss_val < best_loss_val:
+                best_loss_val = loss_val
+                best_loss_val_epoch = current_epoch
+        elif current_epoch > best_loss_val_epoch + 10:
+                break
        # delta = previousLoss - loss_val
        # if delta < 1e-3:
        #     break
@@ -318,8 +343,7 @@ def main():
         save_model(cfg, current_epoch, model, stats, args)
     
 
-    # That's all, folks!
-        
+
 
 
 if __name__ == '__main__':

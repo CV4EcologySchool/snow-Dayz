@@ -13,3 +13,13 @@ Lectures/BjornLecture.txt
 Lectures/TarunLecture.txt
 Lectures/DataAblationEli.txt
 Lectures/EfficientModelsSpeedvAccuracy.txt
+
+
+datadrive/vmData/weather/experiments/exp_resnet50_2classes_None/runs
+datadrive/vmData/weather/experiments/exp_resnet50_2classes_seq6hr/runs
+datadrive/vmData/weather/experiments/exp_resnet50_2classes_seq12hr/runs
+datadrive/vmData/weather/experiments/exp_resnet50_2classes_seq24hr/runs
+datadrive/vmData/weather/experiments/exp_resnet50_2classes_seqSliding/runs
+
+
+
