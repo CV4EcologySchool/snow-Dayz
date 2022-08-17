@@ -162,7 +162,7 @@ def train(cfg, dataLoader, model, optimizer):
         #     oa*(1/3)
 #### https://scikit-learn.org/stable/modules/generated/sklearn.metrics.balanced_accuracy_score.html
  
-        ba = balanced_accuracy_score(labels.numpy(), pred_label.numpy())  ## check on whether sklearn can take numpy 
+        #ba = balanced_accuracy_score(labels.numpy(), pred_label.numpy())  ## check on whether sklearn can take numpy 
         #ba_total += ba.item() ### basically just running recall 
         #IPython.embed()
 
