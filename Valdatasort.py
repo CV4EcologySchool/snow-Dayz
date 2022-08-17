@@ -12,7 +12,7 @@ def main():
     TestDate2 = pd.Timestamp('2019-04-01 00:00:00')
 
     origin_folder = ('/datadrive/vmData/weather/train_resized/*')
-    valDest = ('/datadrive/vmData/weather/val_resized/')
+    valDest = ('/datadrive/vmData/weather/val_resized')
     labels = pd.read_csv('/datadrive/vmData/weather/trainLabels.csv')
     labels = labels[['File', 'Weather','Date','Time','SnowCover','Temperature','location']]
 
