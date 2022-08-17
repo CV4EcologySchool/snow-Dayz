@@ -131,8 +131,9 @@ def predict(cfg, dataLoader, model):
             prediction = model(data1) ## the full probabilty
             #predictions.append(prediction)
             #print(prediction.shape) ## it is going to be [batch size #num_classes]
-            
+            print(prediction)
             ## predictions
+            IPython.embed()
             predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
             predicted_labels.extend(predict_label)
             #print(predict_label)
@@ -287,6 +288,7 @@ def main():
 
     # setup dataloader validation
     dl_val = create_dataloader(cfg, folder = 'test_resized', labels = 'testLabels.csv')
+    print(dl_val.__len__())
 
 ##create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
     # load model and predict from model
