@@ -59,18 +59,15 @@ class CTDataset(Dataset):
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
             ToTensor()                          # ...and convert them to torch.Tensor.
         ])
-        #self.drop = cfg['drop']
         
         # index data into list
         self.data = []
 
         # load annotation file
         self.annoPath = os.path.join(
-            self.data_root, labels) ############# should i set this as an input?? 
-
+            self.data_root, labels) 
 
         meta = pd.read_csv(self.annoPath)
-        #print(meta.head())
         meta = meta[meta['Weather'] != 'Fog'] ### could also drop 'other'
         meta = meta[meta['Weather'] != 'Other']
         meta = meta[meta['File'] != '2015_04_05_09_00_00.jpg']
@@ -78,60 +75,29 @@ class CTDataset(Dataset):
 
         ## add a check to make sure it exists in the folder of interest
         list_of_images = glob.glob(os.path.join(self.data_root, self.folder)+'/*') ####UPDATED
-        #print(os.path.join(self.data_root, self.folder)+'/*')
-        #print(len(list_of_images))
-        # list_of_images = pd.Series(list_of_images)
-        # print(list_of_images)
-        # list_of_images = pd.DataFrame(list_of_images.str.split('/', expand=True)[-1])
-        # print(list_of_images)
         list_of_images = [file.split('/')[-1] for file in list_of_images]
-        #print(list_of_images)
+        
         if self.sequenceType == 'None':
             #######maybe instead walk through list_of_images
-            #a = 0
             for file, weather in zip(meta['File'], meta['Weather']):
-               # if a > 2: break
             #     #if random.uniform(0.0, 1.0) <= 0.99:
             #         #continue
             #         #(random.uniform(0.0, 1.0) <= 0.005) and
-               # IPython.embed()
                 if file in list_of_images: 
                     imgFileName = file ## make sure there is the image file in the train folder
                     if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
                     elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
-               # a+=1              
-              #  else: continue
-            #IPython.embed()
-            #for file in list_of_images[5]:
-                #print(file)
-            #     imgFileName = file
-            #     fileIndex = meta[meta['File'] == file].index
-            #     if len(fileIndex != 0):
-            #         weather =  (meta['Weather'][fileIndex].values.tolist())[0]
-            #         #print(weather)
-            #         if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-            #         elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]])
 
 ######################### sequences #################
         if self.sequenceType != 'None':
-            for file in list_of_images[5]:
-            # for file, weather in zip(meta['File'], meta['Weather']):
+            for file, weather in zip(meta['File'], meta['Weather']):
             #     ## (random.uniform(0.0, 1.0) <= 0.001) and 
             #     if sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
-            #         imgFileName = file
-                fileIndex = meta[meta['File'] == file].index
-                if len(fileIndex != 0):
-                        #IPython.embed()
-                        meta_merged = list_of_images.merge(meta, left_on = 5, right_on = 'File')
+                if file in list_of_images: 
                         imgFileName = file 
-                        before, file, after = sequenceGenerator(meta_merged, file, sequenceType = self.sequenceType)
-                        weather =  (meta['Weather'][fileIndex].values.tolist())[0]
-                        if cfg['num_classes'] == 2:
-                            imgFileName = file
-                            self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
+                        before, file, after = sequenceGenerator(meta, file, sequenceType = self.sequenceType)
+                        if cfg['num_classes'] == 2: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
                         else: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES[weather]]) ## why label index and not label?
-
-###### error is because there are probs some image that it wants from the meta file sort but is not there because it is not in the actual folder
 
     def __len__(self):
         '''
@@ -172,16 +138,12 @@ class CTDataset(Dataset):
             before, image_name, after = image_name
 
             image_path1 = os.path.join(self.data_root, self.folder, before) ## should specify train folder and get image name 
-            #print(image_path1)
-            #print(self.data_root)
-            #print(self.folder)
             image_path2 = os.path.join(self.data_root, self.folder, image_name)
             image_path3 = os.path.join(self.data_root, self.folder, after) ####
 
             img1 = Image.open(image_path1).convert('L')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
             img2 = Image.open(image_path2).convert('L')
             img3 = Image.open(image_path3).convert('L')
-            #(print(img3.size))
             #except: pass
 
             # transform: see lines 31ff above where we define our transformations
