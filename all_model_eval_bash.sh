@@ -13,19 +13,16 @@
 
 #python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_3classes_seq6hr --config configs/exp_resnet50_3classes_seq6hr.yaml
 
-python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_3classes_seq12hr --config configs/exp_resnet50_3classes_seq12hr.yaml
+#python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_3classes_seq12hr --config configs/exp_resnet50_3classes_seq12hr.yaml
 
 python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_3classes_seq24hr --config configs/exp_resnet50_3classes_seq24hr.yaml
 
 python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_3classes_seqSliding --config configs/exp_resnet50_3classes_seqSliding.yaml
 
-python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_2classes_seq6hr --config configs/exp_resnet50_2classes_seq6hr.yaml
-
 python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_2classes_seq12hr --config configs/exp_resnet50_2classes_seq12hr.yaml
 
 python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_2classes_seq24hr --config configs/exp_resnet50_2classes_seq24hr.yaml
 
-python classifier/evaluate.py --exp_dir old_experiments --exp_name exp_resnet50_2classes_seq6hr --config configs/exp_resnet50_2classes_seq6hr.yaml
 
 ######################
 

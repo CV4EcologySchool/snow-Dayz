@@ -248,7 +248,6 @@ def multiClassMetrics(cfg, dl_val, model, args, epoch):
     df.to_csv(cfg['data_root'] + '/' + args.exp_dir +'/'+(args.exp_name)+'/figs/'+'classification_reportTEST.csv')
     print("classification report saved")
 
-
     # confusion matrix
     confmatrix = save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
     print("confusion matrix saved")
