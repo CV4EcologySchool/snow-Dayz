@@ -180,14 +180,14 @@ def save_confusion_matrix(true_labels, predicted_labels, cfg, args, epoch='128',
 
     # make a csv of accuracy metrics 
 
-def save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch='128', split='train'):
+def save_precision_recall_curve(true_labels, confidences, cfg, args, epoch='128', split='train'):
         #### make the path if it doesn't exist
     if not os.path.exists((args.exp_dir) +'/'+(args.exp_name)+'/figs'):
         os.makedirs(args.exp_dir + '/'+(args.exp_name)+'/figs', exist_ok=True)
     
-    PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, predicted_labels)
+    PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, confidences)
     PRcurve.plot()
-    plt.savefig(cfg['data_root'] + '/' + args.exp_dir + '/'+(args.exp_name)+'/figs/PRcurveTEST'+str(epoch) +'.png', facecolor="white")
+    plt.savefig(cfg['data_root'] + '/' + args.exp_dir + '/'+(args.exp_name)+'/figs/PRcurveTESTconfidences'+str(epoch) +'.png', facecolor="white")
 
 def binaryMetrics(cfg, dl_val, model, args, epoch):
     print('generating binary predicted labels')
@@ -206,7 +206,7 @@ def binaryMetrics(cfg, dl_val, model, args, epoch):
     ######################### put this all in a function ##############
     # get precision score
     ### this is just a way to get two decimal places 
-    precision = precision_score(true_labels, predicted_labels)
+    precision = precision_score(true_labels, confidences)
     print("Precision of model is {:0.2f}".format(precision))
 
     # get recall score
