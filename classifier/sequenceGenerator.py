@@ -16,6 +16,7 @@ which is also the image of interest.
 
 import pandas as pd
 import numpy as np
+import IPython
 
 def sequenceGenerator(meta, file, sequenceType):
     
@@ -77,6 +78,7 @@ def sequenceGenerator(meta, file, sequenceType):
 
 
     if sequenceType == 'sliding':
+        IPython.embed()
         #print(file)
         cameraIDsubset['Date'] = pd.to_datetime(cameraIDsubset['Date']) 
         cameraIDsubset = cameraIDsubset.sort_values(by='Date',ascending=True)
