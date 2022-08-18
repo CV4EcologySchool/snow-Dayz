@@ -95,11 +95,11 @@ class CTDataset(Dataset):
             #     if sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
                 #meta_merged = 
                 list_of_imagesDF = pd.DataFrame(list_of_images)
-                IPython.embed()
-                meta_merged = list_of_imagesDF.merge(meta, lright_on='File')
+                #IPython.embed()
+                meta_merged = list_of_imagesDF.merge(meta, how='inner', left_on = 0, right_on='File')
                 if file in list_of_images: 
                         imgFileName = file 
-                        before, file, after = sequenceGenerator(meta, file, sequenceType = self.sequenceType)
+                        before, file, after = sequenceGenerator(meta_merged, file, sequenceType = self.sequenceType)
                         if cfg['num_classes'] == 2: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES_BINARY[weather]])
                         else: self.data.append([[before, imgFileName, after], self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
