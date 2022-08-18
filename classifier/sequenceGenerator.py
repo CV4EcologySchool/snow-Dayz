@@ -78,11 +78,11 @@ def sequenceGenerator(meta, file, sequenceType):
 
 
     if sequenceType == 'sliding':
-        IPython.embed()
+        #IPython.embed()
         #print(file)
         cameraIDsubset['Date'] = pd.to_datetime(cameraIDsubset['Date']) 
         cameraIDsubset = cameraIDsubset.sort_values(by='Date',ascending=True)
-        cameraIDsubset = cameraIDsubset.drop(['level_0'], axis=1)
+        #cameraIDsubset = cameraIDsubset.drop(['level_0'], axis=1)
         cameraIDsubset = pd.DataFrame(cameraIDsubset).reset_index()
         #print(cameraIDsubset)
         ### find the file 
