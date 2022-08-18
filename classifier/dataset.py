@@ -95,8 +95,8 @@ class CTDataset(Dataset):
             #     if sum(list_of_images == file) > 0: ## make sure there is the file in the image (train) folder
                 #meta_merged = 
                 list_of_imagesDF = pd.DataFrame(list_of_images)
-                meta_merged = list_of_imagesDF.merge(meta, right_on='File')
                 IPython.embed()
+                meta_merged = list_of_imagesDF.merge(meta, lright_on='File')
                 if file in list_of_images: 
                         imgFileName = file 
                         before, file, after = sequenceGenerator(meta, file, sequenceType = self.sequenceType)
