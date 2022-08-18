@@ -207,6 +207,7 @@ def binaryMetrics(cfg, dl_val, model, args, epoch):
     ######################### put this all in a function ##############
     # get precision score
     ### this is just a way to get two decimal places 
+    IPython.embed()
     precision = precision_score(true_labels, confidences)
     print("Precision of model is {:0.2f}".format(precision))
 
