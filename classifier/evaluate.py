@@ -130,6 +130,7 @@ def predict(cfg, dataLoader, model):
             #print(prediction)
             ## predictions
             #IPython.embed()
+            ##threshold = 0.3
             predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
             predicted_labels.extend(predict_label)
             #print(predict_label)
@@ -220,7 +221,7 @@ def binaryMetrics(cfg, dl_val, model, args, epoch):
     print("F1score of model is {:0.2f}".format(F1score))
     ######################################################################
 
-    PRcurve = save_precision_recall_curve(true_labels, predicted_labels, cfg, args, epoch = epoch, split = 'train')
+    PRcurve = save_precision_recall_curve(true_labels, confidences, cfg, args, epoch = epoch, split = 'train')
     print("precision recall curve saved")
 
     metrics = pd.DataFrame({'precision':precision, 'recall':recall, 'F1score':F1score}, index=[0])
