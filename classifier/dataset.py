@@ -71,6 +71,7 @@ class CTDataset(Dataset):
         meta = meta[meta['Weather'] != 'Fog'] ### could also drop 'other'
         meta = meta[meta['Weather'] != 'Other']
         meta = meta[meta['File'] != '2015_04_05_09_00_00.jpg']
+        meta = meta[(meta['location'] == 'Wynoochee1') or (meta['location'] == 'Wynoochee2') or (meta['location'] == 'Wynoochee3') or (meta['location'] == 'SNQradiometer')]
         meta = meta.drop_duplicates(subset=['File']).reset_index() ## maybe I should keep the original indices??
 
         ## add a check to make sure it exists in the folder of interest

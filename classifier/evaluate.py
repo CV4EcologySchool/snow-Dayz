@@ -186,6 +186,8 @@ def save_precision_recall_curve(true_labels, confidences, cfg, args, epoch='128'
     if not os.path.exists((args.exp_dir) +'/'+(args.exp_name)+'/figs'):
         os.makedirs(args.exp_dir + '/'+(args.exp_name)+'/figs', exist_ok=True)
     
+
+    true_labels_float = [float(x) for x in true_labels]
     PRcurve = PrecisionRecallDisplay.from_predictions(true_labels, confidences)
     PRcurve.plot()
     plt.savefig(cfg['data_root'] + '/' + args.exp_dir + '/'+(args.exp_name)+'/figs/PRcurveTESTconfidences'+str(epoch) +'.png', facecolor="white")
@@ -208,7 +210,7 @@ def binaryMetrics(cfg, dl_val, model, args, epoch):
     # get precision score
     ### this is just a way to get two decimal places 
     IPython.embed()
-    precision = precision_score(true_labels, confidences)
+    precision = precision_score(true_labels, precision)
     print("Precision of model is {:0.2f}".format(precision))
 
     # get recall score
