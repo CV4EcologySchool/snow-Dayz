@@ -70,9 +70,9 @@ class CTDataset(Dataset):
         meta = pd.read_csv(self.annoPath)
         meta = meta[meta['Weather'] != 'Fog'] ### could also drop 'other'
         meta = meta[meta['Weather'] != 'Other']
-        IPython.embed()
+        #IPython.embed()
         meta = meta[meta['File'] != '2015_04_05_09_00_00.jpg']
-        meta = meta[(meta['location'] == 'Wynoochee3') or (meta['location'] == 'SNQradiometer')]
+        meta = meta[(meta['location'] == 'Wynoochee1') | (meta['location'] == 'Wynoochee2')]
         meta = meta.drop_duplicates(subset=['File']).reset_index() ## maybe I should keep the original indices??
 
         ## add a check to make sure it exists in the folder of interest
