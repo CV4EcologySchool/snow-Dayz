@@ -166,7 +166,7 @@ def train(cfg, dataLoader, model, optimizer):
     progressBar.close()
     loss_total /= len(dataLoader)           # shorthand notation for: loss_total = loss_total / len(dataLoader)
     oa_total /= len(dataLoader)
-    ba_total /= len(dataLoader)
+    #ba_total /= len(dataLoader)
 
     return loss_total, oa_total
 
