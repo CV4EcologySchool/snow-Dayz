@@ -239,6 +239,7 @@ def main():
     parser.add_argument('--exp_name', help = 'Path to experiment name', default = 'experiment_name')
     parser.add_argument('--train_folder', help = 'Path to train folder', default = 'train_resized')
     parser.add_argument('--val_folder', help = 'Path to val folder', default = 'val_resized')
+    parser.add_argument('--val_labels', help = 'Path to val labels', default = 'valLabels.csv')
     parser.add_argument('--drop', help = 'Whether to drop images of identical images', default = 'False')
  
     #
@@ -276,7 +277,7 @@ def main():
     # initialize data loaders for training and validation set
     dl_train = create_dataloader(cfg, folder=args.train_folder, labels = 'trainLabels.csv')
     print('dl_train',dl_train.__len__())
-    dl_test = create_dataloader(cfg, folder=args.val_folder, labels = 'valLabels.csv')
+    dl_test = create_dataloader(cfg, folder=args.val_folder, labels = args.val_labels)
     print('dl_val',dl_test.__len__())
 
     # initialize model
