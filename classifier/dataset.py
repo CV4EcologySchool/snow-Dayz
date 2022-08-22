@@ -72,7 +72,7 @@ class CTDataset(Dataset):
         meta = meta[meta['Weather'] != 'Other']
         #IPython.embed()
         meta = meta[meta['File'] != '2015_04_05_09_00_00.jpg']
-        meta = meta[(meta['location'] == 'Wynoochee1') | (meta['location'] == 'Wynoochee2')]
+        #meta = meta[(meta['location'] == 'Wynoochee1') | (meta['location'] == 'Wynoochee2')]
         meta = meta.drop_duplicates(subset=['File']).reset_index() ## maybe I should keep the original indices??
 
         ## add a check to make sure it exists in the folder of interest
