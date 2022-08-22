@@ -70,6 +70,7 @@ class CTDataset(Dataset):
         meta = pd.read_csv(self.annoPath)
         meta = meta[meta['Weather'] != 'Fog'] ### could also drop 'other'
         meta = meta[meta['Weather'] != 'Other']
+        IPython.embed()
         meta = meta[meta['File'] != '2015_04_05_09_00_00.jpg']
         meta = meta[(meta['location'] == 'Wynoochee3') or (meta['location'] == 'SNQradiometer')]
         meta = meta.drop_duplicates(subset=['File']).reset_index() ## maybe I should keep the original indices??
