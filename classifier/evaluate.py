@@ -85,7 +85,7 @@ def predict(cfg, dataLoader, model):
         true_labels = [] ## labels as 0, 1 .. (classes)
         predicted_labels = [] ## labels as 0, 1 .. (classes)
         confidences0 = [] ## soft max of probabilities 
-        confidences1 = []
+        confidences1list = []
         confidences2 = []
         #confidences3 = []
         #confidences4 = []
@@ -129,22 +129,21 @@ def predict(cfg, dataLoader, model):
             #print(prediction.shape) ## it is going to be [batch size #num_classes]
             #print(prediction)
             ## predictions
-            #IPython.embed()
+
             ##threshold = 0.3
             #predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
-            #IPython.embed()
             #if prediction,
             confidence = torch.nn.Softmax(dim=1)(prediction).detach().numpy() ## had to add .detach()
 
             #predicted_labels.extend(predict_label)
             #print(predict_label)
-            IPython.embed()
+            #IPython.embed()
             if cfg['num_classes'] == 2:
                 confidence1 = confidence[:,1]
-                confidences1.extend(confidence1)
+                confidences1list.extend(confidence1)
                 if confidence1 > 0.3: predict_label = 1
                 else: predict_label = 0 
-                predicted_labels.extend(predict_label)
+                predicted_labels.append(predict_label)
 
             if cfg['num_classes'] == 3:
                 confidence0 = confidence[:,0]
@@ -152,11 +151,11 @@ def predict(cfg, dataLoader, model):
                 confidence2 = confidence[:,2]
 
                 confidences0.extend(confidence0)
-                confidences1.extend(confidence1)
+                confidences1list.extend(confidence1)
                 confidences2.extend(confidence2)
         
-        if cfg['num_classes'] == 2: return filenames, true_labels, predicted_labels, confidences1
-        else: return filenames, true_labels, predicted_labels, confidences0, confidences1, confidences2
+        if cfg['num_classes'] == 2: return filenames, true_labels, predicted_labels, confidences1list
+        else: return filenames, true_labels, predicted_labels, confidences0, confidences1list, confidences2
    
 
     #print(predicted_labels)
