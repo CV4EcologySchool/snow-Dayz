@@ -282,6 +282,7 @@ def main():
     parser.add_argument('--split', help='Data split', default ='train')
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
     parser.add_argument('--test_folder', help='Path to test_folder', default='test_resized')
+    parser.add_argument('--test_labels', help='Path to test labels', default='testLabels.csv')
     args = parser.parse_args()
 
     #epoch = '1'
@@ -293,7 +294,7 @@ def main():
     cfg = yaml.safe_load(open(args.config, 'r'))
 
     # setup dataloader validation
-    dl_val = create_dataloader(cfg, folder = args.test_folder, labels = 'testLabels_clean.csv')
+    dl_val = create_dataloader(cfg, folder = args.test_folder, labels = args.test_labels)
     print(dl_val.__len__())
 
 ##create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
