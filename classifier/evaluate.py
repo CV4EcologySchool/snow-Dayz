@@ -131,7 +131,9 @@ def predict(cfg, dataLoader, model):
             ## predictions
             #IPython.embed()
             ##threshold = 0.3
-            predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
+            #predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
+            IPython.embed()
+            #if prediction,
             predicted_labels.extend(predict_label)
             #print(predict_label)
 
