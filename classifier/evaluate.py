@@ -132,16 +132,19 @@ def predict(cfg, dataLoader, model):
             #IPython.embed()
             ##threshold = 0.3
             #predict_label = torch.argmax(prediction, dim=1).numpy() ## the label
-            IPython.embed()
+            #IPython.embed()
             #if prediction,
-            predicted_labels.extend(predict_label)
+            confidence = torch.nn.Softmax(dim=1)(prediction).detach().numpy() ## had to add .detach()
+
+            #predicted_labels.extend(predict_label)
             #print(predict_label)
 
-            confidence = torch.nn.Softmax(dim=1)(prediction).detach().numpy() ## had to add .detach()
-            
             if cfg['num_classes'] == 2:
                 confidence1 = confidence[:,1]
                 confidences1.extend(confidence1)
+                if confidence1 > 0.3: predict_label = 1
+                else: predict_label = 0 
+                predicted_labels.extend(predict_label)
 
             if cfg['num_classes'] == 3:
                 confidence0 = confidence[:,0]
