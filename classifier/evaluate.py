@@ -138,7 +138,7 @@ def predict(cfg, dataLoader, model):
 
             #predicted_labels.extend(predict_label)
             #print(predict_label)
-
+            IPython.embed()
             if cfg['num_classes'] == 2:
                 confidence1 = confidence[:,1]
                 confidences1.extend(confidence1)
