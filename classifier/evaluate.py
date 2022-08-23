@@ -84,9 +84,9 @@ def predict(cfg, dataLoader, model):
         #predictions = [] ## predictions as tensor probabilites
         true_labels = [] ## labels as 0, 1 .. (classes)
         predicted_labels = [] ## labels as 0, 1 .. (classes)
-        confidences0 = [] ## soft max of probabilities 
+        confidences0list = [] ## soft max of probabilities 
         confidences1list = []
-        confidences2 = []
+        confidences2list = []
         #confidences3 = []
         #confidences4 = []
         ##### may need to adjust this in the dataloader for the sequence:
@@ -150,12 +150,16 @@ def predict(cfg, dataLoader, model):
                 confidence1 = confidence[:,1]
                 confidence2 = confidence[:,2]
 
-                confidences0.extend(confidence0)
+                if confidence1 > 0.3: predict_label = 1
+                else: predict_label = 0 
+                predicted_labels.append(predict_label)
+
+                confidences0list.extend(confidence0)
                 confidences1list.extend(confidence1)
-                confidences2.extend(confidence2)
+                confidences2list.extend(confidence2)
         
         if cfg['num_classes'] == 2: return filenames, true_labels, predicted_labels, confidences1list
-        else: return filenames, true_labels, predicted_labels, confidences0, confidences1list, confidences2
+        else: return filenames, true_labels, predicted_labels, confidences0list, confidences1list, confidences2list
    
 
     #print(predicted_labels)
@@ -213,8 +217,8 @@ def binaryMetrics(cfg, dl_val, model, args, epoch):
     ######################### put this all in a function ##############
     # get precision score
     ### this is just a way to get two decimal places 
-    IPython.embed()
-    precision = precision_score(true_labels, precision)
+    #IPython.embed()
+    precision = precision_score(true_labels, predicted_labels)
     print("Precision of model is {:0.2f}".format(precision))
 
     # get recall score
@@ -277,6 +281,7 @@ def main():
     parser.add_argument('--exp_name', required=True, help='Path to experiment folder', default = "experiment_name")
     parser.add_argument('--split', help='Data split', default ='train')
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
+    parser.add_argument('--test_folder', help='Path to test_folder', default='test_resized')
     args = parser.parse_args()
 
     #epoch = '1'
@@ -288,7 +293,7 @@ def main():
     cfg = yaml.safe_load(open(args.config, 'r'))
 
     # setup dataloader validation
-    dl_val = create_dataloader(cfg, folder = 'test_resized', labels = 'testLabels.csv')
+    dl_val = create_dataloader(cfg, folder = args.test_folder, labels = 'testLabels_clean.csv')
     print(dl_val.__len__())
 
 ##create_dataloader(cfg, split='train', folder = 'train', labels = 'trainLabels.csv'):
