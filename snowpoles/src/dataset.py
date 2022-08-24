@@ -90,10 +90,10 @@ valid_data = snowPoleDataset(valid_samples,
 # prepare data loaders
 train_loader = DataLoader(train_data, 
                           batch_size=config.BATCH_SIZE, 
-                          shuffle=True)
+                          shuffle=True, num_workers = 4)
 valid_loader = DataLoader(valid_data, 
                           batch_size=config.BATCH_SIZE, 
-                          shuffle=False)
+                          shuffle=False, num_workers = 4) 
 print(f"Training sample instances: {len(train_data)}")
 print(f"Validation sample instances: {len(valid_data)}")
 
