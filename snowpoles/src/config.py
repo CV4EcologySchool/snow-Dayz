@@ -1,7 +1,7 @@
 import torch
 # constant paths
-ROOT_PATH =  'datadrive/data/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
-OUTPUT_PATH = '../outputs'
+ROOT_PATH =  '/datadrive/vmData/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs'
 # learning parameters
 BATCH_SIZE = 1 #32
 LR = 0.001
