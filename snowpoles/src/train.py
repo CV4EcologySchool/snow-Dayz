@@ -22,6 +22,7 @@ criterion = nn.SmoothL1Loss()
 # training function
 def fit(model, dataloader, data):
     print('Training')
+    model.to(config.DEVICE) ### added on Aug 24
     model.train()
     train_running_loss = 0.0
     counter = 0
@@ -46,6 +47,7 @@ def fit(model, dataloader, data):
 # validation function
 def validate(model, dataloader, data, epoch):
     print('Validating')
+    model.to(config.DEVICE)
     model.eval()
     valid_running_loss = 0.0
     counter = 0
