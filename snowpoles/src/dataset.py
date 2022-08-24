@@ -19,15 +19,18 @@ import numpy as np
 import config
 import utils
 from torch.utils.data import Dataset, DataLoader
+import IPython
+import matplotlib.pyplot as plt
 
 
 ##### re-write this for out of domain testing
-def train_test_split(csv_path, split):
+def train_test_split(csv_path) : # split):
+    #IPython.embed()
     df_data = pd.read_csv(csv_path)
-    len_data = len(df_data)
+    #len_data = len(df_data)
     # calculate the validation data sample length
     ## validation cameras: 
-    val_cameras = ['E9E', 'W2B', 'E6B', 'W8A'] ## check
+    val_cameras = ['E9E', 'W2B', 'E6B', 'W8A'] ## check, out of domanin testing
 
     #valid_split = int(len_data * split)
     # calculate the training data samples length
@@ -35,8 +38,8 @@ def train_test_split(csv_path, split):
 
     #training_samples = df_data.iloc[:train_split][:]
     #valid_samples = df_data.iloc[-valid_split:][:]
-    valid_samples = df_data[df_data['CameraID'].isin(val_cameras)]
-    training_samples = df_data[~df_data['CameraID'].isin(val_cameras)]
+    valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
+    training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
 
     return training_samples, valid_samples
 
@@ -50,7 +53,8 @@ class snowPoleDataset(Dataset):
         return len(self.data)
     
     def __getitem__(self, index):
-        cameraID = self.data.iloc[index]['filename'].split('_')[0]
+        cameraID = self.data.iloc[index]['filename'].split('_')[0] ## need this to get the right folder
+        #IPython.embed()
         image = cv2.imread(f"{self.path}/{cameraID}/{self.data.iloc[index]['filename']}")
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         orig_h, orig_w, channel = image.shape
@@ -61,6 +65,7 @@ class snowPoleDataset(Dataset):
         # transpose for getting the channel size to index 0
         image = np.transpose(image, (2, 0, 1))
         # get the keypoints
+        #IPython.embed()
         keypoints = self.data.iloc[index][1:][3:7]  ### change to x1 y1 x2 y2
 
         keypoints = np.array(keypoints, dtype='float32')
@@ -74,14 +79,14 @@ class snowPoleDataset(Dataset):
         }
 
 # get the training and validation data samples
-training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels.csv",
-                                                   config.TEST_SPLIT)
+training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels.csv") #config.TEST_SPLIT)
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
-                                 f"{config.ROOT_PATH}/**/*.JPG")  ## we want all folders
+                                 f"{config.ROOT_PATH}")  ## we want all folders
+#IPython.embed()
 valid_data = snowPoleDataset(valid_samples, 
-                                 f"{config.ROOT_PATH}/**/*.JPG")
+                                 f"{config.ROOT_PATH}")
 # prepare data loaders
 train_loader = DataLoader(train_data, 
                           batch_size=config.BATCH_SIZE, 

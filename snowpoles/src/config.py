@@ -1,9 +1,9 @@
 import torch
 # constant paths
-ROOT_PATH = 'datadrive/data/SNEX20_TLI'
+ROOT_PATH =  'datadrive/data/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
 OUTPUT_PATH = '../outputs'
 # learning parameters
-BATCH_SIZE = 32
+BATCH_SIZE = 1 #32
 LR = 0.001
 EPOCHS = 30
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

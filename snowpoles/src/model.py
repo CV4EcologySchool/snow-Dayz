@@ -10,7 +10,7 @@ In this case we just want 2.
 
 import torch.nn as nn
 import torch.nn.functional as F
-import pretrainedmodels
+import pretrainedmodels  ## will need to a pip install pretrained models
 
 class snowPoleResNet50(nn.Module):
     def __init__(self, pretrained, requires_grad):
@@ -28,7 +28,7 @@ class snowPoleResNet50(nn.Module):
                 param.requires_grad = False
             print('Freezing intermediate layer parameters...')
         # change the final layer
-        self.l0 = nn.Linear(2048, 2)  #### the second value is the number of points you want to predict
+        self.l0 = nn.Linear(2048, 4)  #### the second value is the number of points you want to predict
 
     def forward(self, x):
         # get the batch size only, ignore (c, h, w)
