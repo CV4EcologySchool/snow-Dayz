@@ -23,4 +23,4 @@ datadrive/vmData/weather/experiments/exp_resnet50_2classes_seqSliding/runs
 
 Lectures/ServingHostingDeployingModels.txt
 
-
+snowpoles/src/__pycache__/*.pyc
