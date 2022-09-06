@@ -22,8 +22,12 @@ def valid_keypoints_plot(image, outputs, orig_keypoints, epoch):
     output_keypoint = output_keypoint.reshape(-1, 2)
     orig_keypoint = orig_keypoint.reshape(-1, 2)
     for p in range(output_keypoint.shape[0]):
-        plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.')
-        plt.plot(orig_keypoint[p, 0], orig_keypoint[p, 1], 'b.')
+        if p == 0: 
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.') ## top
+            plt.plot(orig_keypoint[p, 0], orig_keypoint[p, 1], 'b.')
+        else:
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'g.') ## bottom
+            plt.plot(orig_keypoint[p, 0], orig_keypoint[p, 1], 'b.')
     plt.savefig(f"{config.OUTPUT_PATH}/val_epoch_{epoch}.png")
     plt.close()
 

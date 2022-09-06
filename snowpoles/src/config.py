@@ -1,14 +1,14 @@
 import torch
 # constant paths
-ROOT_PATH =  '/datadrive/vmData/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs'
+ROOT_PATH =    '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_test' #'/datadrive/vmData/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
+OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs2' #'/datadrive/vmData/snow_poles_outputs'
 # learning parameters
-BATCH_SIZE = 128 #32
-LR = 0.001
-EPOCHS = 30
-DEVICE = torch.device('cuda') # if torch.cuda.is_available() else 'cpu')
+BATCH_SIZE = 4 #32
+LR = 0.001  # #0.0001 lower to factor of 10
+EPOCHS = 4
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # train/test split
-TEST_SPLIT = 0.1
+#TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as validation
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = False
 

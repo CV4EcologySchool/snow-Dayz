@@ -8,6 +8,7 @@ import utils
 from model import snowPoleResNet50
 from dataset import train_data, train_loader, valid_data, valid_loader
 from tqdm import tqdm
+import IPython
 
 matplotlib.style.use('ggplot')
 
@@ -80,6 +81,16 @@ for epoch in range(config.EPOCHS):
     val_loss.append(val_epoch_loss)
     print(f"Train Loss: {train_epoch_loss:.4f}")
     print(f'Val Loss: {val_epoch_loss:.4f}')
+    ####### saving model each epoch
+    #IPython.embed()
+    if (epoch % 2) == 0:
+        torch.save({
+            'epoch': config.EPOCHS,
+            'model_state_dict': model.state_dict(),
+            'optimizer_state_dict': optimizer.state_dict(),
+            'loss': criterion,
+            }, f"{config.OUTPUT_PATH}/model_epoch{epoch}.pth")
+
 
 # loss plots
 plt.figure(figsize=(10, 7))
@@ -89,7 +100,7 @@ plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend()
 plt.savefig(f"{config.OUTPUT_PATH}/loss.png")
-plt.show()
+plt.close()  # changed from plt.show()
 torch.save({
             'epoch': config.EPOCHS,
             'model_state_dict': model.state_dict(),

@@ -21,10 +21,11 @@ import utils
 from torch.utils.data import Dataset, DataLoader
 import IPython
 import matplotlib.pyplot as plt
+import glob
 
 
 ##### re-write this for out of domain testing
-def train_test_split(csv_path) : # split):
+def train_test_split(csv_path, path) : # split):
     #IPython.embed()
     df_data = pd.read_csv(csv_path)
     #len_data = len(df_data)
@@ -38,8 +39,16 @@ def train_test_split(csv_path) : # split):
 
     #training_samples = df_data.iloc[:train_split][:]
     #valid_samples = df_data.iloc[-valid_split:][:]
+
     valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
     training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
+
+    ##### only images that exist
+    #IPython.embed()
+    all_images = glob.glob(path + ('/**/*.JPG'))
+    filenames = [item.split('/')[-1] for item in all_images]
+    valid_samples = valid_samples[valid_samples['filename'].isin(filenames)].reset_index()
+    training_samples = training_samples[training_samples['filename'].isin(filenames)].reset_index()
 
     return training_samples, valid_samples
 
@@ -55,6 +64,7 @@ class snowPoleDataset(Dataset):
     def __getitem__(self, index):
         cameraID = self.data.iloc[index]['filename'].split('_')[0] ## need this to get the right folder
         #IPython.embed()
+        
         image = cv2.imread(f"{self.path}/{cameraID}/{self.data.iloc[index]['filename']}")
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         orig_h, orig_w, channel = image.shape
@@ -66,7 +76,7 @@ class snowPoleDataset(Dataset):
         image = np.transpose(image, (2, 0, 1))
         # get the keypoints
         #IPython.embed()
-        keypoints = self.data.iloc[index][1:][3:7]  ### change to x1 y1 x2 y2
+        keypoints = self.data.iloc[index][1:][['x1','y1','x2','y2']]  #[3:7]  ### change to x1 y1 x2 y2
 
         keypoints = np.array(keypoints, dtype='float32')
         # reshape the keypoints
@@ -79,7 +89,7 @@ class snowPoleDataset(Dataset):
         }
 
 # get the training and validation data samples
-training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels.csv") #config.TEST_SPLIT)
+training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels.csv", f"{config.ROOT_PATH}") #config.TEST_SPLIT)
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
@@ -90,10 +100,10 @@ valid_data = snowPoleDataset(valid_samples,
 # prepare data loaders
 train_loader = DataLoader(train_data, 
                           batch_size=config.BATCH_SIZE, 
-                          shuffle=True, num_workers = 4)
+                          shuffle=True, num_workers = 0)
 valid_loader = DataLoader(valid_data, 
                           batch_size=config.BATCH_SIZE, 
-                          shuffle=False, num_workers = 4) 
+                          shuffle=False, num_workers = 0) 
 print(f"Training sample instances: {len(train_data)}")
 print(f"Validation sample instances: {len(valid_data)}")
 
