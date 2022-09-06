@@ -60,9 +60,15 @@ class snowPoleDataset(Dataset):
         self.resize = 224
     def __len__(self):
         return len(self.data)
+
+    def __filename__(self, index):
+        #print('test')
+        filename = self.data.iloc[index]['filename']
+        return filename
     
     def __getitem__(self, index):
         cameraID = self.data.iloc[index]['filename'].split('_')[0] ## need this to get the right folder
+        filename = self.data.iloc[index]['filename']
         #IPython.embed()
         
         image = cv2.imread(f"{self.path}/{cameraID}/{self.data.iloc[index]['filename']}")
@@ -86,6 +92,7 @@ class snowPoleDataset(Dataset):
         return {
             'image': torch.tensor(image, dtype=torch.float),
             'keypoints': torch.tensor(keypoints, dtype=torch.float),
+            'filename': filename
         }
 
 # get the training and validation data samples

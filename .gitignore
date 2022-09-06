@@ -13,6 +13,7 @@ Lectures/BjornLecture.txt
 Lectures/TarunLecture.txt
 Lectures/DataAblationEli.txt
 Lectures/EfficientModelsSpeedvAccuracy.txt
+Lectures/*
 
 
 datadrive/vmData/weather/experiments/exp_resnet50_2classes_None/runs

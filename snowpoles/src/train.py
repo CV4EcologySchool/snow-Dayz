@@ -61,7 +61,7 @@ def validate(model, dataloader, data, epoch):
             # flatten the keypoints
             keypoints = keypoints.view(keypoints.size(0), -1)
             outputs = model(image)
-            loss = criterion(outputs, keypoints)
+            loss = criterion(outputs, keypoints) ## cross entropy loss between input and output
             valid_running_loss += loss.item()
             # plot the predicted validation keypoints after every...
             # ... predefined number of epochs

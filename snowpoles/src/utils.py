@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import config
+import IPython
 
 def valid_keypoints_plot(image, outputs, orig_keypoints, epoch):
     """
@@ -53,3 +54,37 @@ def dataset_keypoints_plot(data):
             plt.plot(keypoints[j, 0], keypoints[j, 1], 'b.')
     plt.show()
     plt.close()
+
+
+def eval_keypoints_plot(file, image, outputs, orig_keypoints):
+    """
+    This function plots the regressed (predicted) keypoints and the actual 
+    keypoints after each validation epoch for one image in the batch.
+    """
+    # detach the image, keypoints, and output tensors from GPU to CPU
+    #IPython.embed()
+    image = image.detach().cpu()
+    image = image.squeeze(0) ## drop the dimension because no longer need it for model 
+    outputs = outputs.detach().cpu().numpy()
+    orig_keypoints = orig_keypoints.detach().cpu().numpy()
+    # just get a single datapoint from each batch
+    #img = image[0]
+    output_keypoint = outputs[0] ## don't know why but it is technically nested
+    img = np.array(image, dtype='float32')
+    img = np.transpose(img, (1, 2, 0))
+    plt.imshow(img)
+    
+    output_keypoint = output_keypoint.reshape(-1, 2)
+    orig_keypoints = orig_keypoints.reshape(-1, 2)
+    for p in range(output_keypoint.shape[0]):
+        if p == 0: 
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.') ## top
+            plt.plot(orig_keypoints[p, 0], orig_keypoints[p, 1], 'b.')
+        else:
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'g.') ## bottom
+            plt.plot(orig_keypoints[p, 0], orig_keypoints[p, 1], 'b.')
+    plt.savefig(f"{config.OUTPUT_PATH}/eval_{file}.png")
+    plt.close()
+
+
+#def object_keypoint_similarity():
