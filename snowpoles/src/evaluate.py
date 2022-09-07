@@ -72,9 +72,6 @@ def main():
     parser = argparse.ArgumentParser(description='Train deep learning model.')
     parser.add_argument('--exp_dir', required=True, help='Path to experiment directory', default = "experiment_dir")
     parser.add_argument('--exp_name', required=True, help='Path to experiment folder', default = "experiment_name")
-    #parser.add_argument('--image_path', required=True, help='Path to full image folder', default = "images")
-    #parser.add_argument('')
-
 
     args = parser.parse_args()
     model = load_model(args)

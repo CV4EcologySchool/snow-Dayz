@@ -9,6 +9,7 @@ from model import snowPoleResNet50
 from dataset import train_data, train_loader, valid_data, valid_loader
 from tqdm import tqdm
 import IPython
+import os
 
 matplotlib.style.use('ggplot')
 
@@ -65,7 +66,9 @@ def validate(model, dataloader, data, epoch):
             valid_running_loss += loss.item()
             # plot the predicted validation keypoints after every...
             # ... predefined number of epochs
-            if (epoch+1) % 1 == 0 and i == 0:
+            if not os.path.exists(config.OUTPUT_PATH):
+                os.makedirs(config.OUTPUT_PATH, exist_ok=True)
+            if (epoch+1) % 1 == 0 and i == 20:  # make this not 0 to get a different image
                 utils.valid_keypoints_plot(image, outputs, keypoints, epoch)
         
     valid_loss = valid_running_loss/counter

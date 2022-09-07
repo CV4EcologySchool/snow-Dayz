@@ -13,7 +13,7 @@ def valid_keypoints_plot(image, outputs, orig_keypoints, epoch):
     outputs = outputs.detach().cpu().numpy()
     orig_keypoints = orig_keypoints.detach().cpu().numpy()
     # just get a single datapoint from each batch
-    img = image[0]
+    img = image[0]  ## something snow in it ## halfway throught the dataset
     output_keypoint = outputs[0]
     orig_keypoint = orig_keypoints[0]
     img = np.array(img, dtype='float32')
