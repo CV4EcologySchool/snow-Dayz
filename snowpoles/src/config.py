@@ -1,16 +1,16 @@
 import torch
 import os
 # constant paths
-#ROOT_PATH =    '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_test' #'/datadrive/vmData/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
-#OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized' #'/datadrive/vmData/snow_poles_outputs'
+ROOT_PATH =    '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized' #'/datadrive/vmData/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
+OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized2' #'/datadrive/vmData/snow_poles_outputs'
 
-ROOT_PATH = '/datadrive/vmData/SNEX20_TLI'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_LRe4_BS64'
+#ROOT_PATH = '/datadrive/vmData/SNEX20_TLI'
+#OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_LRe4_BS64'
 
 # learning parameters
-BATCH_SIZE = 64 #32
+BATCH_SIZE = 4#64 #32
 LR = 0.001  # #0.0001 lower to factor of 10
-EPOCHS = 100
+EPOCHS = 4#100
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # train/test split
 #TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as validation
