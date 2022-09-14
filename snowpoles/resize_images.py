@@ -43,8 +43,8 @@ for file in tqdm.tqdm(snowpoleImages['filename']):
     new_filename = newPath + CameraID + ('/') + file
     orig_h, orig_w, channel = image.shape
     newsize = (448, 448)
-    im1 = cv2.resize(image, newsize)
-    im1 = cv2.imwrite(new_filename, im1)
+    #im1 = cv2.resize(image, newsize)
+    #im1 = cv2.imwrite(new_filename, im1)
 
     keypoints = snowpoleImages.loc[snowpoleImages['filename'] == file][['x1','y1','x2','y2']]
 
@@ -66,4 +66,4 @@ for file in tqdm.tqdm(snowpoleImages['filename']):
 
 labels_resized = pd.DataFrame({'Camera':Camera, 'filename':files, 'x1':x1s, 'y1':y1s, 'x2':x2s, 'y2':y2s})
 #IPython.embed()
-labels_resized.to_csv('/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized/snowPoles_labels.csv')
+labels_resized.to_csv('/datadrive/vmData/SNEX20_TLI_resized/snowPoles_labels.csv')
