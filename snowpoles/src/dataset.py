@@ -24,6 +24,9 @@ import matplotlib.pyplot as plt
 import glob
 import torch
 import torchvision.transforms as T
+from PIL import Image
+from PIL import Image, ImageFile
+from torchvision.transforms import Compose, Resize, ToTensor
 
 ##### re-write this for out of domain testing
 def train_test_split(csv_path, path) : # split):
@@ -60,6 +63,10 @@ class snowPoleDataset(Dataset):
         self.path = path
         self.resize = 224
         #self.split = split
+        self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
+            Resize(([224, 224])),        # For now, we just resize the images to the same dimensions...
+            ToTensor()                          # ...and convert them to torch.Tensor.
+        ])
 
     def __len__(self):
         return len(self.data)
@@ -74,15 +81,25 @@ class snowPoleDataset(Dataset):
         filename = self.data.iloc[index]['filename']
         #IPython.embed()
         
-        image = cv2.imread(f"{self.path}/{cameraID}/{self.data.iloc[index]['filename']}")
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        orig_h, orig_w, channel = image.shape
+        #image = cv2.imread(f"{self.path}/{cameraID}/{self.data.iloc[index]['filename']}")
+        #image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        #orig_h, orig_w, channel = image.shape
+        
         # resize the image into `resize` defined above
-        image = cv2.resize(image, (self.resize, self.resize))
+        #image = cv2.resize(image, (self.resize, self.resize))
         # again reshape to add grayscale channel format
-        image = image / 255.0
+        #image = image / 255.0
         # transpose for getting the channel size to index 0
-        image = np.transpose(image, (2, 0, 1))
+        #image = np.transpose(image, (2, 0, 1))
+
+        ### PIL library
+        img = Image.open(f"{self.path}/{cameraID}/{self.data.iloc[index]['filename']}").convert('RGB')  
+        orig_h, orig_w = img.size
+        img_tensor = self.transform(img)  
+        if config.COLOR_JITTER == True:# and (split == 'train'): 
+            jitter = T.ColorJitter(brightness=.5, hue=.3)
+            image = jitter(img_tensor)
+
         # get the keypoints
         #IPython.embed()
         keypoints = self.data.iloc[index][1:][['x1','y1','x2','y2']]  #[3:7]  ### change to x1 y1 x2 y2
@@ -92,11 +109,6 @@ class snowPoleDataset(Dataset):
         keypoints = keypoints.reshape(-1, 2)
         # rescale keypoints according to image resize
         keypoints = keypoints * [self.resize / orig_w, self.resize / orig_h]
-
-        if config.COLOR_JITTER == True:# and (split == 'train'): 
-            IPython.embed()
-            jitter = T.ColorJitter(brightness=.5, hue=.3)
-            image = jitter(image)
 
         #if config.RANDOM_ROTATION == True: 
          #   image = T.ColorJitter(brightness=.5, hue=.3)
