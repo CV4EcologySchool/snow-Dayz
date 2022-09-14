@@ -19,6 +19,7 @@ if not os.path.exists(f"{config.OUTPUT_PATH}"):
 
 if config.DEVICE != 'cpu' and not torch.cuda.is_available():
         print(f'WARNING: device set to "{config.DEVICE}" but CUDA not available; falling back to CPU...')
+else: print(f'THIS EXPERIMENT USES GPUS: {config.DEVICE}')
 
 # model 
 model = snowPoleResNet50(pretrained=True, requires_grad=True).to(config.DEVICE)

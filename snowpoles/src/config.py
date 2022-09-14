@@ -9,7 +9,7 @@ OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_LRe4_BS64'
 
 # learning parameters
 BATCH_SIZE = 64 #32
-LR = 0.0001  # #0.0001 lower to factor of 10
+LR = 0.001  # #0.0001 lower to factor of 10
 EPOCHS = 100
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # train/test split
