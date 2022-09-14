@@ -55,10 +55,12 @@ def train_test_split(csv_path, path) : # split):
 
 
 class snowPoleDataset(Dataset):
-    def __init__(self, samples, path):
+    def __init__(self, samples, path): # split='train'):
         self.data = samples
         self.path = path
         self.resize = 224
+        #self.split = split
+
     def __len__(self):
         return len(self.data)
 
@@ -91,11 +93,13 @@ class snowPoleDataset(Dataset):
         # rescale keypoints according to image resize
         keypoints = keypoints * [self.resize / orig_w, self.resize / orig_h]
 
-        if config.COLOR_JITTER == True: 
-            image = T.ColorJitter(brightness=.5, hue=.3)
+        if config.COLOR_JITTER == True:# and (split == 'train'): 
+            IPython.embed()
+            jitter = T.ColorJitter(brightness=.5, hue=.3)
+            image = jitter(image)
 
-        if config.RANDOM_ROTATION == True: 
-            image = T.ColorJitter(brightness=.5, hue=.3)
+        #if config.RANDOM_ROTATION == True: 
+         #   image = T.ColorJitter(brightness=.5, hue=.3)
 
         return {
             'image': torch.tensor(image, dtype=torch.float),
