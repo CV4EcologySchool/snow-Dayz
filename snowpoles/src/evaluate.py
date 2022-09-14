@@ -21,8 +21,10 @@ import utils
 import pandas as pd
 from dataset import train_data, train_loader, valid_data, valid_loader
 from tqdm import tqdm
+from scipy.spatial import distance
+import os
 
-def load_model(args):
+def load_model():
     model = snowPoleResNet50(pretrained=False, requires_grad=False).to(config.DEVICE)
     # load the model checkpoint
     checkpoint = torch.load(config.OUTPUT_PATH + '/model.pth')
@@ -39,46 +41,80 @@ that it will use the last model, and we will just use the dataset, not the datal
 It is a little bit easier to flatten this way. 
 
 '''
+
+
 def predict(model, data): ## try this without a dataloader
     #files =  glob.glob(args.image_path + ('/**/*.JPG'))
     #df_data = pd.read_csv(f"{config.ROOT_PATH}/snowPoles_labels.csv")
     #IPython.embed()
+
+    if not os.path.exists(f"{config.OUTPUT_PATH}/eval"):
+        os.makedirs(f"{config.OUTPUT_PATH}/eval", exist_ok=True)
+
     output_list = []
+    Cameras, filenames = [], []
+    x1s_true, y1s_true, x2s_true, y2s_true = [], [], [], []
+    x1s_pred, y1s_pred, x2s_pred, y2s_pred = [], [], [], []
+    top_pixel_errors, bottom_pixel_errors, total_length_pixels = [], [], []
+    
     #num_batches = int(len(data)/dataloader.batch_size)
     with torch.no_grad():
         for i, data in tqdm(enumerate(data)): #, total=num_batches):
             image, keypoints = data['image'].to(config.DEVICE), data['keypoints'].to(config.DEVICE)
             filename = data['filename']
+            Camera = filename.split('_')[0]
+
             # flatten the keypoints
-            keypoints = keypoints.view(keypoints.size(0), -1)
+            keypoints = keypoints.numpy().reshape(-1,2)
+            x1_true, y1_true, x2_true, y2_true = keypoints[0,0], keypoints[0,1], keypoints[1,0], keypoints[1,1]
             ## add an empty dimension for sample size
             image = image.unsqueeze(0)
             outputs = model(image)
             output_list.append(outputs)
             utils.eval_keypoints_plot(filename, image, outputs, orig_keypoints=keypoints) ## visualize points
+            pred_keypoint = np.array(outputs[0], dtype='float32')
+            x1_pred, y1_pred, x2_pred, y2_pred = pred_keypoint[0], pred_keypoint[1], pred_keypoint[2], pred_keypoint[3]
+            
+            Cameras.append(Camera)
+            filenames.append(filename)
+            x1s_true.append(x1_true), y1s_true.append(y1_true), x2s_true.append(x2_true), y2s_true.append(y2_true)
+            x1s_pred.append(x1_pred), y1s_pred.append(y1_pred), x2s_pred.append(x2_pred), y2s_pred.append(y2_pred)
 
-    return output_list
+            ## error
+            top_pixel_error = distance.euclidean([x1_true,y1_true], [x1_pred,y1_pred])
+            bottom_pixel_error = distance.euclidean([x2_true,y2_true], [x2_pred,y2_pred])
+            total_length_pixel = distance.euclidean([x1_pred,y1_pred],[x2_pred,y2_pred])
+            top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
 
-def eval(args):
-    files =  glob.glob(args.image_path + ('/**/*.JPG'))
-    df_data = pd.read_csv(f"{config.ROOT_PATH}/snowPoles_labels.csv")
-    #oks_1 =
-    #oks_2 =
+    IPython.embed()
+    results = pd.DataFrame({'Camera':Camera, 'filename':filenames, 'x1_true':x1s_true, 'y1_true':y1s_true, 'x2_true':x2s_true, 'y2_true':y2s_true, \
+        'x1_pred': x1s_pred, 'y1s_pred': y1s_pred, 'x2_pred': x2s_pred, 'y2_pred': y2s_pred, 'top_pixel_error': top_pixel_errors, \
+            'bottom_pixel_error': bottom_pixel_errors, 'total_length_pixel': total_length_pixels})
 
+    results.to_csv(f"{config.OUTPUT_PATH}/eval/results.csv")
+    #### overall average
+    print('Overall Top Pixel Error \n')
+    print(np.mean(top_pixel_error))
+    print('Overall Bottom Pixel Error \n')
+    print(np.mean(bottom_pixel_error))
+    #### average for each camera
+
+    return results
 
 def main():
     # Argument parser for command-line arguments:
     # python code/train.py --output model_runs
-    parser = argparse.ArgumentParser(description='Train deep learning model.')
-    parser.add_argument('--exp_dir', required=True, help='Path to experiment directory', default = "experiment_dir")
-    parser.add_argument('--exp_name', required=True, help='Path to experiment folder', default = "experiment_name")
+    #parser = argparse.ArgumentParser(description='Train deep learning model.')
+    #parser.add_argument('--exp_dir', required=True, help='Path to experiment directory', default = "experiment_dir")
+    #parser.add_argument('--exp_name', required=True, help='Path to experiment folder', default = "experiment_name")
 
-    args = parser.parse_args()
-    model = load_model(args)
+    #args = parser.parse_args()
+    model = load_model()
 
     ## returns a set of images of outputs
     outputs = predict(model, valid_data)  
 
+    #results = eval(outputs)
 
 if __name__ == '__main__':
     main()

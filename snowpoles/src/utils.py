@@ -66,7 +66,7 @@ def eval_keypoints_plot(file, image, outputs, orig_keypoints):
     image = image.detach().cpu()
     image = image.squeeze(0) ## drop the dimension because no longer need it for model 
     outputs = outputs.detach().cpu().numpy()
-    orig_keypoints = orig_keypoints.detach().cpu().numpy()
+    orig_keypoints = orig_keypoints #.numpy()#orig_keypoints.detach().cpu().numpy()
     # just get a single datapoint from each batch
     #img = image[0]
     output_keypoint = outputs[0] ## don't know why but it is technically nested
@@ -83,7 +83,7 @@ def eval_keypoints_plot(file, image, outputs, orig_keypoints):
         else:
             plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'g.') ## bottom
             plt.plot(orig_keypoints[p, 0], orig_keypoints[p, 1], 'b.')
-    plt.savefig(f"{config.OUTPUT_PATH}/eval_{file}.png")
+    plt.savefig(f"{config.OUTPUT_PATH}/eval/eval_{file}.png")
     plt.close()
 
 
