@@ -65,7 +65,7 @@ def predict(model, data): ## try this without a dataloader
             Camera = filename.split('_')[0]
 
             # flatten the keypoints
-            keypoints = keypoints.numpy().reshape(-1,2)
+            keypoints = keypoints.detach().cpu().numpy().reshape(-1,2)
             x1_true, y1_true, x2_true, y2_true = keypoints[0,0], keypoints[0,1], keypoints[1,0], keypoints[1,1]
             ## add an empty dimension for sample size
             image = image.unsqueeze(0)
