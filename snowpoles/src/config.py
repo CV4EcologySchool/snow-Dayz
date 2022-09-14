@@ -5,7 +5,7 @@ import os
 #OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized' #'/datadrive/vmData/snow_poles_outputs'
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_jitterB5H3'
 
 # learning parameters
 BATCH_SIZE = 64 #32
