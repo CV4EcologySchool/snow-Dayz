@@ -1,11 +1,11 @@
 import torch
 import os
 # constant paths
-ROOT_PATH =    '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized' #'/datadrive/vmData/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
-OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized2' #'/datadrive/vmData/snow_poles_outputs'
+#ROOT_PATH =    '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized' #'/datadrive/vmData/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
+#OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized2' #'/datadrive/vmData/snow_poles_outputs'
 
-#ROOT_PATH = '/datadrive/vmData/SNEX20_TLI'
-#OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_LRe4_BS64'
+ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64'
 
 # learning parameters
 BATCH_SIZE = 4#64 #32
