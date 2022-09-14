@@ -13,6 +13,10 @@ import os
 
 matplotlib.style.use('ggplot')
 
+## create output path
+if not os.path.exists(f"{config.OUTPUT_PATH}"):
+    os.makedirs(f"{config.OUTPUT_PATH}", exist_ok=True)
+
 # model 
 model = snowPoleResNet50(pretrained=True, requires_grad=True).to(config.DEVICE)
 # optimizer
