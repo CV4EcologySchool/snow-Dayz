@@ -100,6 +100,7 @@ class snowPoleDataset(Dataset):
             jitter = T.ColorJitter(brightness=.5, hue=.3)
             image = jitter(img_tensor)
 
+        IPython.embed()
         # get the keypoints
         #IPython.embed()
         keypoints = self.data.iloc[index][1:][['x1','y1','x2','y2']]  #[3:7]  ### change to x1 y1 x2 y2
