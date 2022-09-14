@@ -64,8 +64,8 @@ class snowPoleDataset(Dataset):
         self.resize = 224
         #self.split = split
         self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
-            Resize(([224, 224]))#,        # For now, we just resize the images to the same dimensions...
-            #ToTensor()                          # ...and convert them to torch.Tensor.
+            Resize(([224, 224])),        # For now, we just resize the images to the same dimensions...
+            ToTensor()                          # ...and convert them to torch.Tensor.
         ])
 
     def __len__(self):
@@ -115,7 +115,7 @@ class snowPoleDataset(Dataset):
          #   image = T.ColorJitter(brightness=.5, hue=.3)
 
         return {
-            'image': torch.tensor(image, dtype=torch.float),
+            'image': image, #torch.tensor(image, dtype=torch.float),
             'keypoints': torch.tensor(keypoints, dtype=torch.float),
             'filename': filename
         }
