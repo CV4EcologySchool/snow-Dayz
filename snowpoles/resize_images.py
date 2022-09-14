@@ -67,3 +67,4 @@ for file in tqdm.tqdm(snowpoleImages['filename']):
 labels_resized = pd.DataFrame({'Camera':Camera, 'filename':files, 'x1':x1s, 'y1':y1s, 'x2':x2s, 'y2':y2s})
 #IPython.embed()
 labels_resized.to_csv('/datadrive/vmData/SNEX20_TLI_resized/snowPoles_labels.csv')
+IPython.embed()
