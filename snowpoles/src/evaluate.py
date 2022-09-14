@@ -70,6 +70,7 @@ def predict(model, data): ## try this without a dataloader
             ## add an empty dimension for sample size
             image = image.unsqueeze(0)
             outputs = model(image)
+            IPython.embed()
             outputs = outputs.detach().cpu().numpy()
             output_list.append(outputs)
             utils.eval_keypoints_plot(filename, image, outputs, orig_keypoints=keypoints) ## visualize points
