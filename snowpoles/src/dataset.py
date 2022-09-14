@@ -98,9 +98,10 @@ class snowPoleDataset(Dataset):
         img_tensor = self.transform(img)  
         if config.COLOR_JITTER == True:# and (split == 'train'): 
             jitter = T.ColorJitter(brightness=.5, hue=.3)
-            image = jitter(img_tensor)
+            img_tensor = jitter(img_tensor)
 
         IPython.embed()
+
         # get the keypoints
         #IPython.embed()
         keypoints = self.data.iloc[index][1:][['x1','y1','x2','y2']]  #[3:7]  ### change to x1 y1 x2 y2
@@ -115,7 +116,7 @@ class snowPoleDataset(Dataset):
          #   image = T.ColorJitter(brightness=.5, hue=.3)
 
         return {
-            'image': image, #torch.tensor(image, dtype=torch.float),
+            'image': img_tensor, #torch.tensor(image, dtype=torch.float),
             'keypoints': torch.tensor(keypoints, dtype=torch.float),
             'filename': filename
         }
