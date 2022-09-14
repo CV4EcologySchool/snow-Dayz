@@ -17,6 +17,10 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = False
 
+# data augmentations
+COLOR_JITTER = True
+RANDOM_ROTATION = False
+
 ### in my datasheet it is columns 3, 4, 5, 6, so we will use range 3:7
 ## or we can name them directly
 

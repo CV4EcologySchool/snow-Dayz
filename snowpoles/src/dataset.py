@@ -22,7 +22,8 @@ from torch.utils.data import Dataset, DataLoader
 import IPython
 import matplotlib.pyplot as plt
 import glob
-
+import torch
+import torchvision.transforms as T
 
 ##### re-write this for out of domain testing
 def train_test_split(csv_path, path) : # split):
@@ -89,6 +90,13 @@ class snowPoleDataset(Dataset):
         keypoints = keypoints.reshape(-1, 2)
         # rescale keypoints according to image resize
         keypoints = keypoints * [self.resize / orig_w, self.resize / orig_h]
+
+        if config.COLOR_JITTER == True: 
+            image = T.ColorJitter(brightness=.5, hue=.3)
+
+        if config.RANDOM_ROTATION == True: 
+            image = T.ColorJitter(brightness=.5, hue=.3)
+
         return {
             'image': torch.tensor(image, dtype=torch.float),
             'keypoints': torch.tensor(keypoints, dtype=torch.float),
