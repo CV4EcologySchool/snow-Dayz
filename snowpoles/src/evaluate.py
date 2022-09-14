@@ -70,9 +70,9 @@ def predict(model, data): ## try this without a dataloader
             ## add an empty dimension for sample size
             image = image.unsqueeze(0)
             outputs = model(image)
-            IPython.embed()
+            #IPython.embed()
             outputs = outputs.detach().cpu().numpy()
-            output_list.append(outputs)
+            #output_list.append(outputs)
             utils.eval_keypoints_plot(filename, image, outputs, orig_keypoints=keypoints) ## visualize points
             pred_keypoint = np.array(outputs[0], dtype='float32')
             x1_pred, y1_pred, x2_pred, y2_pred = pred_keypoint[0], pred_keypoint[1], pred_keypoint[2], pred_keypoint[3]

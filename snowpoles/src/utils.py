@@ -62,10 +62,10 @@ def eval_keypoints_plot(file, image, outputs, orig_keypoints):
     keypoints after each validation epoch for one image in the batch.
     """
     # detach the image, keypoints, and output tensors from GPU to CPU
-    #IPython.embed()
+    IPython.embed()
     image = image.detach().cpu()
     image = image.squeeze(0) ## drop the dimension because no longer need it for model 
-    outputs = outputs.detach().cpu().numpy()
+    outputs = outputs #.detach().cpu().numpy()
     orig_keypoints = orig_keypoints #.detach().cpu().numpy()#orig_keypoints.detach().cpu().numpy()
     # just get a single datapoint from each batch
     #img = image[0]
