@@ -126,7 +126,7 @@ class snowPoleDataset(Dataset):
         }
 
 # get the training and validation data samples
-training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels.csv", f"{config.ROOT_PATH}") #config.TEST_SPLIT)
+training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}") #config.TEST_SPLIT)
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
