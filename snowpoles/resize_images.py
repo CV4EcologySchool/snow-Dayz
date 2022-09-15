@@ -17,11 +17,11 @@ from PIL import Image
 snowpolefiles = glob.glob('/datadrive/vmData/SNEX20_TLI/**/*')
 snowpoleList = [item.split('/')[-1] for item in snowpolefiles]
 #labels = pd.read_csv('/Volumes/CatBreen/CV4ecology/SNEX20_TLI_test/snowPoles_labels.csv')
-labels = pd.read_csv('/datadrive/vmData/SNEX20_TLI/snowPoles_labels.csv')
-snowpoleImages =  labels[labels['filename'].isin(snowpoleList)].reset_index()
+labels = pd.read_csv('/datadrive/vmData/SNEX20_TLI/snowPoles_labels_clean.csv')
+snowpoleImages =  labels[labels['filename'].isin(snowpoleList)].reset_index() ## only error code = 0 
 
 #newPath = '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized/' #'/datadrive/vmData/SNEX20_TLI_resized/'
-newPath = '/datadrive/vmData/SNEX20_TLI_resized/'
+newPath = '/datadrive/vmData/SNEX20_TLI_resized_clean/'
 
 if not os.path.exists(newPath):
     os.makedirs(newPath)
@@ -66,5 +66,5 @@ for file in tqdm.tqdm(snowpoleImages['filename']):
 
 labels_resized = pd.DataFrame({'Camera':Camera, 'filename':files, 'x1':x1s, 'y1':y1s, 'x2':x2s, 'y2':y2s})
 #IPython.embed()
-labels_resized.to_csv('/datadrive/vmData/SNEX20_TLI_resized/snowPoles_labels.csv')
+labels_resized.to_csv('/datadrive/vmData/SNEX20_TLI_resized/snowPoles_labels_clean.csv')
 IPython.embed()
