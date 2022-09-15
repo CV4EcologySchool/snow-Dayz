@@ -97,8 +97,12 @@ class snowPoleDataset(Dataset):
         orig_h, orig_w = img.size
         img_tensor = self.transform(img)  
         if config.COLOR_JITTER == True:# and (split == 'train'): 
-            jitter = T.ColorJitter(brightness=.5, hue=.3)
+            jitter = T.ColorJitter(brightness=.8, hue=.5)
             img_tensor = jitter(img_tensor)
+
+        if config.RANDOM_ROTATION == True:# and (split == 'train'): 
+            rotator = T.RandomRotation(degrees=(0, 180))
+            img_tensor = rotator(img_tensor)
 
         #IPython.embed()
 

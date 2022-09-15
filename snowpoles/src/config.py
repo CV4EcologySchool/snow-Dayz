@@ -5,7 +5,7 @@ import os
 #OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized' #'/datadrive/vmData/snow_poles_outputs'
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_jitterB5H3'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_jitterB8H5_rotator'
 
 # learning parameters
 BATCH_SIZE = 64 #32
@@ -19,7 +19,7 @@ SHOW_DATASET_PLOT = False
 
 # data augmentations
 COLOR_JITTER = True
-RANDOM_ROTATION = False
+RANDOM_ROTATION = True
 
 ### in my datasheet it is columns 3, 4, 5, 6, so we will use range 3:7
 ## or we can name them directly
