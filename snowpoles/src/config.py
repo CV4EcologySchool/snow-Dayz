@@ -4,11 +4,11 @@ import os
 #ROOT_PATH =    '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized' #'/datadrive/vmData/SNEX20_TLI' # '/Volumes/CatBreen/CV4ecology/SNEX20_TLI' # 'datadrive/data/SNEX20_TLI'
 #OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized' #'/datadrive/vmData/snow_poles_outputs'
 
-ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_jitterB8H5_rotator'
+ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_jitterB8H5_clean'
 
 # learning parameters
-BATCH_SIZE = 64 #32
+BATCH_SIZE = 128 #32
 LR = 0.0001  # #0.0001 lower to factor of 10
 EPOCHS = 100
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
