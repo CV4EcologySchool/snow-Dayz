@@ -87,4 +87,6 @@ def eval_keypoints_plot(file, image, outputs, orig_keypoints):
     plt.close()
 
 
-#def object_keypoint_similarity():
+#def object_keypoint_similarity()
+
+

@@ -104,6 +104,23 @@ class snowPoleDataset(Dataset):
             rotator = T.RandomRotation(degrees=(0, 180))
             img_tensor = rotator(img_tensor)
 
+        # if config.AFFINE == True:
+        #     degrees = random(30,70)
+        #     translate = random(0.1, 0.3)
+        #     scale = random(0.5, 0.75)
+
+        #     affine_transfomer = T.affine(degrees=(degrees), translate=(translate), scale=(scale))
+        #     affine_imgs = affine_transfomer(img_tensor)
+        #     IPython.embed()
+        #     #plot(affine_imgs)
+
+        if config.GAUSSIAN == True:
+            blur = T.GaussianBlur(kernel_size=(51, 91), sigma=(3,7))
+            img_tensor = blur(img_tensor)
+
+        #if config.PERSPECTIVE ==True:
+         #   perspective = T.RandomPerspective(distortion_scale=0.6, p=1.0) 
+
         #IPython.embed()
 
         # get the keypoints
@@ -114,6 +131,7 @@ class snowPoleDataset(Dataset):
         # reshape the keypoints
         keypoints = keypoints.reshape(-1, 2)
         # rescale keypoints according to image resize
+        #IPython.embed()
         keypoints = keypoints * [self.resize / orig_w, self.resize / orig_h]
 
         #if config.RANDOM_ROTATION == True: 
@@ -126,7 +144,7 @@ class snowPoleDataset(Dataset):
         }
 
 # get the training and validation data samples
-training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}") #config.TEST_SPLIT)
+training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels.csv", f"{config.ROOT_PATH}") #config.TEST_SPLIT)
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
