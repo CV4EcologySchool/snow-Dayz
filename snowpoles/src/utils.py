@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import config
 import IPython
+import cv2 
 
 def valid_keypoints_plot(image, outputs, orig_keypoints, epoch):
     """
@@ -45,7 +46,8 @@ def dataset_keypoints_plot(data):
     for i in range(9):
         sample = data[i]
         img = sample['image']
-        img = np.array(img, dtype='float32')
+        img = np.array(img, dtype='float32') #/255
+        #IPython.embed()
         img = np.transpose(img, (1, 2, 0))
         plt.subplot(3, 3, i+1)
         plt.imshow(img)
@@ -88,5 +90,15 @@ def eval_keypoints_plot(file, image, outputs, orig_keypoints):
 
 
 #def object_keypoint_similarity()
+def vis_keypoints(image, keypoints, color=(0,255,0), diameter=15):
+    image = image.copy()
 
+    for (x, y) in keypoints:
+        cv2.circle(image, (int(x), int(y)), diameter, (0, 255, 0), -1)
+        
+    #plt.figure(figsize=(8, 8))
+    #plt.axis('off')
+    plt.imshow(image)
+    plt.show()
+    plt.close()
 
