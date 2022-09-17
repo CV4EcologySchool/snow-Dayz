@@ -73,9 +73,11 @@ class snowPoleDataset(Dataset):
             #A.RandomCrop(width=100, height=100, p=0.5),
             #A.Rotate(p=0.5),
             #A.HorizontalFlip(p=0.5),
-            A.CropAndPad(px=50, p =1.0),
+            A.CropAndPad(px=25, p =1.0), ## final model is 50 pixels
             A.ShiftScaleRotate(p=0.5),
-            #A.Resize(224, 224)
+            #A.RandomCrop(width=100, height=100, p=0.5),
+            A.Affine(translate_px = 10,p=0.5), ### will throw off algorithm 
+            A.Resize(224, 224)
             ], 
             keypoint_params=A.KeypointParams(format='xy'))
 
@@ -140,8 +142,8 @@ class snowPoleDataset(Dataset):
         #utils.vis_keypoints(transformed['image'], transformed['keypoints'])
         image = np.transpose(img_transformed, (2, 0, 1))
         #IPython.embed()
-        #if len(keypoints) != 2:
-         #   IPython.embed()
+        if len(keypoints) != 2:
+           IPython.embed()
 
         return {
             'image': torch.tensor(image, dtype=torch.float),
@@ -150,7 +152,7 @@ class snowPoleDataset(Dataset):
         }
 
 # get the training and validation data samples
-training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}") #config.TEST_SPLIT)
+training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels.csv", f"{config.ROOT_PATH}") #config.TEST_SPLIT)
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
