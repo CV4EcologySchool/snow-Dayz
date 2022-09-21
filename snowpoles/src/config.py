@@ -5,10 +5,13 @@ import os
 #OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized' #'/datadrive/vmData/snow_poles_outputs'
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_CROPTILT_clean'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_CROPTILT_clean_wWA'
+
+#ROOT_PATH = '/Users/catherinebreen/Documents/Chewelah_2020-21_sample'
+#OUTPUT_PATH = '//Users/catherinebreen/Documents/Chewelah_2020-21_outputs'
 
 # learning parameters
-BATCH_SIZE = 64 #32
+BATCH_SIZE = 64 #4 #32
 LR = 0.0001  # #0.0001 lower to factor of 10
 EPOCHS = 100
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -16,11 +19,6 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 #TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as validation
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = False
-
-# data augmentations
-COLOR_JITTER = False
-RANDOM_ROTATION = False
-GAUSSIAN = False
 
 ### in my datasheet it is columns 3, 4, 5, 6, so we will use range 3:7
 ## or we can name them directly

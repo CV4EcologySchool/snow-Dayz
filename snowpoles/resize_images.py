@@ -14,14 +14,16 @@ import IPython
 from PIL import Image
 
 #snowpolefiles = glob.glob('/Volumes/CatBreen/CV4ecology/SNEX20_TLI_test/**/*') #glob.glob('/datadrive/vmData/SNEX20_TLI/**/*')
-snowpolefiles = glob.glob('/datadrive/vmData/SNEX20_TLI/**/*')
+#snowpolefiles = glob.glob('/datadrive/vmData/SNEX20_TLI/**/*')
+snowpolefiles = glob.glob('/Volumes/CatBreen/Chelewah_Timelapse_Photos/samples/**/*')
+
 snowpoleList = [item.split('/')[-1] for item in snowpolefiles]
-#labels = pd.read_csv('/Volumes/CatBreen/CV4ecology/SNEX20_TLI_test/snowPoles_labels.csv')
-labels = pd.read_csv('/datadrive/vmData/SNEX20_TLI/snowPoles_labels_clean.csv')
+labels = pd.read_csv('/Volumes/CatBreen/Chelewah_Timelapse_Photos/samples/snow_labels_chewelah.csv')
+#labels = pd.read_csv('/datadrive/vmData/SNEX20_TLI/snowPoles_labels_clean.csv')
 snowpoleImages =  labels[labels['filename'].isin(snowpoleList)].reset_index() ## only error code = 0 
 
 #newPath = '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized/' #'/datadrive/vmData/SNEX20_TLI_resized/'
-newPath = '/datadrive/vmData/SNEX20_TLI_resized_clean/'
+newPath = '/Volumes/CatBreen/Chelewah_Timelapse_Photos/Resized/'
 
 if not os.path.exists(newPath):
     os.makedirs(newPath)
@@ -36,7 +38,7 @@ y2s=[]
 for file in tqdm.tqdm(snowpoleImages['filename']): 
     #IPython.embed()
     CameraID = file.split('_')[0] ## need this
-    image = cv2.imread(f"/datadrive/vmData/SNEX20_TLI/{CameraID}/{file}")
+    image = cv2.imread(f"/Volumes/CatBreen/Chelewah_Timelapse_Photos/samples/{CameraID}/{file}")
     new_filename = newPath + CameraID + ('/')
     if not os.path.exists(new_filename):
         os.makedirs(new_filename)
@@ -65,8 +67,8 @@ for file in tqdm.tqdm(snowpoleImages['filename']):
     #keypoints = keypoints.view(keypoints.size(0), -1)
 
 labels_resized = pd.DataFrame({'Camera':Camera, 'filename':files, 'x1':x1s, 'y1':y1s, 'x2':x2s, 'y2':y2s})
-#IPython.embed()
-labels_resized.to_csv('/datadrive/vmData/SNEX20_TLI_resized_clean/snowPoles_labels_clean.csv')
+#IPython.embed()IPython.embed()
+labels_resized.to_csv('/Volumes/CatBreen/Chelewah_Timelapse_Photos/Resized/snowPoles_labels_clean.csv')
 IPython.embed()
 
 

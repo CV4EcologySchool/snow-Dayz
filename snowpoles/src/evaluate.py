@@ -23,6 +23,7 @@ from dataset import train_data, train_loader, valid_data, valid_loader
 from tqdm import tqdm
 from scipy.spatial import distance
 import os
+import matplotlib.pyplot as plt
 
 def load_model():
     model = snowPoleResNet50(pretrained=False, requires_grad=False).to(config.DEVICE)
