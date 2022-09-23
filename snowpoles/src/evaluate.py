@@ -49,8 +49,8 @@ def predict(model, data): ## try this without a dataloader
     #df_data = pd.read_csv(f"{config.ROOT_PATH}/snowPoles_labels.csv")
     #IPython.embed()
 
-    if not os.path.exists(f"{config.OUTPUT_PATH}/eval2"):
-        os.makedirs(f"{config.OUTPUT_PATH}/eval2", exist_ok=True)
+    if not os.path.exists(f"{config.OUTPUT_PATH}/eval"):
+        os.makedirs(f"{config.OUTPUT_PATH}/eval", exist_ok=True)
 
     output_list = []
     Cameras, filenames = [], []
@@ -96,7 +96,7 @@ def predict(model, data): ## try this without a dataloader
         'x1_pred': x1s_pred, 'y1s_pred': y1s_pred, 'x2_pred': x2s_pred, 'y2_pred': y2s_pred, 'top_pixel_error': top_pixel_errors, \
             'bottom_pixel_error': bottom_pixel_errors, 'total_length_pixel': total_length_pixels})
 
-    results.to_csv(f"{config.OUTPUT_PATH}/eval2/results.csv")
+    results.to_csv(f"{config.OUTPUT_PATH}/eval/results.csv")
     #### overall average
     print('Overall Top Pixel Error \n')
     print(np.mean(top_pixel_error))
