@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 def load_model():
     model = snowPoleResNet50(pretrained=False, requires_grad=False).to(config.DEVICE)
     # load the model checkpoint
-    checkpoint = torch.load(config.OUTPUT_PATH + '/model_epoch.pth')
+    checkpoint = torch.load(config.OUTPUT_PATH + '/model.pth')
     # load model weights state_dict
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
