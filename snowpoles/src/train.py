@@ -10,6 +10,7 @@ from dataset import train_data, train_loader, valid_data, valid_loader
 from tqdm import tqdm
 import IPython
 import os
+import numpy as np 
 
 matplotlib.style.use('ggplot')
 
@@ -85,6 +86,11 @@ def validate(model, dataloader, data, epoch):
 train_loss = []
 val_loss = []
 for epoch in range(config.EPOCHS):
+    ## early stopping ##
+    best_loss_val = np.inf
+    best_loss_val_epoch = 0 # index of the epoch
+    #######################
+
     print(f"Epoch {epoch+1} of {config.EPOCHS}")
     train_epoch_loss = fit(model, train_loader, train_data)
     val_epoch_loss = validate(model, valid_loader, valid_data, epoch)
@@ -102,6 +108,14 @@ for epoch in range(config.EPOCHS):
             'loss': criterion,
             }, f"{config.OUTPUT_PATH}/model_epoch{epoch}.pth")
 
+    ####### early stopping #########
+    #IPython.embed()
+    if val_epoch_loss < best_loss_val:
+                best_loss_val = val_epoch_loss
+                best_loss_val_epoch = epoch
+    elif epoch > best_loss_val_epoch + 10:
+            break
+
 
 # loss plots
 plt.figure(figsize=(10, 7))
@@ -117,5 +131,5 @@ torch.save({
             'model_state_dict': model.state_dict(),
             'optimizer_state_dict': optimizer.state_dict(),
             'loss': criterion,
-            }, f"{config.OUTPUT_PATH}/model.pth")
+            }, f"{config.OUTPUT_PATH}/model.pth") ### the last model
 print('DONE TRAINING')
