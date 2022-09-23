@@ -28,7 +28,7 @@ import matplotlib.pyplot as plt
 def load_model():
     model = snowPoleResNet50(pretrained=False, requires_grad=False).to(config.DEVICE)
     # load the model checkpoint
-    checkpoint = torch.load(config.OUTPUT_PATH + '/model_epoch82.pth')
+    checkpoint = torch.load(config.OUTPUT_PATH + '/model_epoch.pth')
     # load model weights state_dict
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
@@ -77,6 +77,8 @@ def predict(model, data): ## try this without a dataloader
             utils.eval_keypoints_plot(filename, image, outputs, orig_keypoints=keypoints) ## visualize points
             pred_keypoint = np.array(outputs[0], dtype='float32')
             x1_pred, y1_pred, x2_pred, y2_pred = pred_keypoint[0], pred_keypoint[1], pred_keypoint[2], pred_keypoint[3]
+            #PixelLengths = 
+
             
             Cameras.append(Camera)
             filenames.append(filename)
