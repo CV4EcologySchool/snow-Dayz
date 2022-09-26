@@ -57,6 +57,7 @@ def predict(model, data): ## try this without a dataloader
     x1s_true, y1s_true, x2s_true, y2s_true = [], [], [], []
     x1s_pred, y1s_pred, x2s_pred, y2s_pred = [], [], [], []
     top_pixel_errors, bottom_pixel_errors, total_length_pixels = [], [], []
+    total_length_pixel_actuals = []
     
     #num_batches = int(len(data)/dataloader.batch_size)
     with torch.no_grad():
@@ -89,12 +90,14 @@ def predict(model, data): ## try this without a dataloader
             top_pixel_error = distance.euclidean([x1_true,y1_true], [x1_pred,y1_pred])
             bottom_pixel_error = distance.euclidean([x2_true,y2_true], [x2_pred,y2_pred])
             total_length_pixel = distance.euclidean([x1_pred,y1_pred],[x2_pred,y2_pred])
+            total_length_pixel_actual = distance.euclidean([x1_true,y1_true],[x2_true,y2_true])
             top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
+            total_length_pixel_actuals.append(total_length_pixel_actual)
 
     #IPython.embed()
     results = pd.DataFrame({'Camera':Cameras, 'filename':filenames, 'x1_true':x1s_true, 'y1_true':y1s_true, 'x2_true':x2s_true, 'y2_true':y2s_true, \
         'x1_pred': x1s_pred, 'y1s_pred': y1s_pred, 'x2_pred': x2s_pred, 'y2_pred': y2s_pred, 'top_pixel_error': top_pixel_errors, \
-            'bottom_pixel_error': bottom_pixel_errors, 'total_length_pixel': total_length_pixels})
+            'bottom_pixel_error': bottom_pixel_errors, 'total_length_pixel': total_length_pixels, 'total_length_pixel_actual': total_length_pixel_actuals})
 
     results.to_csv(f"{config.OUTPUT_PATH}/eval/results.csv")
     #### overall average
