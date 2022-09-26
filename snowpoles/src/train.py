@@ -85,11 +85,12 @@ def validate(model, dataloader, data, epoch):
 
 train_loss = []
 val_loss = []
+## early stopping ##
+#######################
+best_loss_val = np.inf
+best_loss_val_epoch = 0 # index of the epoch
+#######################
 for epoch in range(config.EPOCHS):
-    ## early stopping ##
-    best_loss_val = np.inf
-    best_loss_val_epoch = 0 # index of the epoch
-    #######################
 
     print(f"Epoch {epoch+1} of {config.EPOCHS}")
     train_epoch_loss = fit(model, train_loader, train_data)
@@ -115,7 +116,6 @@ for epoch in range(config.EPOCHS):
                 best_loss_val_epoch = epoch
     elif epoch > best_loss_val_epoch + 10:
             break
-
 
 # loss plots
 plt.figure(figsize=(10, 7))
