@@ -51,7 +51,7 @@ def train_test_split(csv_path, path, split, domain):
         #training_samples = df_data.sample(n = int(len_data * split))
         #training_samples, valid_samples = strain_test_split(df_data, test_size=split, random)
 
-        training_samples = df_data.sample(frac=0.9, random_state=100)
+        training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
 
     else:
