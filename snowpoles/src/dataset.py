@@ -52,12 +52,12 @@ def train_test_split(csv_path, path, split, domain):
         training_samples = df_data.sample(frac=0.9, random_state=100)
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
 
-    else: pass
-        #print('testing OUT OF DOMAIN')
+    else:
+        print('testing OUT OF DOMAIN')
         ######### EXP #2: OUT OF DOMAIN TESTING ############
-        #val_cameras = ['E9E', 'W2B', 'E6B', 'W8A','CHE8', 'CHE9', 'CHE10'] 
-        #valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
-        #training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
+        val_cameras = ['E9E', 'W2B', 'E6B', 'W8A','CHE8', 'CHE9', 'CHE10'] 
+        valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
+        training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
 
     ##### only images that exist
     #IPython.embed()
@@ -70,30 +70,36 @@ def train_test_split(csv_path, path, split, domain):
 
 
 class snowPoleDataset(Dataset):
-    def __init__(self, samples, path): # split='train'):
+
+    def __init__(self, samples, path, domain): # split='train'):
         self.data = samples
         self.path = path
         self.resize = 224
-        #self.split = split
         # self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
         #     Resize(([224, 224])), 
         #            # For now, we just resize the images to the same dimensions...
         #     ToTensor()                          # ...and convert them to torch.Tensor.
         # ])
-        self.transform = A.Compose([
-                #A.RandomCrop(width=100, height=100, p=0.5),
-                #A.Rotate(p=0.5),
-                #A.HorizontalFlip(p=0.5),
-            #A.CropAndPad(px=75, p =1.0), ## final model is 50 pixels
-            #A.ShiftScaleRotate(p=0.5),
-            #A.ShiftScaleRotate(shift_limit=0.0625, scale_limit=0.2, rotate_limit=45, p=0.8),
-            #A.OneOf([
-             #   A.Affine(translate_px = (-5, 5),p=0.5), ### will throw off algorithm 
-              #  A.Affine(scale = (0.5, 1.0), p =0.5),
-               # A.Affine(translate_percent = (-0.15,0.15), p =0.5)], p =0.5),
-            A.Resize(224, 224),
-            ], 
-            keypoint_params=A.KeypointParams(format='xy'))
+        if domain == True: 
+            self.transform = A.Compose([
+                A.Resize(224, 224),
+                ], keypoint_params=A.KeypointParams(format='xy'))
+        else: 
+            self.transform = A.Compose([
+                A.ToFloat(max_value=1.0),
+                A.CropAndPad(px=75, p =1.0), ## final model is 50 pixels
+                A.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.2, rotate_limit=20, p=1.0),
+                A.OneOf([
+                    A.Affine(translate_px = (-3, 3),p=0.5), ### will throw off algorithm 
+                    A.Affine(scale = (0.5, 1.0), p =0.5),
+                    A.Affine(translate_percent = (-0.15,0.15), p =0.5)], p =0.5),
+                A.OneOf([
+                    A.RandomBrightnessContrast(p=0.5),
+                    A.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2, always_apply=False, p=0.5),
+                    A.ToGray(p=0.5)], p = 0.5),
+                #A.FromFloat(max_value=1.0),
+                A.Resize(224, 224),
+                ], keypoint_params=A.KeypointParams(format='xy'))
 
     def __len__(self):
         return len(self.data)
@@ -136,6 +142,7 @@ class snowPoleDataset(Dataset):
         #=if config.RANDOM_ROTATION == True: 
          #   image = T.ColorJitter(brightness=.5, hue=.3)
         #utils.vis_keypoints(image, keypoints)
+        #IPython.embed()
         transformed = self.transform(image=image, keypoints=keypoints)
         img_transformed = transformed['image']
         keypoints = transformed['keypoints']
@@ -158,10 +165,10 @@ training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPole
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
-                                 f"{config.ROOT_PATH}")  ## we want all folders
+                                 f"{config.ROOT_PATH}", config.DOMAIN)  ## we want all folders
 #IPython.embed()
 valid_data = snowPoleDataset(valid_samples, 
-                                 f"{config.ROOT_PATH}")
+                                 f"{config.ROOT_PATH}", domain = True) # we always want the transform to be the normal transform
 # prepare data loaders
 train_loader = DataLoader(train_data, 
                           batch_size=config.BATCH_SIZE, 
@@ -174,6 +181,9 @@ print(f"Validation sample instances: {len(valid_data)}")
 
 # whether to show dataset keypoint plots
 if config.SHOW_DATASET_PLOT:
+    utils.dataset_keypoints_plot(train_data)
     utils.dataset_keypoints_plot(valid_data)
+
+
 
 

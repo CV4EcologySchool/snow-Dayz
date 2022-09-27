@@ -5,7 +5,7 @@ import os
 #OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized' #'/datadrive/vmData/snow_poles_outputs'
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe5_BS64_clean_wWA_IN' #_earlystop'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_clean_wWA_OUT' #_earlystop'
 
 # learning parameters
 BATCH_SIZE = 64 #64 #4 #32
@@ -16,7 +16,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as validation
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = True
-DOMAIN = True ## True for IN DOMAIN; False for Out of Domain
+DOMAIN = False ## True for IN DOMAIN; False for Out of Domain
 
 ### in my datasheet it is columns 3, 4, 5, 6, so we will use range 3:7
 ## or we can name them directly
