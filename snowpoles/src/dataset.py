@@ -9,6 +9,8 @@ Updates:
     rather than training and testing
 - specified the cameras for validation, 2 from each side, split from in and out of canopy
 - hardcoded the training files path
+- data aug docs: https://albumentations.ai/docs/getting_started/keypoints_augmentation/ 
+- data aug docs cont. : https://albumentations.ai/docs/api_reference/augmentations/transforms/
 
 '''
 
@@ -26,7 +28,7 @@ import torch
 import torchvision.transforms as T
 from PIL import Image
 from PIL import Image, ImageFile
-import albumentations as A
+import albumentations as A ### better for keypoint augmentations
 from torchvision.transforms import Compose, Resize, ToTensor
 from sklearn.model_selection import train_test_split
 
@@ -88,11 +90,11 @@ class snowPoleDataset(Dataset):
             self.transform = A.Compose([
                 A.ToFloat(max_value=1.0),
                 A.CropAndPad(px=75, p =1.0), ## final model is 50 pixels
-                A.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.2, rotate_limit=20, p=1.0),
-                A.OneOf([
-                    A.Affine(translate_px = (-3, 3),p=0.5), ### will throw off algorithm 
-                    A.Affine(scale = (0.5, 1.0), p =0.5),
-                    A.Affine(translate_percent = (-0.15,0.15), p =0.5)], p =0.5),
+                A.ShiftScaleRotate(shift_limit=0.05, scale_limit=0.2, rotate_limit=20, p=0.5),
+                #A.OneOf([
+                 #   A.Affine(translate_px = (-3, 3),p=0.5), ### will throw off algorithm 
+                  #  A.Affine(scale = (0.5, 1.0), p =0.5),
+                   # A.Affine(translate_percent = (-0.15,0.15), p =0.5)], p =0.5),
                 A.OneOf([
                     A.RandomBrightnessContrast(p=0.5),
                     A.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2, always_apply=False, p=0.5),
