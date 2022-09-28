@@ -5,7 +5,7 @@ import os
 #OUTPUT_PATH = '/Volumes/CatBreen/CV4ecology/snow_poles_outputs_resized' #'/datadrive/vmData/snow_poles_outputs'
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_clean_wWA_OUT_earlystop' #_earlystop'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_clean_wWA_OUT_nonAug' #_earlystop'
 
 # learning parameters
 BATCH_SIZE = 64 #64 #4 #32
