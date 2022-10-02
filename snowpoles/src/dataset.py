@@ -57,7 +57,7 @@ def train_test_split(csv_path, path, split, domain):
     else:
         print('testing OUT OF DOMAIN')
         ######### EXP #2: OUT OF DOMAIN TESTING ############
-        val_cameras = ['E9E', 'W2B', 'E6B', 'W8A','CHE8', 'CHE9', 'CHE10'] 
+        val_cameras = ['E9E', 'W2E', 'CHE8', 'CHE9', 'TWISP-U-01'] 
         valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
         training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
 
