@@ -81,7 +81,7 @@ def eval_keypoints_plot(file, image, outputs, orig_keypoints):
     for p in range(output_keypoint.shape[0]):
         if p == 0: 
             plt.plot(orig_keypoints[p, 0], orig_keypoints[p, 1], 'b.',  markersize=20)
-            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.', markersize=20) ## top
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'o.', markersize=20) ## top
         else:
             plt.plot(orig_keypoints[p, 0], orig_keypoints[p, 1], 'b.',  markersize=20)
             plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'g.', markersize=20) ## bottom
