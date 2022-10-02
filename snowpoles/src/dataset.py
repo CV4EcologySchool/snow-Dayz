@@ -82,7 +82,7 @@ class snowPoleDataset(Dataset):
         #            # For now, we just resize the images to the same dimensions...
         #     ToTensor()                          # ...and convert them to torch.Tensor.
         # ])
-        if domain == False: 
+        if domain == True: 
             self.transform = A.Compose([
                 A.Resize(224, 224),
                 ], keypoint_params=A.KeypointParams(format='xy'))
