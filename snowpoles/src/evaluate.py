@@ -102,9 +102,11 @@ def predict(model, data): ## try this without a dataloader
     results.to_csv(f"{config.OUTPUT_PATH}/eval/results.csv")
     #### overall average
     print('Overall Top Pixel Error \n')
-    print(np.mean(top_pixel_error))
+    print(np.mean(top_pixel_errors))
     print('Overall Bottom Pixel Error \n')
-    print(np.mean(bottom_pixel_error))
+    print(np.mean(bottom_pixel_errors))
+    print('Mean difference between actual and predicted \n')
+    print(np.mean(total_length_pixel_actuals-total_length_pixels))
     #### average for each camera
 
     return results
