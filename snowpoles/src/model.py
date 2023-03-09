@@ -6,6 +6,8 @@ https://debuggercafe.com/advanced-facial-keypoint-detection-with-pytorch/
 ## make sure to change the final layer to the number of points you want 
 In this case we just want 2. 
 
+other website with model: https://medium.com/@alexppppp/how-to-train-a-custom-keypoint-detection-model-with-pytorch-d9af90e111da
+
 '''
 
 import torch.nn as nn

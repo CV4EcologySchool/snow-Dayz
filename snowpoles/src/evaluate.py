@@ -6,6 +6,8 @@ example command line to run:
 
 python src/evaluate.py --exp_dir '/Volumes/CatBreen/CV4ecology/snow_poles_outputs2' --exp_name snow_poles_outputs2 --image_path '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_test'
 
+
+
 '''
 
 import torch

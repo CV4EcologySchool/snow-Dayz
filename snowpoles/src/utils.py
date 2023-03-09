@@ -3,6 +3,7 @@ import numpy as np
 import config
 import IPython
 import cv2 
+import argparse
 
 def valid_keypoints_plot(image, outputs, orig_keypoints, epoch):
     """
@@ -94,6 +95,7 @@ def vis_keypoints(image, keypoints, color=(0,255,0), diameter=15):
     image = image.copy()
 
     for (x, y) in keypoints:
+        print(x, y)
         cv2.circle(image, (int(x), int(y)), diameter, (0, 255, 0), -1)
         
     #plt.figure(figsize=(8, 8))
@@ -102,3 +104,20 @@ def vis_keypoints(image, keypoints, color=(0,255,0), diameter=15):
     plt.show()
     plt.close()
 
+
+def vis_predicted_keypoints(args, file, image, keypoints, color=(0,255,0), diameter=15):
+    # image = image.squeeze()
+    # image = image.cpu()
+    output_keypoint = keypoints.reshape(-1, 2)
+    # image = np.transpose(image, (1, 2, 0))
+    # image = np.array(image, dtype='float32')
+
+    plt.imshow(image)
+    for p in range(output_keypoint.shape[0]):
+        if p == 0: 
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.') ## top
+        else:
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'g.') ## bottom
+    plt.savefig(f"{args.output_path}/predictions/image_{file}.png")
+    plt.close()
+   

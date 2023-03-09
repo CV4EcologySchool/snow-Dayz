@@ -15,7 +15,7 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
 from torch.optim import SGD
-from torch.utils.tensorboard import SummaryWriter 
+#from torch.utils.tensorboard import SummaryWriter 
 from sklearn.metrics import balanced_accuracy_score
 import IPython
 
