@@ -107,7 +107,7 @@ def predict(model, args): ## try this without a dataloader
             pred_keypoint[3] = pred_keypoint[3] * (h /224)
             ###########
 
-            #utils.vis_predicted_keypoints(args, filename, image, pred_keypoint,) ## visualize points
+            utils.vis_predicted_keypoints(args, filename, image, pred_keypoint,) ## visualize points
             x1_pred, y1_pred, x2_pred, y2_pred = pred_keypoint[0], pred_keypoint[1], pred_keypoint[2], pred_keypoint[3]
             
             Cameras.append(Camera)

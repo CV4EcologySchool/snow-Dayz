@@ -26,6 +26,7 @@ bot_row_img_cutoff= []
 
 for image in tqdm(images): 
     img_name = image.split('/')[-1] ## the last part of the filename
+    img_name_wofileExt = img_name.split('.')[0]
     first_letter = img_name[0]
     ## look up image in the csv:
     try: 
@@ -61,9 +62,8 @@ for image in tqdm(images):
             top_5 =  round(height*(100/100)) ## 2%
 
         if first_letter in camDict['Wingscape']:
-
-        bottom_5 = round(height*(90/100)) ## 2%? 
-        top_5 =  round(height*(100/100)) ## 2%
+            bottom_5 = round(height*(90/100)) ## 2%? 
+            top_5 =  round(height*(100/100)) ## 2%
 
         ## cut off top 10% ##
         masked = masked[0:bottom_5,:] ## crop bottom 10% and top 10% (could make this 5%, and it would 24:424)
@@ -80,7 +80,7 @@ for image in tqdm(images):
         #cv2.imshow('masked iamge', masked)
         # save
         #IPython.embed()
-        #cv2.imwrite(f'/Volumes/CatBreen/CV4ecology/segmented_images_resized_cropped2_10/mask_{img_name}', masked) #, binary * 255)
+        #cv2.imwrite(f'/Volumes/CatBreen/CV4ecology/segmented_images_resized_cropped2_10/mask_{img_name_wofileExt}.png', masked) #, binary * 255)
         #cv2.imwrite(f'/Volumes/CatBreen/CV4ecology/input_images_resized_cropped2_10/{img_name}', img) #, binary * 255)
         #cv2.imwrite('/Users/catherinebreen/Documents/test')
         #IPython.embed()

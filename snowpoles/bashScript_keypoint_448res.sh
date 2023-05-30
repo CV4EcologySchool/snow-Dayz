@@ -74,3 +74,11 @@ python src/predict.py --image_path '/Users/catherinebreen/Documents/Chapter 1/WR
 
 python src/predict.py --image_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean/W8C' --output_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/448res_results/CNNkeypoint'
 
+
+
+python src/predict.py --image_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean/W8C' --output_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/448res_results/CNNkeypoint'
+
+
+
+#### for WRR submission: 
+python src/predict.py --image_path '/Users/catherinebreen/Documents/CBRE and SnowEx/SNEX20_TLI/W9E' --output_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/test'
