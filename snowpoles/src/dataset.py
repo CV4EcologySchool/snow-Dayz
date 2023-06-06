@@ -28,12 +28,12 @@ import torch
 import torchvision.transforms as T
 from PIL import Image
 from PIL import Image, ImageFile
-import albumentations as A ### better for keypoint augmentations
+import albumentations as A ### better for keypoint augmentations, pip install albumentations
 from torchvision.transforms import Compose, Resize, ToTensor
 from sklearn.model_selection import train_test_split
 
 ##### re-write this for out of domain testing
-def train_test_split(csv_path, path, split, domain):
+def train_test_split(csv_path, path, split, domain, snex):
     #IPython.embed()
     df_data = pd.read_csv(csv_path)
 
@@ -61,6 +61,11 @@ def train_test_split(csv_path, path, split, domain):
         valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
         training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
 
+    if snex == True:
+        print('SNEX ONLY')
+        snex_cam = ['E6A', 'E6B', 'E9A','E9E', 'E9F','W1A','W2A','W2B',
+                    'W5A','W6A','W6B','W6C','W8A','W8C','W9A','W9B','W9C','W9D','W9E','W9G']
+
     ##### only images that exist
     #IPython.embed()
     all_images = glob.glob(path + ('/**/*.JPG'))
@@ -73,7 +78,7 @@ def train_test_split(csv_path, path, split, domain):
 
 class snowPoleDataset(Dataset):
 
-    def __init__(self, samples, path, domain): # split='train'):
+    def __init__(self, samples, path, domain, snex): # split='train'):
         self.data = samples
         self.path = path
         self.resize = 224
@@ -153,7 +158,7 @@ class snowPoleDataset(Dataset):
         image = np.transpose(img_transformed, (2, 0, 1))
         #IPython.embed()
         if len(keypoints) != 2:
-            IPython.embed()
+            #IPython.embed()
             utils.vis_keypoints(transformed['image'], transformed['keypoints'])
 
         return {
@@ -167,10 +172,10 @@ training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPole
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
-                                 f"{config.ROOT_PATH}", config.DOMAIN)  ## we want all folders
+                                 f"{config.ROOT_PATH}", config.DOMAIN, config.SNEX)  ## we want all folders
 #IPython.embed()
 valid_data = snowPoleDataset(valid_samples, 
-                                 f"{config.ROOT_PATH}", domain = True) # we always want the transform to be the normal transform
+                                 f"{config.ROOT_PATH}", config.DOMAIN, config.SNEX) # we always want the transform to be the normal transform
 # prepare data loaders
 train_loader = DataLoader(train_data, 
                           batch_size=config.BATCH_SIZE, 
