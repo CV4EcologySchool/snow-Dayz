@@ -78,7 +78,7 @@ def train_test_split(csv_path, path, split, domain, snex):
 
 class snowPoleDataset(Dataset):
 
-    def __init__(self, samples, path, domain, snex): # split='train'):
+    def __init__(self, samples, path, domain): # split='train'):
         self.data = samples
         self.path = path
         self.resize = 224
@@ -168,14 +168,14 @@ class snowPoleDataset(Dataset):
         }
 
 # get the training and validation data samples
-training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}", config.TEST_SPLIT, config.DOMAIN)
+training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}", config.TEST_SPLIT, config.DOMAIN, config.SNEX)
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
-                                 f"{config.ROOT_PATH}", config.DOMAIN, config.SNEX)  ## we want all folders
+                                 f"{config.ROOT_PATH}", config.DOMAIN)  ## we want all folders
 #IPython.embed()
 valid_data = snowPoleDataset(valid_samples, 
-                                 f"{config.ROOT_PATH}", config.DOMAIN, config.SNEX) # we always want the transform to be the normal transform
+                                 f"{config.ROOT_PATH}", config.DOMAIN) # we always want the transform to be the normal transform
 # prepare data loaders
 train_loader = DataLoader(train_data, 
                           batch_size=config.BATCH_SIZE, 
