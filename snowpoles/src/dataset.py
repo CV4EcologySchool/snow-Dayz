@@ -36,6 +36,7 @@ from sklearn.model_selection import train_test_split
 def train_test_split(csv_path, path, split, domain, snex):
     #IPython.embed()
     df_data = pd.read_csv(csv_path)
+    print(f'all rows in df_data {len(df_data.index)}')
 
     ########## EXP #1: CAN MODEL DETECT SNOW  
     if domain == True: 
@@ -62,9 +63,16 @@ def train_test_split(csv_path, path, split, domain, snex):
         training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
 
     if snex == True:
-        print('SNEX ONLY')
-        snex_cam = ['E6A', 'E6B', 'E9A','E9E', 'E9F','W1A','W2A','W2B',
+        print('SNEX CAMERAS ONLY')
+        snex_cams = ['E6A', 'E6B', 'E9A','E9E', 'E9F','W1A','W2A','W2B',
                     'W5A','W6A','W6B','W6C','W8A','W8C','W9A','W9B','W9C','W9D','W9E','W9G']
+        valid_samples = df_data[df_data['Camera'].isin(snex_cams)]  
+        training_samples = df_data[~df_data['Camera'].isin(snex_cams)]
+    else:
+        print('SNEX_WAOK cameras')
+        valid_samples = valid_samples
+        training_samples = training_samples
+
 
     ##### only images that exist
     #IPython.embed()
