@@ -19,7 +19,7 @@ TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as va
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = False
 DOMAIN = True ## True for IN DOMAIN; False for Out of Domain
-SNEX = False
+SNEX = True
 
 ### in my datasheet it is columns 3, 4, 5, 6, so we will use range 3:7
 ## or we can name them directly
