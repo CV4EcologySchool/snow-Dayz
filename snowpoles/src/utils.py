@@ -145,6 +145,7 @@ def camres(Camera):    ## first get resolution dictionary (move to utils eventua
         nativeRes.append([orig_h, orig_w])
 
     resDic = dict(zip(camIDs, nativeRes))
+    IPython.embed()
     CamRes = resDic[Camera] ## test this but this is what you want to return
     return CamRes
 
