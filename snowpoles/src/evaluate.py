@@ -95,7 +95,7 @@ def predict(model, data): ## try this without a dataloader
             automated_sd = outputs_cm['snow_depth']
             automated_sds.append(automated_sd)
 
-            ## difference between automated and manual
+            # ## difference between automated and manual
             manual_snowdepth, difference = utils.diffcm(Camera, filename, automated_sd)
             manual_sds.append(manual_snowdepth), diff_sds.append(difference)
 

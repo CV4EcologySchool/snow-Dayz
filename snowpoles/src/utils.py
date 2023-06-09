@@ -132,22 +132,31 @@ def vis_predicted_keypoints(args, file, image, keypoints, color=(0,255,0), diame
 ############################ turn into object?
 
 def camres(Camera):    ## first get resolution dictionary (move to utils eventually)
-    nativeRes_imgs = glob.glob(f"{config.res_info_path}/*") ## just 29 example images
-    camIDs = []
-    nativeRes = []
+    # nativeRes_imgs = glob.glob(f"{config.res_info_path}/*") ## just 29 example images
+    # camIDs = []
+    # nativeRes = []
+    # orig_hs = []
+    # orig_ws = []
 
-    ## turn into dictionary 
-    for img in nativeRes_imgs:
-        camID = img.split('/')[-1].split('_')[0]
-        image = cv2.imread(img)
-        orig_h, orig_w, channel = image.shape
-        camIDs.append(camID)
-        nativeRes.append([orig_h, orig_w])
+    # # ## turn into dictionary 
+    # for img in nativeRes_imgs:
+    #      camID = img.split('/')[-1].split('_')[0]
+    #      image = cv2.imread(img)
+    #      orig_h, orig_w, channel = image.shape
+    #      camIDs.append(camID), orig_hs.append(orig_h), orig_ws.append(orig_w)
+    #      #nativeRes.append([orig_h, orig_w])
 
-    resDic = dict(zip(camIDs, nativeRes))
-    #IPython.embed()
-    CamRes = resDic[Camera] ## test this but this is what you want to return
-    return CamRes
+    # #resDic = dict(zip(camIDs, nativeRes))
+    # #CamRes = resDic[Camera] ## test this but this is what you want to return
+    # df = pd.DataFrame({'camID':camIDs,'orig_h':orig_hs, 'orig_w':orig_ws})
+    # df.to_csv('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/nativeRes.csv')
+    
+    df = pd.read_csv(f'{config.native_res_path}')
+    # CamRes = df.loc[df['camID'] == Camera, 'nativeRes'].iloc[0]
+    orig_w = df.loc[df['camID'] == Camera, 'orig_w'].iloc[0]
+    orig_h = df.loc[df['camID'] == Camera, 'orig_h'].iloc[0]
+    return orig_w, orig_h 
+
 
 def conversionDic(Camera):
         ## now get the resulting predicted x and ys 
@@ -164,13 +173,14 @@ def outputs_in_cm(Camera, filename, x1s_pred, y1s_pred, x2s_pred, y2s_pred):
     '''
     This function converts the length in pixels to length in cm for each output
     '''
-    camRes = camres(Camera)
+    orig_w, orig_h = camres(Camera)
     conversion, snowfreestake_cm = conversionDic(Camera)
 
     keypoints = [x1s_pred, y1s_pred, x2s_pred, y2s_pred]
     keypoints = np.array(keypoints, dtype='float32')
     keypoints = keypoints.reshape(-1, 2)
-    keypoints = keypoints * [camRes[1] / 224, camRes[0] / 224] ### orig_w: resDic[1]; orig_h: resDic[0]
+    #IPython.embed()
+    keypoints = keypoints * [orig_w / 224, orig_h / 224] ### orig_w: resDic[1]; orig_h: resDic[0]
     
     proj_pix_length = math.dist(keypoints[0], keypoints[1])
     proj_cm_length = proj_pix_length * float(conversion) ## this is pix * cm/pix conversion for each camera
