@@ -185,31 +185,8 @@ def outputs_in_cm(Camera, filename, x1s_pred, y1s_pred, x2s_pred, y2s_pred):
 
 
 def datetimeExtrac(filename):
-    images = glob.glob(f'{config.native_res_path}/**/*.JPG')
-    filenames = []
-    datetimes = []
-
-    for image in images: 
-        filename = image.split('/')[-1]
-        img = PIL.Image.open(image)
-        exif_data = img._getexif()
-        exif = {
-            PIL.ExifTags.TAGS[k]: v
-            for k, v in img._getexif().items()
-            if k in PIL.ExifTags.TAGS}
-        datetime = exif['DateTime']
-        
-        ## reformat date
-        Date = datetime.split(' ')[0].replace(':','/')
-        Time = datetime.split(' ')[1][:-3]
-        DateAndTime = Date + ' ' + Time
-        ####
-
-        filenames.append(filename)
-        datetimes.append(DateAndTime) ## updated from datetime so that it is in the right format in dictionary
-
-    dictionary = dict(zip(filenames, datetimes))
-    fileDatetime = dictionary[filename]
+    datetimeinfo = pd.read_csv(f'{config.datetime_info}')
+    fileDatetime = datetimeinfo.loc[datetimeinfo['filenames'] == filename, 'datetimes'].iloc[0]
     return fileDatetime 
 
 #IPython.embed()
