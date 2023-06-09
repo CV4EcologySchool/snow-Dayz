@@ -132,7 +132,7 @@ def vis_predicted_keypoints(args, file, image, keypoints, color=(0,255,0), diame
 ############################ turn into object?
 
 def camres(Camera):    ## first get resolution dictionary (move to utils eventually)
-    nativeRes_imgs = glob.glob("/Users/catherinebreen/Documents/Chapter1/WRRsubmission/resolution_info/*")
+    nativeRes_imgs = glob.glob(f"{config.res_info_path}/*") ## just 29 example images
     camIDs = []
     nativeRes = []
 
@@ -151,7 +151,7 @@ def camres(Camera):    ## first get resolution dictionary (move to utils eventua
 
 def conversionDic(Camera):
         ## now get the resulting predicted x and ys 
-    conversion_table = pd.read_csv('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/snowfree_table.csv')
+    conversion_table = pd.read_csv(f'{config.snowfreetbl_path}')
     convDic = dict(zip(conversion_table['camera'], conversion_table['conversion']))
     conversion = convDic[Camera]
 
@@ -185,7 +185,7 @@ def outputs_in_cm(Camera, filename, x1s_pred, y1s_pred, x2s_pred, y2s_pred):
 
 
 def datetimeExtrac(filename):
-    images = glob.glob('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/data/native_res/**/*.JPG')
+    images = glob.glob(f'{config.native_res_path}/**/*.JPG')
     filenames = []
     datetimes = []
 
@@ -220,7 +220,7 @@ def diffcm(Camera, filename, automated_snow_depth):
     ## dictionary of just the SnowEx photos ##
     ## look up actual snow depth from the published data on SnowEx.com...
     fileDatetime = datetimeExtrac(filename)
-    actual_snow_depth = pd.read_csv('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/SNEX20_SD_TLI_clean.csv') ## add CH and OK poles using conversions
+    actual_snow_depth = pd.read_csv(f'{config.manual_labels_path}') ## add CH and OK poles using conversions
 
     ## look up in actual_snow_depth table
     try: 
