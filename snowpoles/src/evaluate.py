@@ -26,6 +26,8 @@ from tqdm import tqdm
 from scipy.spatial import distance
 import os
 import matplotlib.pyplot as plt
+import math
+
 
 def load_model():
     model = snowPoleResNet50(pretrained=False, requires_grad=False).to(config.DEVICE)
@@ -60,7 +62,9 @@ def predict(model, data): ## try this without a dataloader
     x1s_pred, y1s_pred, x2s_pred, y2s_pred = [], [], [], []
     top_pixel_errors, bottom_pixel_errors, total_length_pixels = [], [], []
     total_length_pixel_actuals = []
-    
+
+    automated_sds, manual_sds, diff_sds = [], [], []
+
     #num_batches = int(len(data)/dataloader.batch_size)
     with torch.no_grad():
         for i, data in tqdm(enumerate(data)): #, total=num_batches):
@@ -80,13 +84,20 @@ def predict(model, data): ## try this without a dataloader
             utils.eval_keypoints_plot(filename, image, outputs, orig_keypoints=keypoints) ## visualize points
             pred_keypoint = np.array(outputs[0], dtype='float32')
             x1_pred, y1_pred, x2_pred, y2_pred = pred_keypoint[0], pred_keypoint[1], pred_keypoint[2], pred_keypoint[3]
-            #PixelLengths = 
-
             
             Cameras.append(Camera)
             filenames.append(filename)
             x1s_true.append(x1_true), y1s_true.append(y1_true), x2s_true.append(x2_true), y2s_true.append(y2_true)
             x1s_pred.append(x1_pred), y1s_pred.append(y1_pred), x2s_pred.append(x2_pred), y2s_pred.append(y2_pred)
+
+            ## outputs proj and in cm
+            outputs_cm = utils.outputs_in_cm(Camera, filename, x1s_pred, y1s_pred, x2s_pred, y2s_pred)
+            automated_sd = outputs_cm['snow_depth']
+            automated_sds.append(automated_sd)
+
+            ## difference between automated and manual
+            manual_snowdepth, difference = utils.diffcm(Camera, filename, automated_sd)
+            manual_sds.append(manual_snowdepth), diff_sds.append(difference)
 
             ## error
             top_pixel_error = distance.euclidean([x1_true,y1_true], [x1_pred,y1_pred])
@@ -99,17 +110,18 @@ def predict(model, data): ## try this without a dataloader
     #IPython.embed()
     results = pd.DataFrame({'Camera':Cameras, 'filename':filenames, 'x1_true':x1s_true, 'y1_true':y1s_true, 'x2_true':x2s_true, 'y2_true':y2s_true, \
         'x1_pred': x1s_pred, 'y1s_pred': y1s_pred, 'x2_pred': x2s_pred, 'y2_pred': y2s_pred, 'top_pixel_error': top_pixel_errors, \
-            'bottom_pixel_error': bottom_pixel_errors, 'total_length_pixel': total_length_pixels, 'total_length_pixel_actual': total_length_pixel_actuals})
+            'bottom_pixel_error': bottom_pixel_errors, 'total_length_pixel': total_length_pixels, 'total_length_pixel_actual': total_length_pixel_actuals,
+            'automated_depth':automated_sds,'manual_snowdepth':manual_sds,'difference':diff_sds})
 
-    results.to_csv(f"{config.OUTPUT_PATH}/eval/results.csv")
     #### overall average
     print('Overall Top Pixel Error \n')
     print(np.mean(top_pixel_errors))
     print('Overall Bottom Pixel Error \n')
     print(np.mean(bottom_pixel_errors))
-    #print('Mean difference between actual and predicted \n')
-    #print(np.mean(total_length_pixel_actuals-total_length_pixels))
-    #### average for each camera
+    print('Overall difference in cm')
+    print(np.mean(diff_sds))
+
+    results.to_csv(f"{config.OUTPUT_PATH}/eval/results.csv")
 
     return results
 

@@ -5,6 +5,13 @@ import IPython
 import cv2 
 import argparse
 
+import math
+import pandas as pd 
+import glob
+import PIL
+from PIL import Image
+from PIL import ExifTags
+
 def valid_keypoints_plot(image, outputs, orig_keypoints, epoch):
     """
     This function plots the regressed (predicted) keypoints and the actual 
@@ -121,3 +128,107 @@ def vis_predicted_keypoints(args, file, image, keypoints, color=(0,255,0), diame
     plt.savefig(f"{args.output_path}/predictions/image_{file}.png")
     plt.close()
    
+
+############################ turn into object?
+
+def camres(Camera):    ## first get resolution dictionary (move to utils eventually)
+    nativeRes_imgs = glob.glob("/Users/catherinebreen/Documents/Chapter1/WRRsubmission/resolution_info/*")
+    camIDs = []
+    nativeRes = []
+
+    ## turn into dictionary 
+    for img in nativeRes_imgs:
+        camID = img.split('/')[-1].split('_')[0]
+        image = cv2.imread(img)
+        orig_h, orig_w, channel = image.shape
+        camIDs.append(camID)
+        nativeRes.append([orig_h, orig_w])
+
+    resDic = dict(zip(camIDs, nativeRes))
+    CamRes = resDic[Camera] ## test this but this is what you want to return
+    return CamRes
+
+def conversionDic(Camera):
+        ## now get the resulting predicted x and ys 
+    conversion_table = pd.read_csv('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/snowfree_table.csv')
+    convDic = dict(zip(conversion_table['camera'], conversion_table['conversion']))
+    conversion = convDic[Camera]
+
+    stake_cm_dic = dict(zip(conversion_table['camera'], conversion_table['snow_free_cm'])) ## snowfree stake
+    snowfreestake_cm = stake_cm_dic[Camera]
+
+    return conversion, snowfreestake_cm
+
+def outputs_in_cm(Camera, filename, x1s_pred, y1s_pred, x2s_pred, y2s_pred):
+    '''
+    This function converts the length in pixels to length in cm for each output
+    '''
+    camRes = camres(Camera)
+    conversion, snowfreestake_cm = conversionDic(Camera)
+
+    keypoints = [x1s_pred, y1s_pred, x2s_pred, y2s_pred]
+    keypoints = np.array(keypoints, dtype='float32')
+    keypoints = keypoints.reshape(-1, 2)
+    keypoints = keypoints * [camRes[1] / 224, camRes[0] / 224] ### orig_w: resDic[1]; orig_h: resDic[0]
+    
+    proj_pix_length = math.dist(keypoints[0], keypoints[1])
+    proj_cm_length = proj_pix_length * float(conversion) ## this is pix * cm/pix conversion for each camera
+    snow_depth = snowfreestake_cm - float(proj_cm_length)
+    x1_proj, y1_proj, x2_proj, y2_proj = keypoints[0][0], keypoints[0][1], keypoints[1][0], keypoints[1][1]
+  
+    cmresults = {'Camera':Camera,'filename':filename,'x1_proj':x1_proj,'y1_proj':y1_proj,
+                 'x2_proj':x2_proj,'y2_proj':y2_proj,'proj_pixel_length':proj_pix_length,
+                 'proj_cm_length':proj_cm_length,'snow_depth':snow_depth}
+
+    return cmresults 
+
+
+def datetimeExtrac(filename):
+    images = glob.glob('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/data/native_res/**/*.JPG')
+    filenames = []
+    datetimes = []
+
+    for image in images: 
+        filename = image.split('/')[-1]
+        img = PIL.Image.open(image)
+        exif_data = img._getexif()
+        exif = {
+            PIL.ExifTags.TAGS[k]: v
+            for k, v in img._getexif().items()
+            if k in PIL.ExifTags.TAGS}
+        datetime = exif['DateTime']
+        
+        ## reformat date
+        Date = datetime.split(' ')[0].replace(':','/')
+        Time = datetime.split(' ')[1][:-3]
+        DateAndTime = Date + ' ' + Time
+        ####
+
+        filenames.append(filename)
+        datetimes.append(DateAndTime) ## updated from datetime so that it is in the right format in dictionary
+
+    dictionary = dict(zip(filenames, datetimes))
+    fileDatetime = dictionary[filename]
+    return fileDatetime 
+
+#IPython.embed()
+
+def diffcm(Camera, filename, automated_snow_depth):
+        #from utils (and also .snow_pole_analysis) import datetimeExtrac
+
+    ## dictionary of just the SnowEx photos ##
+    ## look up actual snow depth from the published data on SnowEx.com...
+    fileDatetime = datetimeExtrac(filename)
+    actual_snow_depth = pd.read_csv('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/SNEX20_SD_TLI_clean.csv') ## add CH and OK poles using conversions
+
+    ## look up in actual_snow_depth table
+    try: 
+        sd = float(actual_snow_depth[(actual_snow_depth['Camera']==Camera) & (actual_snow_depth['Date&Time']==fileDatetime)]['Snow Depth (cm)'])
+        manual_snowdepth = sd
+        difference = manual_snowdepth - automated_snow_depth
+    except:
+        # because it was cleaned, there will be some data not included
+        manual_snowdepth = 'na'
+        difference = 'na'
+
+    return manual_snowdepth, difference
