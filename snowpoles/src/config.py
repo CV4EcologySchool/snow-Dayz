@@ -13,8 +13,8 @@ ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
 OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
 manual_labels_path = '/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
-native_res_path = '/datdrive/vmData/resolution_info'
-#res_info_path = 
+native_res_path = '/datdrive/vmData/native_res/native_res'
+res_info_path = 'datadrive/vmData/resolution_info'
 
 #OUTPUT_PATH = '/Users/catherinebreen/Documents/Chapter1/dendrite_outputs/IN/snow_poles_outputs_resized_LRe4_BS64_clean_wWAOK_IN'
 
