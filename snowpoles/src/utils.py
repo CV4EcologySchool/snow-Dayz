@@ -66,7 +66,7 @@ def dataset_keypoints_plot(data):
     plt.close()
 
 
-def eval_keypoints_plot(file, image, outputs, orig_keypoints, eval='eval'): 
+def eval_keypoints_plot(file, image, outputs, eval, orig_keypoints): 
     """
     This function plots the regressed (predicted) keypoints and the actual 
     keypoints after each validation epoch for one image in the batch.
