@@ -208,7 +208,6 @@ def datetimeExtrac(filename):
 
 def diffcm(Camera, filename, automated_snow_depth):
         #from utils (and also .snow_pole_analysis) import datetimeExtrac
-    IPython.embed()
     ## dictionary of just the SnowEx photos ##
     ## look up actual snow depth from the published data on SnowEx.com...
     fileDatetime = datetimeExtrac(filename)
