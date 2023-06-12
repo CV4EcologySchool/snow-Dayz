@@ -21,7 +21,7 @@ import glob
 import IPython
 import utils
 import pandas as pd
-from dataset import valid_data, test_data
+from dataset import train_data, train_loader, valid_data, valid_loader, test_data, test_loader
 from tqdm import tqdm
 from scipy.spatial import distance
 import os
@@ -136,10 +136,7 @@ def main():
     model = load_model()
 
     ## returns a set of images of outputs
-    outputs = predict(model, valid_data)  
-
-    print(f"the results for the CHE and OK datasets...")
-    outputs = predict(model, test_data)
+    outputs = predict(model, test_data)  ## write a script for test data in the dataset.py   
 
     #results = eval(outputs)
 

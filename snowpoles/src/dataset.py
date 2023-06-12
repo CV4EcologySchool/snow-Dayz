@@ -58,7 +58,7 @@ def train_test_split(csv_path, path, split, domain, snex):
     else:
         print('testing OUT OF DOMAIN')
         ######### EXP #2: OUT OF DOMAIN TESTING ############
-        val_cameras = ['E9E', 'W2E', 'CHE8', 'CHE9', 'TWISP-U-01'] 
+        val_cameras = ['E9E', 'W2E', 'CHE8', 'CHE9', 'TWISP-U-01']   ## would have to update this
         valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
         training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
 
@@ -73,6 +73,10 @@ def train_test_split(csv_path, path, split, domain, snex):
         valid_samples = valid_samples
         training_samples = training_samples
 
+    wa_cams = ['CHE2', 'CHE3', 'CHE4', 'CHE5', 'CHE6', 'CHE7',
+               'CHE8', 'CHE9', 'CHE10', 'TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02']
+    testing_samples = df_data[df_data['Camera'].isin(wa_cams)]  
+
 
     ##### only images that exist
     #IPython.embed()
@@ -80,8 +84,9 @@ def train_test_split(csv_path, path, split, domain, snex):
     filenames = [item.split('/')[-1] for item in all_images]
     valid_samples = valid_samples[valid_samples['filename'].isin(filenames)].reset_index()
     training_samples = training_samples[training_samples['filename'].isin(filenames)].reset_index()
+    testing_samples = testing_samples[testing_samples['filename'].isin(filenames)].reset_index()
 
-    return training_samples, valid_samples
+    return training_samples, valid_samples, testing_samples
 
 
 class snowPoleDataset(Dataset):
@@ -176,7 +181,9 @@ class snowPoleDataset(Dataset):
         }
 
 # get the training and validation data samples
-training_samples, valid_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}", config.TEST_SPLIT, config.DOMAIN, config.SNEX)
+# we also added a test set for wa cameras that we will adjust after some fine-tuning
+training_samples, valid_samples, testing_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}", 
+                                                   config.TEST_SPLIT, config.DOMAIN, config.SNEX)
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
@@ -184,6 +191,11 @@ train_data = snowPoleDataset(training_samples,
 #IPython.embed()
 valid_data = snowPoleDataset(valid_samples, 
                                  f"{config.ROOT_PATH}", config.DOMAIN) # we always want the transform to be the normal transform
+
+test_data = snowPoleDataset(testing_samples, 
+                            f"{config.ROOT_PATH}", config.DOMAIN) # this will be some assortment of the WA A & B cameras
+
+
 # prepare data loaders
 train_loader = DataLoader(train_data, 
                           batch_size=config.BATCH_SIZE, 
@@ -191,8 +203,14 @@ train_loader = DataLoader(train_data,
 valid_loader = DataLoader(valid_data, 
                           batch_size=config.BATCH_SIZE, 
                           shuffle=False, num_workers = 0) 
+
+# test_loader = DataLoader(test_data, 
+#                           batch_size=config.BATCH_SIZE, 
+#                           shuffle=False, num_workers = 0) 
+
 print(f"Training sample instances: {len(train_data)}")
 print(f"Validation sample instances: {len(valid_data)}")
+print(f"Test sample instances: {len(test_data)}")
 
 # whether to show dataset keypoint plots
 if config.SHOW_DATASET_PLOT:
