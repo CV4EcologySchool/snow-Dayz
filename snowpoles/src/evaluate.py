@@ -91,7 +91,7 @@ def predict(model, data): ## try this without a dataloader
             x1s_pred.append(x1_pred), y1s_pred.append(y1_pred), x2s_pred.append(x2_pred), y2s_pred.append(y2_pred)
 
             ## outputs proj and in cm
-            outputs_cm = utils.outputs_in_cm(Camera, filename, x1s_pred, y1s_pred, x2s_pred, y2s_pred)
+            outputs_cm = utils.outputs_in_cm(Camera, filename, x1_pred, y1_pred, x2_pred, y2_pred)
             automated_sd = outputs_cm['snow_depth']
             automated_sds.append(automated_sd)
 
