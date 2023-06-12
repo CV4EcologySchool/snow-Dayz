@@ -92,27 +92,22 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             x1s_pred.append(x1_pred), y1s_pred.append(y1_pred), x2s_pred.append(x2_pred), y2s_pred.append(y2_pred)
 
             ## outputs proj and in cm
-            try: 
-                outputs_cm = utils.outputs_in_cm(Camera, filename, x1_pred, y1_pred, x2_pred, y2_pred)
-                automated_sd = outputs_cm['snow_depth']
-                automated_sds.append(automated_sd)
+            outputs_cm = utils.outputs_in_cm(Camera, filename, x1_pred, y1_pred, x2_pred, y2_pred)
+            automated_sd = outputs_cm['snow_depth']
+            automated_sds.append(automated_sd)
 
-                # ## difference between automated and manual
-                manual_snowdepth, difference = utils.diffcm(Camera, filename, automated_sd)
-                manual_sds.append(manual_snowdepth), diff_sds.append(difference)
+            # ## difference between automated and manual
+            manual_snowdepth, difference = utils.diffcm(Camera, filename, automated_sd)
+            manual_sds.append(manual_snowdepth), diff_sds.append(difference)
 
-                ## error
-                top_pixel_error = distance.euclidean([x1_true,y1_true], [x1_pred,y1_pred])
-                bottom_pixel_error = distance.euclidean([x2_true,y2_true], [x2_pred,y2_pred])
-                total_length_pixel = distance.euclidean([x1_pred,y1_pred],[x2_pred,y2_pred])
-                total_length_pixel_actual = distance.euclidean([x1_true,y1_true],[x2_true,y2_true])
-                top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
-                total_length_pixel_actuals.append(total_length_pixel_actual)
-            
-            except Exception:
-                print(Exception)
-                print('ERROR')
-                IPython.embed()
+            ## error
+            top_pixel_error = distance.euclidean([x1_true,y1_true], [x1_pred,y1_pred])
+            bottom_pixel_error = distance.euclidean([x2_true,y2_true], [x2_pred,y2_pred])
+            total_length_pixel = distance.euclidean([x1_pred,y1_pred],[x2_pred,y2_pred])
+            total_length_pixel_actual = distance.euclidean([x1_true,y1_true],[x2_true,y2_true])
+            top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
+            total_length_pixel_actuals.append(total_length_pixel_actual)
+    
 
     #IPython.embed()
     results = pd.DataFrame({'Camera':Cameras, 'filename':filenames, 'x1_true':x1s_true, 'y1_true':y1s_true, 'x2_true':x2s_true, 'y2_true':y2s_true, \
