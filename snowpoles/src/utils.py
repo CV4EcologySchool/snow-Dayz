@@ -93,7 +93,7 @@ def eval_keypoints_plot(file, image, outputs, eval, orig_keypoints):
             plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.', markersize=20) ## top
         else:
             plt.plot(orig_keypoints[p, 0], orig_keypoints[p, 1], 'b.',  markersize=20)
-            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'g.', markersize=20) ## bottom
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'y.', markersize=20) ## bottom
     plt.savefig(f"{config.OUTPUT_PATH}/{eval}/{eval}_{file}.png")
     plt.close()
 
