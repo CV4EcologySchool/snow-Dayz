@@ -215,8 +215,8 @@ def diffcm(Camera, filename, automated_snow_depth):
     actual_snow_depth = pd.read_csv(f'{config.manual_labels_path}') ## add CH and OK poles using conversions
 
     ## look up in actual_snow_depth table
-    try: 
-        sd = float(actual_snow_depth[(actual_snow_depth['Camera']==Camera) & (actual_snow_depth['Date&Time']==fileDatetime)]['Snow Depth (cm)'])
+    try: ## make sure to change it back to Camera, Date&Time, Snow Depth (cm)
+        sd = float(actual_snow_depth[(actual_snow_depth['camera']==Camera) & (actual_snow_depth['dates']==fileDatetime)]['snowDepth'])
         manual_snowdepth = sd
         difference = manual_snowdepth - automated_snow_depth
     except:
