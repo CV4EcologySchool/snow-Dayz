@@ -138,7 +138,7 @@ def main():
     model = load_model()
 
     ## returns a set of images of outputs
-    outputs = predict(model, valid_data, eval='eval')  
+    #outputs = predict(model, valid_data, eval='eval')  
 
     print(f"the results for the CHE and OK datasets...")
     outputs = predict(model, test_data, eval='test')
