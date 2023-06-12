@@ -201,11 +201,7 @@ def outputs_in_cm(Camera, filename, x1s_pred, y1s_pred, x2s_pred, y2s_pred):
 
 def datetimeExtrac(filename):
     datetimeinfo = pd.read_csv(f'{config.datetime_info}')
-    try: 
-        fileDatetime = datetimeinfo.loc[datetimeinfo['filenames'] == filename, 'datetimes'].iloc[0]
-    except: 
-        print('error')
-        IPython.embed()
+    fileDatetime = datetimeinfo.loc[datetimeinfo['filenames'] == filename, 'datetimes'].iloc[0]
     return fileDatetime 
 
 #IPython.embed()

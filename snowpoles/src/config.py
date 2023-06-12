@@ -14,7 +14,7 @@ import os
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
 OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
-manual_labels_path = '/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
+manual_labels_path = '/datadrive/vmData/manuallylabeled.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
 datetime_info = '/datadrive/vmData/labeledImgs_datetime_info.csv' #'/datdrive/vmData/native_res/native_res'
 ##res_info_path = '/datadrive/vmData/resolution_info'
 native_res_path = '/datadrive/vmData/nativeRes.csv'
