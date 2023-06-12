@@ -117,12 +117,11 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
 
     #### overall average
     print('Overall Top Pixel Error \n')
-    print(np.mean(top_pixel_errors))
+    print(f"{np.mean(top_pixel_errors)} +/- {np.std(top_pixel_errors)}")
     print('Overall Bottom Pixel Error \n')
-    print(np.mean(bottom_pixel_errors))
+    print(f"{np.mean(bottom_pixel_errors)} +/- {np.std(top_pixel_errors)}")
     print('Overall difference in cm')
-    IPython.embed()
-    print(np.mean(diff_sds))
+    print(f"{np.mean(diff_sds)} +/- {np.std(top_pixel_errors)}")
 
     results.to_csv(f"{config.OUTPUT_PATH}/{eval}/results.csv")
 
@@ -139,7 +138,7 @@ def main():
     model = load_model()
 
     ## returns a set of images of outputs
-    #outputs = predict(model, valid_data, eval='eval')  
+    outputs = predict(model, valid_data, eval='eval')  
 
     print(f"the results for the CHE and OK datasets...")
     outputs = predict(model, test_data, eval='test')
