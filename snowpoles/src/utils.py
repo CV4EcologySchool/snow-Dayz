@@ -36,7 +36,7 @@ def valid_keypoints_plot(image, outputs, orig_keypoints, epoch):
             plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.') ## top
             plt.plot(orig_keypoint[p, 0], orig_keypoint[p, 1], 'b.')
         else:
-            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'g.') ## bottom
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'y.') ## bottom
             plt.plot(orig_keypoint[p, 0], orig_keypoint[p, 1], 'b.')
     plt.savefig(f"{config.OUTPUT_PATH}/val_epoch_{epoch}.png")
     plt.close()
@@ -125,7 +125,7 @@ def vis_predicted_keypoints(args, file, image, keypoints, color=(0,255,0), diame
         if p == 0: 
             plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.') ## top
         else:
-            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'g.') ## bottom
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'y.') ## bottom
     plt.savefig(f"{args.output_path}/predictions/image_{file}.png")
     plt.close()
    
@@ -154,8 +154,12 @@ def camres(Camera):    ## first get resolution dictionary (move to utils eventua
     
     df = pd.read_csv(f'{config.native_res_path}')
     # CamRes = df.loc[df['camID'] == Camera, 'nativeRes'].iloc[0]
-    orig_w = df.loc[df['camID'] == Camera, 'orig_w'].iloc[0]
-    orig_h = df.loc[df['camID'] == Camera, 'orig_h'].iloc[0]
+    try: 
+        orig_w = df.loc[df['camID'] == Camera, 'orig_w'].iloc[0]
+        orig_h = df.loc[df['camID'] == Camera, 'orig_h'].iloc[0]
+    except: 
+        print('error')
+        IPython.embed()
     return orig_w, orig_h 
 
 
