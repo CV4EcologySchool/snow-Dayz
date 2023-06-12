@@ -48,13 +48,14 @@ It is a little bit easier to flatten this way.
 '''
 
 
-def predict(model, data): ## try this without a dataloader
+def predict(model, data, eval='eval'): ## try this without a dataloader
+    ## eval is the method, whether eval or test
     #files =  glob.glob(args.image_path + ('/**/*.JPG'))
     #df_data = pd.read_csv(f"{config.ROOT_PATH}/snowPoles_labels.csv")
     #IPython.embed()
 
-    if not os.path.exists(f"{config.OUTPUT_PATH}/eval"):
-        os.makedirs(f"{config.OUTPUT_PATH}/eval", exist_ok=True)
+    if not os.path.exists(f"{config.OUTPUT_PATH}/{eval}"):
+        os.makedirs(f"{config.OUTPUT_PATH}/{eval}", exist_ok=True)
 
     output_list = []
     Cameras, filenames = [], []
@@ -81,7 +82,7 @@ def predict(model, data): ## try this without a dataloader
             #IPython.embed()
             outputs = outputs.detach().cpu().numpy()
             #output_list.append(outputs)
-            utils.eval_keypoints_plot(filename, image, outputs, orig_keypoints=keypoints) ## visualize points
+            utils.eval_keypoints_plot(filename, image, outputs, orig_keypoints=keypoints, eval) ## visualize points
             pred_keypoint = np.array(outputs[0], dtype='float32')
             x1_pred, y1_pred, x2_pred, y2_pred = pred_keypoint[0], pred_keypoint[1], pred_keypoint[2], pred_keypoint[3]
             
@@ -121,7 +122,7 @@ def predict(model, data): ## try this without a dataloader
     print('Overall difference in cm')
     print(np.mean(diff_sds))
 
-    results.to_csv(f"{config.OUTPUT_PATH}/eval/results.csv")
+    results.to_csv(f"{config.OUTPUT_PATH}/{eval}/results.csv")
 
     return results
 
@@ -136,10 +137,10 @@ def main():
     model = load_model()
 
     ## returns a set of images of outputs
-    outputs = predict(model, valid_data)  
+    outputs = predict(model, valid_data, eval='eval')  
 
     print(f"the results for the CHE and OK datasets...")
-    outputs = predict(model, test_data)
+    outputs = predict(model, test_data, eval='test')
 
     #results = eval(outputs)
 
