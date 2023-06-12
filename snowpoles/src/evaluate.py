@@ -121,6 +121,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
     print('Overall Bottom Pixel Error \n')
     print(np.mean(bottom_pixel_errors))
     print('Overall difference in cm')
+    IPython.embed()
     print(np.mean(diff_sds))
 
     results.to_csv(f"{config.OUTPUT_PATH}/{eval}/results.csv")
