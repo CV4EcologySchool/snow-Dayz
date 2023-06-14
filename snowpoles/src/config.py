@@ -12,7 +12,7 @@ import os
 
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean_Aug'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
 manual_labels_path = '/datadrive/vmData/manuallylabeled.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
 datetime_info = '/datadrive/vmData/labeledImgs_datetime_info.csv' #'/datdrive/vmData/native_res/native_res'
@@ -31,7 +31,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as validation
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = False
-DOMAIN = True ## True for IN DOMAIN; False for Out of Domain
+DOMAIN = False ## True for IN DOMAIN; False for Out of Domain
 SNEX = True
 
 ### in my datasheet it is columns 3, 4, 5, 6, so we will use range 3:7
