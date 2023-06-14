@@ -145,7 +145,7 @@ def main():
     outputs = predict(model, wa_data, eval='wa')
 
     if config.FINETUNE == True: 
-        print(f"the results for all CO images...")
+        print(f"the results for all CO val images...")
         outputs = predict(model, co_data, eval='co')
 
     #results = eval(outputs)
