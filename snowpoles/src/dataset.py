@@ -77,7 +77,6 @@ def train_test_split(csv_path, path, split, domain, snex):
                'CHE8', 'CHE9', 'CHE10', 'TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02']
     testing_samples = df_data[df_data['Camera'].isin(wa_cams)]  
 
-
     ##### only images that exist
     #IPython.embed()
     all_images = glob.glob(path + ('/**/*.JPG'))
@@ -85,6 +84,22 @@ def train_test_split(csv_path, path, split, domain, snex):
     valid_samples = valid_samples[valid_samples['filename'].isin(filenames)].reset_index()
     training_samples = training_samples[training_samples['filename'].isin(filenames)].reset_index()
     testing_samples = testing_samples[testing_samples['filename'].isin(filenames)].reset_index()
+
+    if config.FINETUNE == True:
+        print(f"FINETUNING MODEL")
+        df_data = df_data[df_data['Camera'].isin(wa_cams)] 
+        df_data = df_data.groupby('Camera').sample(config.FT_sample).reset_index()
+        samples = len(df_data['Camera'])
+        print(f'# of examples we will now train on {samples}')
+        training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
+        valid_samples = df_data[~df_data.index.isin(training_samples.index)]
+
+        ## still check that all images exist
+        all_images = glob.glob(path + ('/**/*.JPG'))
+        filenames = [item.split('/')[-1] for item in all_images]
+        valid_samples = valid_samples[valid_samples['filename'].isin(filenames)].reset_index()
+        training_samples = training_samples[training_samples['filename'].isin(filenames)].reset_index()
+        testing_samples = testing_samples[testing_samples['filename'].isin(filenames)].reset_index()
 
     return training_samples, valid_samples, testing_samples
 

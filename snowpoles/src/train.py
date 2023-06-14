@@ -24,6 +24,12 @@ else: print(f'THIS EXPERIMENT USES GPUS: {config.DEVICE}')
 
 # model 
 model = snowPoleResNet50(pretrained=True, requires_grad=True).to(config.DEVICE)
+## model ## load previous model 
+if config.FINETUNE == True:
+    checkpoint = torch.load(config.FT_PATH + '/model.pth')
+        # load model weights state_dict
+    model.load_state_dict(checkpoint['model_state_dict'])
+
 # optimizer
 optimizer = optim.Adam(model.parameters(), lr=config.LR)
 # we need a loss function which is good for regression like SmmothL1Loss ...
