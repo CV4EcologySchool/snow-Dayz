@@ -73,7 +73,7 @@ def train_test_split(csv_path, path, split, domain, snex):
 
     if config.FINETUNE == True:
         print(f"FINETUNING MODEL")
-        IPython.embed()
+        #IPython.embed()
         df_data = df_data[df_data['Camera'].isin(wa_cams)] 
         df_data = df_data.groupby('Camera').sample(config.FT_sample).reset_index()
         samples = len(df_data['Camera'])
