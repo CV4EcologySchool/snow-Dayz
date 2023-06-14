@@ -215,7 +215,7 @@ valid_loader = DataLoader(valid_data,
 
 print(f"Training sample instances: {len(train_data)}")
 print(f"Validation sample instances: {len(valid_data)}")
-print(f"Test sample instances: {len(test_data)}")
+print(f"Test WA sample instances: {len(wa_data)}")
 
 # whether to show dataset keypoint plots
 if config.SHOW_DATASET_PLOT:
