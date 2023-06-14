@@ -60,9 +60,9 @@ def train_test_split(csv_path, path, split, domain, snex):
     ######### EXP #2 train just on SNEX cameras 
     #if snex == True:
     print('training using SNEX CAMERAS ONLY')
-    df_data = df_data[df_data['Camera'].isin(snex_cams)] 
-    training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
-    valid_samples = df_data[~df_data.index.isin(training_samples.index)]
+    snex_data = df_data[df_data['Camera'].isin(snex_cams)] 
+    training_samples = snex_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
+    valid_samples = snex_data[~snex_data.index.isin(training_samples.index)]
         # else:
         #     print('SNEX_WAOK cameras')
         #     valid_samples = valid_samples
@@ -73,6 +73,7 @@ def train_test_split(csv_path, path, split, domain, snex):
 
     if config.FINETUNE == True:
         print(f"FINETUNING MODEL")
+        IPython.embed()
         df_data = df_data[df_data['Camera'].isin(wa_cams)] 
         df_data = df_data.groupby('Camera').sample(config.FT_sample).reset_index()
         samples = len(df_data['Camera'])
