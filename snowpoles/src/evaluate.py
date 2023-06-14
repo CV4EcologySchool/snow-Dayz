@@ -21,7 +21,7 @@ import glob
 import IPython
 import utils
 import pandas as pd
-from dataset import valid_data, test_data
+from dataset import valid_data, wa_data, co_data
 from tqdm import tqdm
 from scipy.spatial import distance
 import os
@@ -138,10 +138,15 @@ def main():
     model = load_model()
 
     ## returns a set of images of outputs
+    # eval = sets the folder name and 
     outputs = predict(model, valid_data, eval='eval')  
 
-    print(f"the results for the CHE and OK datasets...")
-    outputs = predict(model, test_data, eval='test')
+    print(f"the results for all CHE and OK images...")
+    outputs = predict(model, wa_data, eval='wa')
+
+    if config.FINETUNE == True: 
+        print(f"the results for all CO images...")
+        outputs = predict(model, co_data, eval='co')
 
     #results = eval(outputs)
 

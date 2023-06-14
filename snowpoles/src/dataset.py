@@ -38,52 +38,35 @@ def train_test_split(csv_path, path, split, domain, snex):
     df_data = pd.read_csv(csv_path)
     print(f'all rows in df_data {len(df_data.index)}')
 
-    ########## EXP #1: CAN MODEL DETECT SNOW  
-    if domain == True: 
-        print('testing IN DOMAIN')
-        len_data = len(df_data)
-        # calculate the validation data sample length
-        ## validation cameras: 
-        #valid_split = int(len_data * split)
-        # calculate the training data samples length
-        #train_split = int(len_data - valid_split)
-        #training_samples = df_data.iloc[:train_split][:]
-        #alid_samples = df_data.iloc[-valid_split:][:]
-        #training_samples = df_data.sample(n = int(len_data * split))
-        #training_samples, valid_samples = strain_test_split(df_data, test_size=split, random)
-
-        training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
-        valid_samples = df_data[~df_data.index.isin(training_samples.index)]
-
-    else:
-        print('testing OUT OF DOMAIN')
-        ######### EXP #2: OUT OF DOMAIN TESTING ############
-        val_cameras = ['E9E', 'W2E', 'CHE8', 'CHE9', 'TWISP-U-01']   ## would have to update this
-        valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
-        training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
-
-    if snex == True:
-        print('SNEX CAMERAS ONLY')
-        snex_cams = ['E6A', 'E6B', 'E9A','E9E', 'E9F','W1A','W2A','W2B',
-                    'W5A','W6A','W6B','W6C','W8A','W8C','W9A','W9B','W9C','W9D','W9E','W9G']
-        valid_samples = valid_samples[valid_samples['Camera'].isin(snex_cams)]  
-        training_samples = training_samples[training_samples['Camera'].isin(snex_cams)]
-    else:
-        print('SNEX_WAOK cameras')
-        valid_samples = valid_samples
-        training_samples = training_samples
-
+    snex_cams = ['E6A', 'E6B', 'E9A','E9E', 'E9F','W1A','W2A','W2B',
+            'W5A','W6A','W6B','W6C','W8A','W8C','W9A','W9B','W9C','W9D','W9E','W9G']
     wa_cams = ['CHE2', 'CHE3', 'CHE4', 'CHE5', 'CHE6', 'CHE7',
-               'CHE8', 'CHE9', 'CHE10', 'TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02']
-    testing_samples = df_data[df_data['Camera'].isin(wa_cams)]  
+        'CHE8', 'CHE9', 'CHE10', 'TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02']
+        
+    ### original model ### 
+    if config.FINETUNE == False: 
+    ########## EXP #1: CAN MODEL DETECT SNOW  
+        # if domain == True: 
+        #     print('testing IN DOMAIN')
+        #     training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
+        #     valid_samples = df_data[~df_data.index.isin(training_samples.index)]
 
-    ##### only images that exist
-    #IPython.embed()
-    all_images = glob.glob(path + ('/**/*.JPG'))
-    filenames = [item.split('/')[-1] for item in all_images]
-    valid_samples = valid_samples[valid_samples['filename'].isin(filenames)].reset_index()
-    training_samples = training_samples[training_samples['filename'].isin(filenames)].reset_index()
-    testing_samples = testing_samples[testing_samples['filename'].isin(filenames)].reset_index()
+        # else:
+        #     print('testing OUT OF DOMAIN')
+        #     ######### EXP #2: OUT OF DOMAIN TESTING ############
+        #     val_cameras = ['E9E', 'W2E', 'CHE8', 'CHE9', 'TWISP-U-01']   ## would have to update this
+        #     valid_samples = df_data[df_data['Camera'].isin(val_cameras)]  
+        #     training_samples = df_data[~df_data['Camera'].isin(val_cameras)]
+
+    ######### EXP #2 train just on SNEX cameras 
+        if snex == True:
+            print('training using SNEX CAMERAS ONLY')
+            valid_samples = valid_samples[valid_samples['Camera'].isin(snex_cams)]  
+            training_samples = training_samples[training_samples['Camera'].isin(snex_cams)]
+        # else:
+        #     print('SNEX_WAOK cameras')
+        #     valid_samples = valid_samples
+        #     training_samples = training_samples
 
     if config.FINETUNE == True:
         print(f"FINETUNING MODEL")
@@ -94,14 +77,18 @@ def train_test_split(csv_path, path, split, domain, snex):
         training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
 
-        ## still check that all images exist
-        all_images = glob.glob(path + ('/**/*.JPG'))
-        filenames = [item.split('/')[-1] for item in all_images]
-        valid_samples = valid_samples[valid_samples['filename'].isin(filenames)].reset_index()
-        training_samples = training_samples[training_samples['filename'].isin(filenames)].reset_index()
-        testing_samples = testing_samples[testing_samples['filename'].isin(filenames)].reset_index()
+    all_wa_data = df_data[df_data['Camera'].isin(wa_cams)]   ## same no matter what
+    all_co_data = df_data[df_data['Camera'].isin(snex_cams)] ## for fine-tuning
 
-    return training_samples, valid_samples, testing_samples
+    ##### only images that exist
+    all_images = glob.glob(path + ('/**/*.JPG'))
+    filenames = [item.split('/')[-1] for item in all_images]
+    valid_samples = valid_samples[valid_samples['filename'].isin(filenames)].reset_index()
+    training_samples = training_samples[training_samples['filename'].isin(filenames)].reset_index()
+    all_wa_data = all_wa_data[all_wa_data['filename'].isin(filenames)].reset_index()
+    all_co_data = all_co_data[all_co_data['filename'].isin(filenames)].reset_index()
+
+    return training_samples, valid_samples, all_wa_data, all_co_data
 
 
 class snowPoleDataset(Dataset):
@@ -197,7 +184,7 @@ class snowPoleDataset(Dataset):
 
 # get the training and validation data samples
 # we also added a test set for wa cameras that we will adjust after some fine-tuning
-training_samples, valid_samples, testing_samples = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}", 
+training_samples, valid_samples, all_wa_data, all_co_data = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}", 
                                                    config.TEST_SPLIT, config.DOMAIN, config.SNEX)
 
 # initialize the dataset - `snowPoleDataset()`
@@ -207,9 +194,11 @@ train_data = snowPoleDataset(training_samples,
 valid_data = snowPoleDataset(valid_samples, 
                                  f"{config.ROOT_PATH}", config.DOMAIN) # we always want the transform to be the normal transform
 
-test_data = snowPoleDataset(testing_samples, 
+wa_data = snowPoleDataset(all_wa_data, 
                             f"{config.ROOT_PATH}", config.DOMAIN) # this will be some assortment of the WA A & B cameras
 
+co_data = snowPoleDataset(all_co_data, 
+                            f"{config.ROOT_PATH}", config.DOMAIN) # this will be some assortment of the WA A & B cameras
 
 # prepare data loaders
 train_loader = DataLoader(train_data, 
