@@ -79,8 +79,10 @@ def train_test_split(csv_path, path, split, domain, snex):
         print(f"FINETUNING MODEL")
         #IPython.embed()
         df_data = df_data[df_data['Camera'].isin(wa_cams)] 
-        df_data = df_data.groupby('Camera').sample(config.FT_sample).reset_index()
+        #df_data = df_data.groupby('Camera').sample(config.FT_sample).reset_index()
+        df_data = df_data.sample(150).reset_index()
         samples = len(df_data['Camera'])
+
         print(f'# of examples we will now train on {samples}')
         training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
