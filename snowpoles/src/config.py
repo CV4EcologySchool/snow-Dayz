@@ -12,7 +12,7 @@ import os
 
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean_Aug'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_6_LRe4_BS64_E100_clean_Aug'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
 manual_labels_path = '/datadrive/vmData/manuallylabeled.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
 datetime_info = '/datadrive/vmData/labeledImgs_datetime_info.csv' #'/datdrive/vmData/native_res/native_res'
@@ -40,4 +40,4 @@ SNEX = True
 keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
 FINETUNE = True
 FT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' ## model that you want to fine tune
-FT_sample = 10 
+FT_sample = 6 
