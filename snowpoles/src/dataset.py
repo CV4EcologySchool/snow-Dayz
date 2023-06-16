@@ -44,8 +44,8 @@ def train_test_split(csv_path, path, split, domain, snex):
         'CHE8', 'CHE9', 'CHE10', 'TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02']
     
     # Number of rows, that we want to be sampled from each category 
-    samples_per_group_dict = {'CHE2':, 'CHE3':, 'CHE4':, 'CHE5':, 'CHE6':, 'CHE7':,
-        'CHE8':, 'CHE9':, 'CHE10':, 'TWISP-U-01':, 'TWISP-R-01':, 'CUB-H-02':, 'CUB-L-02':, 'CUB-M-02':}
+    # samples_per_group_dict = {'CHE2':, 'CHE3':, 'CHE4':, 'CHE5':, 'CHE6':, 'CHE7':,
+    #     'CHE8':, 'CHE9':, 'CHE10':, 'TWISP-U-01':, 'TWISP-R-01':, 'CUB-H-02':, 'CUB-L-02':, 'CUB-M-02':}
         
     ### original model ### 
     ########## EXP #1: CAN MODEL DETECT SNOW  
