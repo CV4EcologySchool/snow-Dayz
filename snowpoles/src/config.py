@@ -38,6 +38,6 @@ SNEX = True
 ## or we can name them directly
 
 keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
-FINETUNE = False
+FINETUNE = True
 FT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' ## model that you want to fine tune
 FT_sample = 5 
