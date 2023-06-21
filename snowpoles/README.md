@@ -7,7 +7,7 @@ This model identifies snow depth from snow poles by identifying the top and bott
 
 ### Example images (image: left; mask: right)
 
-<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/E6A_WSCT0293.JPG"> <img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/eval_E6A_WSCT0293.JPG.png">
+<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/E6A_WSCT0293.JPG"> <img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/eval_E6A_WSCT0293.JPG.png" width="75%">
 
 ## Training and evaluation
 1) Before training on GPU, change the dataset root in the configuration files in `config` file. 
