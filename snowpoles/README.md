@@ -6,8 +6,8 @@ This model identifies snow depth from snow poles by identifying the top and bott
 2) annotations (x and y points) are saved as a .csv file from the root folder called "Data"
 
 ### Example images (image: left; mask: right)
-![image](https://github.com/catherine-m-breen/Chapter1/blob/main/example_imgs/W8C_WSCT0134.JPG)
-![mask](https://github.com/catherine-m-breen/Chapter1/blob/main/example_imgs/mask_W8C_WSCT0134.JPG)
+![image](https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/E6A_WSCT0293.JPG)
+![predict](https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/eval_E6A_WSCT0293.JPG.png)
 
 
 ## Training and evaluation
