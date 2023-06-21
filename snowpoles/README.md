@@ -6,11 +6,9 @@ This model identifies snow depth from snow poles by identifying the top and bott
 2) annotations (x and y points) are saved as a .csv file from the root folder called "Data"
 
 ### Example images (image: left; mask: right)
-![image](https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/E6A_WSCT0293.JPG)
-![predict](https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/eval_E6A_WSCT0293.JPG.png)
 
-<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/E6A_WSCT0293.JPG" width="50%">
-<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/eval_E6A_WSCT0293.JPG.png" width="50%">
+<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/E6A_WSCT0293.JPG" width="50">
+<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/eval_E6A_WSCT0293.JPG.png" width="50">
 
 ## Training and evaluation
 1) Before training on GPU, change the dataset root in the configuration files in `config` file. 
