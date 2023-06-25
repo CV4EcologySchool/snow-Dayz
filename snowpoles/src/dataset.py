@@ -82,8 +82,11 @@ def train_test_split(csv_path, path, split, domain, snex):
         # df_data = df_data.sample(config.FT_sample).reset_index()
         
         # by camera
-        IPython.embed()
-        num_samples_per_camera = df_data.groupby('Camera').len()
+        #IPython.embed()
+        # num_samples_per_camera = df_data.groupby('Camera').count()
+        # for cam in wa_cams:
+        #     if num_samples_per_camera.loc[cam]['filename'] > 10:
+
         df_data = df_data.groupby('Camera').sample(config.FT_sample).reset_index()
         samples = len(df_data['Camera'])
 

@@ -12,7 +12,7 @@ import os
 
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean_Aug' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
 #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe5_BS64_E100_clean'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
 manual_labels_path = '/datadrive/vmData/manuallylabeled.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
