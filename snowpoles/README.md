@@ -16,13 +16,13 @@ This model identifies snow depth from snow poles by identifying the top and bott
 
 on local or GPU machine: 
 ```
-python train.py
+python src/train.py
 ```
 
 
 3) Evaluate:
 ```
-python evaluate.py 
+python src/evaluate.py 
 ```
 
 ## Basic packages:
