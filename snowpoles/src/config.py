@@ -13,7 +13,7 @@ import os
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
 #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean_Aug' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_150_LRe4_BS64_E100_clean_v2' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_Aug' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
 #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe5_BS64_E100_clean'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
 manual_labels_path = '/datadrive/vmData/manuallylabeled.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
@@ -33,7 +33,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as validation
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = False
-AUG = False ## True for Aug; False for None
+AUG = True ## True for Aug; False for None
 
 keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
 
