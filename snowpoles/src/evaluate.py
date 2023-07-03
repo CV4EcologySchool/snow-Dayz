@@ -150,9 +150,11 @@ def main():
     print(f"the results for all CHE and OK images...")
     outputs = predict(model, wa_data, eval='wa')
 
-    if config.FINETUNE == True: 
-        print(f"the results for all CO val images...")
-        outputs = predict(model, co_data, eval='co')
+    print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
+    print(f"the results for all 892 CO val images...")
+    outputs = predict(model, co_data, eval='co')
+
+
 
     #results = eval(outputs)
 
