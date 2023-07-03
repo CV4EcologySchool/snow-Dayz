@@ -121,6 +121,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             'automated_depth':automated_sds,'manual_snowdepth':manual_sds,'difference':diff_sds, 'mape':mape_errors})
     
     if eval == 'wa_wo_trainingdata':
+        IPython.embed()
         FT_valid_data = pd.read_csv('/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean/eval/results.csv')
         FT_valid_fname = FT_valid_data['filenames']
         results = results[~results['filenames'].isin(FT_valid_fname)].reset_index() 
