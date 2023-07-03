@@ -33,13 +33,11 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as validation
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = False
-DOMAIN = True ## True for IN DOMAIN; False for Out of Domain
-SNEX = True
-
-### in my datasheet it is columns 3, 4, 5, 6, so we will use range 3:7
-## or we can name them directly
+AUG = False ## True for Aug; False for None
 
 keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
-FINETUNE = True
+
+# Fine-tuning set-up
+FINETUNE = True ## True for test/val dataset to be the subset 
 FT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' ## model that you want to fine tune
 FT_sample = 5

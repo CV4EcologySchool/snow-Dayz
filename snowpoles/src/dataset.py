@@ -33,7 +33,7 @@ from torchvision.transforms import Compose, Resize, ToTensor
 from sklearn.model_selection import train_test_split
 
 ##### re-write this for out of domain testing
-def train_test_split(csv_path, path, split, domain, snex):
+def train_test_split(csv_path, path, split, domain):
     #IPython.embed()
     df_data = pd.read_csv(csv_path)
     print(f'all rows in df_data {len(df_data.index)}')
@@ -63,7 +63,6 @@ def train_test_split(csv_path, path, split, domain, snex):
 
     ######### EXP #2 train just on SNEX cameras 
     #if snex == True:
-    print('training using SNEX CAMERAS ONLY')
     snex_data = df_data[df_data['Camera'].isin(snex_cams)] 
     training_samples = snex_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
     valid_samples = snex_data[~snex_data.index.isin(training_samples.index)]
@@ -72,11 +71,11 @@ def train_test_split(csv_path, path, split, domain, snex):
         #     valid_samples = valid_samples
         #     training_samples = training_samples
     
-    wa_testdata = df_data[df_data['Camera'].isin(wa_cams)]   ## same no matter what
+    wa_testdata = df_data[df_data['Camera'].isin(wa_cams)]  ## same no matter what
     co_testdata = valid_samples #df_data[df_data['Camera'].isin(snex_cams)] ## for fine-tuning
 
     if config.FINETUNE == True:
-        print(f"FINETUNING MODEL")
+        print(f"FINETUNING MODEL n\ ")
         # random sample
         # df_data = df_data[df_data['Camera'].isin(wa_cams)] 
         # df_data = df_data.sample(config.FT_sample).reset_index()
@@ -87,7 +86,8 @@ def train_test_split(csv_path, path, split, domain, snex):
         # for cam in wa_cams:
         #     if num_samples_per_camera.loc[cam]['filename'] > 10:
 
-        df_data = df_data.groupby('Camera').sample(config.FT_sample).reset_index()
+
+        df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index()
         samples = len(df_data['Camera'])
 
         print(f'# of examples we will now train on {samples}')
@@ -107,7 +107,7 @@ def train_test_split(csv_path, path, split, domain, snex):
 
 class snowPoleDataset(Dataset):
 
-    def __init__(self, samples, path, domain): # split='train'):
+    def __init__(self, samples, path, aug): # split='train'):
         self.data = samples
         self.path = path
         self.resize = 224
@@ -116,7 +116,7 @@ class snowPoleDataset(Dataset):
         #            # For now, we just resize the images to the same dimensions...
         #     ToTensor()                          # ...and convert them to torch.Tensor.
         # ])
-        if domain == True: 
+        if aug == True: 
             self.transform = A.Compose([
                 A.Resize(224, 224),
                 ], keypoint_params=A.KeypointParams(format='xy'))
@@ -199,20 +199,20 @@ class snowPoleDataset(Dataset):
 # get the training and validation data samples
 # we also added a test set for wa cameras that we will adjust after some fine-tuning
 training_samples, valid_samples, wa_testdata, co_testdata = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}", 
-                                                   config.TEST_SPLIT, config.DOMAIN, config.SNEX)
+                                                   config.TEST_SPLIT, config.AUG)
 
 # initialize the dataset - `snowPoleDataset()`
 train_data = snowPoleDataset(training_samples, 
-                                 f"{config.ROOT_PATH}", config.DOMAIN)  ## we want all folders
+                                 f"{config.ROOT_PATH}", aug = config.AUG)  ## we want all folders
 #IPython.embed()
 valid_data = snowPoleDataset(valid_samples, 
-                                 f"{config.ROOT_PATH}", config.DOMAIN) # we always want the transform to be the normal transform
+                                 f"{config.ROOT_PATH}", aug = False) # we always want the transform to be the normal transform
 
 wa_data = snowPoleDataset(wa_testdata, 
-                            f"{config.ROOT_PATH}", config.DOMAIN) # this will be some assortment of the WA A & B cameras
+                            f"{config.ROOT_PATH}", aug = False) # this will be some assortment of the WA A & B cameras
 
 co_data = snowPoleDataset(co_testdata, 
-                            f"{config.ROOT_PATH}", config.DOMAIN) # this will be some assortment of the WA A & B cameras
+                            f"{config.ROOT_PATH}", aug = False) # this will be some assortment of the WA A & B cameras
 
 # prepare data loaders
 train_loader = DataLoader(train_data, 
