@@ -126,14 +126,14 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
         results = results[~results['filenames'].isin(FT_valid_fname)].reset_index() 
 
     #### overall average
-    print('Overall Top Pixel Error \n')
-    print(f"{np.mean(top_pixel_errors)} +/- {np.std(top_pixel_errors)}")
-    print('Overall Bottom Pixel Error \n')
-    print(f"{np.mean(bottom_pixel_errors)} +/- {np.std(bottom_pixel_errors)}")
-    print(f"Mean Average Percent Error (MAPE): \n ")
-    print(f"{np.mean(mape_errors)} +/- {np.std(mape_errors)}")
-    print('Overall difference in cm \n ')
-    print(f"{np.mean(diff_sds)} +/- {np.std(diff_sds)}")
+    print('Overall Top Pixel Error')
+    print(f"{np.mean(top_pixel_errors)} +/- {np.std(top_pixel_errors)} \n")
+    print('Overall Bottom Pixel Error')
+    print(f"{np.mean(bottom_pixel_errors)} +/- {np.std(bottom_pixel_errors)} \n")
+    print(f"Mean Average Percent Error (MAPE):")
+    print(f"{np.mean(mape_errors)} +/- {np.std(mape_errors)} \n")
+    print('Overall difference in cm')
+    print(f"{np.mean(diff_sds)} +/- {np.std(diff_sds)} \n")
 
 
     results.to_csv(f"{config.OUTPUT_PATH}/{eval}/results.csv")
