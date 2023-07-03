@@ -21,7 +21,7 @@ import glob
 import IPython
 import utils
 import pandas as pd
-from dataset import valid_data, wa_data, co_data
+from dataset import train_data, valid_data, wa_data, co_data
 from tqdm import tqdm
 from scipy.spatial import distance
 import os
@@ -119,15 +119,22 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
         'x1_pred': x1s_pred, 'y1s_pred': y1s_pred, 'x2_pred': x2s_pred, 'y2_pred': y2s_pred, 'top_pixel_error': top_pixel_errors, \
             'bottom_pixel_error': bottom_pixel_errors, 'total_length_pixel': total_length_pixels, 'total_length_pixel_actual': total_length_pixel_actuals,
             'automated_depth':automated_sds,'manual_snowdepth':manual_sds,'difference':diff_sds, 'mape':mape_errors})
+    
+    if eval == 'wa_wo_trainingdata':
+        FT_valid_data = pd.read_csv('/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean/eval/results.csv')
+        FT_valid_fname = FT_valid_data['filenames']
+        results = results[~results['filenames'].isin(FT_valid_fname)].reset_index() 
 
     #### overall average
     print('Overall Top Pixel Error \n')
     print(f"{np.mean(top_pixel_errors)} +/- {np.std(top_pixel_errors)}")
     print('Overall Bottom Pixel Error \n')
     print(f"{np.mean(bottom_pixel_errors)} +/- {np.std(bottom_pixel_errors)}")
+    print(f"Mean Average Percent Error (MAPE):")
+    print(f"{np.mean(mape_errors)} +/- {np.std(mape_errors)}")
     print('Overall difference in cm')
     print(f"{np.mean(diff_sds)} +/- {np.std(diff_sds)}")
-    print(f"Mean Average Percent Error (MAPE) {np.mean(mape_errors)}")
+
 
     results.to_csv(f"{config.OUTPUT_PATH}/{eval}/results.csv")
 
@@ -153,6 +160,9 @@ def main():
     print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
     print(f"the results for all 892 CO val images...")
     outputs = predict(model, co_data, eval='co')
+
+    print(f"Results for the wa imags without the training data")
+    outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
 
 
 
