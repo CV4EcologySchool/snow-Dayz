@@ -87,7 +87,8 @@ def train_test_split(csv_path, path, split, domain):
         #     if num_samples_per_camera.loc[cam]['filename'] > 10:
 
 
-        df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index()
+        #df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index()
+        df_data = wa_testdata.sample(config.FT_sample).reset_index()
         training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
 
@@ -100,7 +101,7 @@ def train_test_split(csv_path, path, split, domain):
     co_testdata = co_testdata[co_testdata['filename'].isin(filenames)].reset_index()
 
     print(f'# of examples we will now train on {len(training_samples)}, val on {len(valid_samples)}')
-    
+
     return training_samples, valid_samples, wa_testdata, co_testdata
 
 
