@@ -153,7 +153,7 @@ def main():
     model = load_model()
 
     ## returns a set of images of outputs
-    # eval = sets the folder name and 
+    # eval = sets the folder name 
     outputs = predict(model, valid_data, eval='eval')  
 
     print(f"the results for all CHE and OK images... \n")
