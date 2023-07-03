@@ -12,7 +12,8 @@ import os
 
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean_Aug' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
+#OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean_Aug' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
 #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe5_BS64_E100_clean'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
 manual_labels_path = '/datadrive/vmData/manuallylabeled.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
@@ -24,7 +25,7 @@ native_res_path = '/datadrive/vmData/nativeRes.csv'
 
 # learning parameters
 BATCH_SIZE = 64 #64 #4 #32
-LR = 0.00001 #0.00001  # #0.0001 lower to factor of 10
+LR = 0.0001 #0.00001  # #0.0001 lower to factor of 10
 EPOCHS = 100 #100
 #DEVICE = torch.device('mps')  #should be cuda on VMs
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -39,6 +40,6 @@ SNEX = True
 ## or we can name them directly
 
 keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
-FINETUNE = True
+FINETUNE = False
 FT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' ## model that you want to fine tune
 FT_sample = 5

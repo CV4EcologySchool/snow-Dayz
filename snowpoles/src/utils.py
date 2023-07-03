@@ -224,3 +224,9 @@ def diffcm(Camera, filename, automated_snow_depth):
         difference = 'na'
 
     return manual_snowdepth, difference
+
+ #Defining MAPE function
+def MAPE(Y_actual,Y_Predicted):
+    mape = np.mean(np.abs((Y_actual - Y_Predicted)/Y_actual))*100
+    return mape
+
