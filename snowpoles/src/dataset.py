@@ -33,7 +33,7 @@ from torchvision.transforms import Compose, Resize, ToTensor
 from sklearn.model_selection import train_test_split
 
 ##### re-write this for out of domain testing
-def train_test_split(csv_path, path, split, domain):
+def train_test_split(csv_path, path, split, aug):
     #IPython.embed()
     df_data = pd.read_csv(csv_path)
     print(f'all rows in df_data {len(df_data.index)}')
