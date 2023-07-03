@@ -88,9 +88,6 @@ def train_test_split(csv_path, path, split, domain):
 
 
         df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index()
-        samples = len(df_data['Camera'])
-
-        print(f'# of examples we will now train on {samples}')
         training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
 
@@ -102,6 +99,8 @@ def train_test_split(csv_path, path, split, domain):
     wa_testdata = wa_testdata[wa_testdata['filename'].isin(filenames)].reset_index()
     co_testdata = co_testdata[co_testdata['filename'].isin(filenames)].reset_index()
 
+    print(f'# of examples we will now train on {len(training_samples)}, val on {len(valid_samples)}')
+    
     return training_samples, valid_samples, wa_testdata, co_testdata
 
 
