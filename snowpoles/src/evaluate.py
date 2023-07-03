@@ -127,6 +127,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
     print(f"{np.mean(bottom_pixel_errors)} +/- {np.std(bottom_pixel_errors)}")
     print('Overall difference in cm')
     print(f"{np.mean(diff_sds)} +/- {np.std(diff_sds)}")
+    print(f"Mean Average Percent Error (MAPE) {np.mean(mape_errors)}")
 
     results.to_csv(f"{config.OUTPUT_PATH}/{eval}/results.csv")
 
