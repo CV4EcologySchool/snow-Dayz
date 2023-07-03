@@ -33,6 +33,7 @@ def load_model():
     model = snowPoleResNet50(pretrained=False, requires_grad=False).to(config.DEVICE)
     # load the model checkpoint
     checkpoint = torch.load(config.OUTPUT_PATH + '/model.pth')
+    print(f"loading model from the following path: {config.OUTPUT_PATH}")
     # load model weights state_dict
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
@@ -163,7 +164,7 @@ def main():
     outputs = predict(model, co_data, eval='co')
 
     print(f"Results for the wa imags without the training data \n")
-    outputs = predict(model, wa_data, eval='wa_wo_trainingdata \n ')
+    outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
 
 
 
