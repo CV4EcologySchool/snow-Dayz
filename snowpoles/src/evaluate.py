@@ -130,9 +130,9 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
     print(f"{np.mean(top_pixel_errors)} +/- {np.std(top_pixel_errors)}")
     print('Overall Bottom Pixel Error \n')
     print(f"{np.mean(bottom_pixel_errors)} +/- {np.std(bottom_pixel_errors)}")
-    print(f"Mean Average Percent Error (MAPE):")
+    print(f"Mean Average Percent Error (MAPE): n\ ")
     print(f"{np.mean(mape_errors)} +/- {np.std(mape_errors)}")
-    print('Overall difference in cm')
+    print('Overall difference in cm n\ ')
     print(f"{np.mean(diff_sds)} +/- {np.std(diff_sds)}")
 
 
