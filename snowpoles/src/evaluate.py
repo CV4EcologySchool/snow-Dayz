@@ -130,9 +130,9 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
     print(f"{np.mean(top_pixel_errors)} +/- {np.std(top_pixel_errors)}")
     print('Overall Bottom Pixel Error \n')
     print(f"{np.mean(bottom_pixel_errors)} +/- {np.std(bottom_pixel_errors)}")
-    print(f"Mean Average Percent Error (MAPE): n\ ")
+    print(f"Mean Average Percent Error (MAPE): \n ")
     print(f"{np.mean(mape_errors)} +/- {np.std(mape_errors)}")
-    print('Overall difference in cm n\ ')
+    print('Overall difference in cm \n ')
     print(f"{np.mean(diff_sds)} +/- {np.std(diff_sds)}")
 
 
@@ -154,15 +154,15 @@ def main():
     # eval = sets the folder name and 
     outputs = predict(model, valid_data, eval='eval')  
 
-    print(f"the results for all CHE and OK images...")
+    print(f"the results for all CHE and OK images... \n")
     outputs = predict(model, wa_data, eval='wa')
 
     print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
-    print(f"the results for all 892 CO val images...")
+    print(f"the results for all 892 CO val images... \n ")
     outputs = predict(model, co_data, eval='co')
 
-    print(f"Results for the wa imags without the training data")
-    outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
+    print(f"Results for the wa imags without the training data \n")
+    outputs = predict(model, wa_data, eval='wa_wo_trainingdata \n ')
 
 
 
