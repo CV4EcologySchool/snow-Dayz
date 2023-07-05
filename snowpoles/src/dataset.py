@@ -84,6 +84,7 @@ def train_test_split(csv_path, path, split, aug):
         training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
         training_samples.to_csv(f"{config.OUTPUT_PATH}/FT_training_samples.csv")
+        valid_samples.to_csv(f"{config.OUTPUT_PATH}/FT_valid_samples.csv")
 
     ##### only images that exist
     all_images = glob.glob(path + ('/**/*.JPG'))
