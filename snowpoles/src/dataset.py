@@ -31,6 +31,7 @@ from PIL import Image, ImageFile
 import albumentations as A ### better for keypoint augmentations, pip install albumentations
 from torchvision.transforms import Compose, Resize, ToTensor
 from sklearn.model_selection import train_test_split
+import os
 
 ##### re-write this for out of domain testing
 def train_test_split(csv_path, path, split, aug):
@@ -83,6 +84,8 @@ def train_test_split(csv_path, path, split, aug):
         #df_data = wa_testdata.sample(config.FT_sample).reset_index()
         training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
+        if not os.path.exists(f"{config.OUTPUT_PATH}"):
+            os.makedirs(f"{config.OUTPUT_PATH}", exist_ok=True)
         training_samples.to_csv(f"{config.OUTPUT_PATH}/FT_training_samples.csv")
         valid_samples.to_csv(f"{config.OUTPUT_PATH}/FT_valid_samples.csv")
 
