@@ -66,6 +66,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
     total_length_pixel_actuals = []
     mape_errors = []
     mape_errors_sd = []
+    mape_errors_sd_clean = []
 
     automated_sds, manual_sds, diff_sds = [], [], []
 
@@ -117,6 +118,8 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             mape_error = utils.MAPE(total_length_pixel_actual, total_length_pixel)
             mape_error_sd = utils.MAPE(manual_snowdepth, automated_sd)
             mape_errors_sd.append(mape_error_sd)
+
+                        #MAPE cleaned; because negative numbers really throw off the MAPE estimate   
 
             top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
             total_length_pixel_actuals.append(total_length_pixel_actual), mape_errors.append(mape_error)

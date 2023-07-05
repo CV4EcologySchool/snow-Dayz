@@ -34,6 +34,8 @@ for filename in data['filename']:
     cmLengths = pixelLengths * float(conversion)
     snowdepth = snwfreestake - cmLengths
 
+    #if snowdepth < 0: snowdepth = 0 # so that we reduce the noise
+
     che_ok_files.append(filename), che_ok_dates.append(date)
     che_ok_cam.append(camera), che_ok_length_cm.append(cmLengths), che_ok_sd.append(snowdepth)
 
