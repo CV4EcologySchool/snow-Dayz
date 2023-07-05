@@ -79,8 +79,8 @@ def train_test_split(csv_path, path, split, aug):
     if config.FINETUNE == True:
         print(f"FINETUNING MODEL n\ ")
 
-        #df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index()
-        df_data = wa_testdata.sample(config.FT_sample).reset_index()
+        df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index()
+        #df_data = wa_testdata.sample(config.FT_sample).reset_index()
         training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
         valid_samples = df_data[~df_data.index.isin(training_samples.index)]
 
