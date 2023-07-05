@@ -97,6 +97,10 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             ## outputs proj and in cm
             outputs_cm = utils.outputs_in_cm(Camera, filename, x1_pred, y1_pred, x2_pred, y2_pred)
             automated_sd = outputs_cm['snow_depth']
+
+            ## predict values < 0 as 0 
+            if automated_sd < 0: automated_sd = 0
+
             automated_sds.append(automated_sd)
 
             # ## difference between automated and manual
@@ -113,7 +117,6 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             mape_error = utils.MAPE(total_length_pixel_actual, total_length_pixel)
             mape_error_sd = utils.MAPE(manual_snowdepth, automated_sd)
             mape_errors_sd.append(mape_error_sd)
-
 
             top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
             total_length_pixel_actuals.append(total_length_pixel_actual), mape_errors.append(mape_error)
