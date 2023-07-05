@@ -118,10 +118,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             mape_error = utils.MAPE(total_length_pixel_actual, total_length_pixel)
             mape_error_sd = utils.MAPE(manual_snowdepth, automated_sd)
             mape_errors_sd.append(mape_error_sd)
-
-                        #MAPE cleaned; because negative numbers really throw off the MAPE estimate   
             
-
             top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
             total_length_pixel_actuals.append(total_length_pixel_actual), mape_errors.append(mape_error)
     
@@ -133,9 +130,10 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             'automated_depth':automated_sds,'manual_snowdepth':manual_sds,'difference':diff_sds, 'mape':mape_errors,'mape_sd':mape_errors_sd})
     
     if eval == 'wa_wo_trainingdata':
-        FT_valid_data = pd.read_csv(f'{config.OUTPUT_PATH}/eval/results.csv') ## this isn't the training data!
-        FT_valid_fname = FT_valid_data['filename']
-        results = results[~results['filename'].isin(FT_valid_fname)].reset_index() 
+        FT_training_data = pd.read_csv(f'{config.OUTPUT_PATH}/FT_training_samples.csv') ## this isn't the training data!
+        FT_training_data = FT_training_data['filename']
+        print(f"# of training examples in FT model, {len(FT_training_data)}")
+        results = results[~results['filename'].isin(FT_training_data)].reset_index() 
 
     #### overall average
     print('Overall Top Pixel Error')
