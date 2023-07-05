@@ -155,7 +155,7 @@ def main():
     # eval = sets the folder name 
     outputs = predict(model, valid_data, eval='eval')  
 
-    print(f"the results for all CHE and OK images... \n")
+    print(f"the results for all WA images... \n")
     outputs = predict(model, wa_data, eval='wa')
 
     print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")

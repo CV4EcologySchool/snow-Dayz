@@ -40,8 +40,10 @@ def train_test_split(csv_path, path, split, aug):
 
     snex_cams = ['E6A', 'E6B', 'E9A','E9E', 'E9F','W1A','W2A','W2B',
             'W5A','W6A','W6B','W6C','W8A','W8C','W9A','W9B','W9C','W9D','W9E','W9G']
-    wa_cams = ['CHE2', 'CHE3', 'CHE4', 'CHE5', 'CHE6', 'CHE7',
-        'CHE8', 'CHE9', 'CHE10', 'TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02']
+    wa_cams = ['TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02',
+        'CEDAR-H-01', 'CEDAR-L-01', 'CEDAR-M-01','CUB-H-01','CUB-M-01','CUB-U-01', 'BUNKHOUSE-01']
+    #'CHE2', 'CHE3', 'CHE4', 'CHE5', 'CHE6', 'CHE7',
+        #'CHE8', 'CHE9', 'CHE10', 
     
     # Number of rows, that we want to be sampled from each category 
     # samples_per_group_dict = {'CHE2':, 'CHE3':, 'CHE4':, 'CHE5':, 'CHE6':, 'CHE7':,
@@ -76,16 +78,6 @@ def train_test_split(csv_path, path, split, aug):
 
     if config.FINETUNE == True:
         print(f"FINETUNING MODEL n\ ")
-        # random sample
-        # df_data = df_data[df_data['Camera'].isin(wa_cams)] 
-        # df_data = df_data.sample(config.FT_sample).reset_index()
-        
-        # by camera
-        #IPython.embed()
-        # num_samples_per_camera = df_data.groupby('Camera').count()
-        # for cam in wa_cams:
-        #     if num_samples_per_camera.loc[cam]['filename'] > 10:
-
 
         #df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index()
         df_data = wa_testdata.sample(config.FT_sample).reset_index()
@@ -198,7 +190,7 @@ class snowPoleDataset(Dataset):
 
 # get the training and validation data samples
 # we also added a test set for wa cameras that we will adjust after some fine-tuning
-training_samples, valid_samples, wa_testdata, co_testdata = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean.csv", f"{config.ROOT_PATH}", 
+training_samples, valid_samples, wa_testdata, co_testdata = train_test_split(f"{config.ROOT_PATH}/snowPoles_labels_clean_jul23upd.csv", f"{config.ROOT_PATH}", 
                                                    config.TEST_SPLIT, config.AUG)
 
 # initialize the dataset - `snowPoleDataset()`
