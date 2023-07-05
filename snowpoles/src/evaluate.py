@@ -65,6 +65,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
     top_pixel_errors, bottom_pixel_errors, total_length_pixels = [], [], []
     total_length_pixel_actuals = []
     mape_errors = []
+    mape_errors_sd = []
 
     automated_sds, manual_sds, diff_sds = [], [], []
 
@@ -110,6 +111,9 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
 
                         #MAPE
             mape_error = utils.MAPE(total_length_pixel_actual, total_length_pixel)
+            mape_error_sd = utils.MAPE(manual_snowdepth, automated_sd)
+            mape_errors_sd.append(mape_error_sd)
+
 
             top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
             total_length_pixel_actuals.append(total_length_pixel_actual), mape_errors.append(mape_error)
@@ -119,10 +123,10 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
     results = pd.DataFrame({'Camera':Cameras, 'filename':filenames, 'x1_true':x1s_true, 'y1_true':y1s_true, 'x2_true':x2s_true, 'y2_true':y2s_true, \
         'x1_pred': x1s_pred, 'y1s_pred': y1s_pred, 'x2_pred': x2s_pred, 'y2_pred': y2s_pred, 'top_pixel_error': top_pixel_errors, \
             'bottom_pixel_error': bottom_pixel_errors, 'total_length_pixel': total_length_pixels, 'total_length_pixel_actual': total_length_pixel_actuals,
-            'automated_depth':automated_sds,'manual_snowdepth':manual_sds,'difference':diff_sds, 'mape':mape_errors})
+            'automated_depth':automated_sds,'manual_snowdepth':manual_sds,'difference':diff_sds, 'mape':mape_errors,'mape_sd':mape_errors_sd})
     
     if eval == 'wa_wo_trainingdata':
-        FT_valid_data = pd.read_csv(f'{config.OUTPUT_PATH}/eval/results.csv')
+        FT_valid_data = pd.read_csv(f'{config.OUTPUT_PATH}/eval/results.csv') ## this isn't the training data!
         FT_valid_fname = FT_valid_data['filename']
         results = results[~results['filename'].isin(FT_valid_fname)].reset_index() 
 
