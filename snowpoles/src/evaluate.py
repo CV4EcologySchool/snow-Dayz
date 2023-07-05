@@ -49,7 +49,7 @@ It is a little bit easier to flatten this way.
 '''
 
 
-def predict(model, data, eval='eval', ft_data): ## try this without a dataloader
+def predict(model, data, eval='eval'): ## try this without a dataloader
     ## eval is the method, whether eval or test
     #files =  glob.glob(args.image_path + ('/**/*.JPG'))
     #df_data = pd.read_csv(f"{config.ROOT_PATH}/snowPoles_labels.csv")
