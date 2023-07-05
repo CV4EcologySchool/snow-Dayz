@@ -120,6 +120,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             mape_errors_sd.append(mape_error_sd)
 
                         #MAPE cleaned; because negative numbers really throw off the MAPE estimate   
+            
 
             top_pixel_errors.append(top_pixel_error), bottom_pixel_errors.append(bottom_pixel_error), total_length_pixels.append(total_length_pixel)
             total_length_pixel_actuals.append(total_length_pixel_actual), mape_errors.append(mape_error)
@@ -151,6 +152,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
 
     results.to_csv(f"{config.OUTPUT_PATH}/{eval}/results.csv")
 
+    ### track all results & experiments ?
     return results
 
 def main():
