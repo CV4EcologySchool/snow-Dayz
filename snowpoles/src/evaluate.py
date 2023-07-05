@@ -170,12 +170,12 @@ def main():
     # eval = sets the folder name 
     outputs = predict(model, valid_data, eval='eval')  
 
-    # print(f"the results for all WA images... \n")
-    # outputs = predict(model, wa_data, eval='wa')
+    print(f"the results for all WA images... \n")
+    outputs = predict(model, wa_data, eval='wa')
 
-    # print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
-    # print(f"the results for all 892 CO val images... \n ")
-    # outputs = predict(model, co_data, eval='co')
+    print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
+    print(f"the results for all 892 CO val images... \n ")
+    outputs = predict(model, co_data, eval='co')
 
     print(f"Results for the wa imags without the training data \n")
     outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
