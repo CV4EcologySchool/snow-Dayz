@@ -139,6 +139,8 @@ def predict(model, data, eval='eval', ft_data): ## try this without a dataloader
     print(f"{np.mean(mape_errors)} +/- {np.std(mape_errors)} \n")
     print('Overall difference in cm')
     print(f"{np.mean(diff_sds)} +/- {np.std(diff_sds)} \n")
+    print('Overall difference in MAPE')
+    print(f"{np.mean(mape_errors_sd)} +/- {np.std(mape_errors_sd)} \n")
     print("\n")
 
     results.to_csv(f"{config.OUTPUT_PATH}/{eval}/results.csv")
