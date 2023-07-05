@@ -136,7 +136,6 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
         results = results[~results['filename'].isin(FT_training_data)].reset_index() 
         top_pixel_errors, bottom_pixel_errors = results['top_pixel_error'], results['bottom_pixel_error']
         mape_errors, diff_sds, mape_errors_sd = results['mape'], results['difference'], results['mape_sd']
-        
     
 
     #### overall average
@@ -171,12 +170,12 @@ def main():
     # eval = sets the folder name 
     outputs = predict(model, valid_data, eval='eval')  
 
-    print(f"the results for all WA images... \n")
-    outputs = predict(model, wa_data, eval='wa')
+    # print(f"the results for all WA images... \n")
+    # outputs = predict(model, wa_data, eval='wa')
 
-    print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
-    print(f"the results for all 892 CO val images... \n ")
-    outputs = predict(model, co_data, eval='co')
+    # print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
+    # print(f"the results for all 892 CO val images... \n ")
+    # outputs = predict(model, co_data, eval='co')
 
     print(f"Results for the wa imags without the training data \n")
     outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
