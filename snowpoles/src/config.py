@@ -33,7 +33,7 @@ DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 TEST_SPLIT = 0.1  ## could update for the cameras that we want to hold out as validation
 # show dataset keypoint plot
 SHOW_DATASET_PLOT = False
-AUG = False ## True for Aug; False for None
+AUG = True ## True for Aug; False for None
 
 keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
 
