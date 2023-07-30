@@ -13,7 +13,7 @@ import os
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
 #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean_Aug' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_nonFT10p_LRe4_BS64_E100_clean_OKonly' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT15p_LRe4_BS64_E10000_clean_OKonly' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
 #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe5_BS64_E100_clean'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
 manual_labels_path = '/datadrive/vmData/manuallylabeled.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
@@ -26,7 +26,7 @@ native_res_path = '/datadrive/vmData/nativeRes.csv'
 # learning parameters
 BATCH_SIZE = 64 #64 #4 #32
 LR = 0.0001 #0.00001  # #0.0001 lower to factor of 10
-EPOCHS = 100 #100
+EPOCHS = 10000 #100
 #DEVICE = torch.device('mps')  #should be cuda on VMs
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 # train/test split
