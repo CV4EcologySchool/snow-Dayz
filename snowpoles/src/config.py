@@ -7,7 +7,7 @@ import os
 # ROOT_PATH = '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized_clean'
 # OUTPUT_PATH = '/Users/catherinebreen/Documents/Chapter1/aurora_outputsJul26/snow_poles_outputs_resized_FT10p_LRe4_BS64_E100_clean_OKonly'
 # snowfreetbl_path = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/snowfree_table.csv'
-# manual_labels_path = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/manuallylabeled.csv'
+# manual_labels_path = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/manuallylabeled_CUBM02corr.csv'
 # datetime_info = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/labeledImgs_datetime_info.csv'
 # native_res_path = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/nativeRes.csv'
 
@@ -16,7 +16,7 @@ ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
 OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT10p_LRe4_BS64_E100_clean_OKonly' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
     #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe5_BS64_E100_clean'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
-manual_labels_path = '/datadrive/vmData/manuallylabeled.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
+manual_labels_path = '/datadrive/vmData/manuallylabeled_CUBM02corr.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
 datetime_info = '/datadrive/vmData/labeledImgs_datetime_info.csv' #'/datdrive/vmData/native_res/native_res'
 native_res_path = '/datadrive/vmData/nativeRes.csv'
 
