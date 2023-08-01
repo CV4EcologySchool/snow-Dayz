@@ -100,7 +100,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             automated_sd = outputs_cm['snow_depth']
 
             ## predict values < 0 as 0 
-            if automated_sd < 0: automated_sd = 0
+            #if automated_sd < 0: automated_sd = 0
 
             automated_sds.append(automated_sd)
 
