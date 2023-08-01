@@ -178,7 +178,6 @@ def outputs_in_cm(Camera, filename, x1s_pred, y1s_pred, x2s_pred, y2s_pred):
     '''
     This function converts the length in pixels to length in cm for each output
     '''
-    IPython.embed()
     orig_w, orig_h = camres(Camera)
     conversion, snowfreestake_cm = conversionDic(Camera)
 
