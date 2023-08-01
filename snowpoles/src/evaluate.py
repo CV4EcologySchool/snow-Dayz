@@ -97,7 +97,6 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
 
             ## outputs proj and in cm
             outputs_cm = utils.outputs_in_cm(Camera, filename, x1_pred, y1_pred, x2_pred, y2_pred)
-            IPython.embed()
             automated_sd = outputs_cm['snow_depth']
 
 
