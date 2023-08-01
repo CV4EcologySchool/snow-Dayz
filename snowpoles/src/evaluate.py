@@ -97,7 +97,9 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
 
             ## outputs proj and in cm
             outputs_cm = utils.outputs_in_cm(Camera, filename, x1_pred, y1_pred, x2_pred, y2_pred)
+            IPython.embed()
             automated_sd = outputs_cm['snow_depth']
+
 
             ## predict values < 0 as 0 
             #if automated_sd < 0: automated_sd = 0
@@ -168,14 +170,14 @@ def main():
 
     ## returns a set of images of outputs
     # eval = sets the folder name 
-    outputs = predict(model, valid_data, eval='eval')  
+    # outputs = predict(model, valid_data, eval='eval')  
 
-    print(f"the results for all WA images... \n")
-    outputs = predict(model, wa_data, eval='wa')
+    # print(f"the results for all WA images... \n")
+    # outputs = predict(model, wa_data, eval='wa')
 
-    print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
-    print(f"the results for all 892 CO val images... \n ")
-    outputs = predict(model, co_data, eval='co')
+    # print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
+    # print(f"the results for all 892 CO val images... \n ")
+    # outputs = predict(model, co_data, eval='co')
 
     print(f"Results for the wa imags without the training data \n")
     outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
