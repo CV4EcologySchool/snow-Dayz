@@ -169,7 +169,7 @@ def main():
 
     ## returns a set of images of outputs
     # eval = sets the folder name 
-    # outputs = predict(model, valid_data, eval='eval')  
+    outputs = predict(model, valid_data, eval='eval')  
 
     # print(f"the results for all WA images... \n")
     # outputs = predict(model, wa_data, eval='wa')
@@ -178,8 +178,8 @@ def main():
     # print(f"the results for all 892 CO val images... \n ")
     # outputs = predict(model, co_data, eval='co')
 
-    print(f"Results for the wa imags without the training data \n")
-    outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
+    # print(f"Results for the wa imags without the training data \n")
+    # outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
 
 
 
