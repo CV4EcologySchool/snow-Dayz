@@ -40,4 +40,4 @@ keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
 FINETUNE = True ## True for test/val dataset to be the subset 
 FT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' ## model that you want to fine tune
 FT_sample = 10
-FT_IMG_PATH = '/datadrive/vmData/waImgs_every10'
+FT_IMG_PATH = '/datadrive/vmData/WAsubset_every10'
