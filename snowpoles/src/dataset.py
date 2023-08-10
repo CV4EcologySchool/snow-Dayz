@@ -43,13 +43,7 @@ def train_test_split(csv_path, path, split, aug):
             'W5A','W6A','W6B','W6C','W8A','W8C','W9A','W9B','W9C','W9D','W9E','W9G']
     wa_cams = ['TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02',
         'CEDAR-H-01', 'CEDAR-L-01', 'CEDAR-M-01','CUB-H-01','CUB-M-01','CUB-U-01', 'BUNKHOUSE-01']
-    #'CHE2', 'CHE3', 'CHE4', 'CHE5', 'CHE6', 'CHE7',
-        #'CHE8', 'CHE9', 'CHE10', 
     
-    # Number of rows, that we want to be sampled from each category 
-    # samples_per_group_dict = {'CHE2':, 'CHE3':, 'CHE4':, 'CHE5':, 'CHE6':, 'CHE7':,
-    #     'CHE8':, 'CHE9':, 'CHE10':, 'TWISP-U-01':, 'TWISP-R-01':, 'CUB-H-02':, 'CUB-L-02':, 'CUB-M-02':}
-        
     ### original model ### 
     ########## EXP #1: CAN MODEL DETECT SNOW  
         # if domain == True: 
@@ -79,12 +73,14 @@ def train_test_split(csv_path, path, split, aug):
 
     if config.FINETUNE == True:
         print(f"FINETUNING MODEL n\ ")
-
-        df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index()
-        #df_data = wa_testdata.sample(config.FT_sample).reset_index()
-        training_samples = df_data.sample(frac=1.0, random_state=100) ## same shuffle everytime
-        #valid_samples = df_data[~df_data.index.isin(training_samples.index)]
-        valid_samples = wa_testdata.sample(frac=0.1, random_state=100)
+        stratsmp = glob.glob(f"{config.FT_IMG_PATH}/**/*")
+        stratsmp = [item.split('/')[-1] for item in stratsmp]
+        df_data = wa_testdata[wa_testdata['filename'].isin(stratsmp)].reset_index()
+        # df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index() # X images per camera
+        #df_data = wa_testdata.sample(config.FT_sample).reset_index() # random sample
+        training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
+        valid_samples = df_data[~df_data.index.isin(training_samples.index)]
+        # valid_samples = wa_testdata.sample(frac=0.1, random_state=100)
         if not os.path.exists(f"{config.OUTPUT_PATH}"):
             os.makedirs(f"{config.OUTPUT_PATH}", exist_ok=True)
         training_samples.to_csv(f"{config.OUTPUT_PATH}/FT_training_samples.csv")
