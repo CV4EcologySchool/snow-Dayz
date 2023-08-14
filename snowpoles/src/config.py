@@ -13,7 +13,7 @@ import os
 
 ROOT_PATH = '/datadrive/vmData/SNEX20_TLI_resized_clean'
     #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FT_5_LRe4_BS64_E100_clean_Aug' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
-OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_FTevery10+mxsd_LRe4_BS64_E10000_clean_SNEX_IN' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
+OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' #snow_poles_outputs_resized_FT_10_LRe4_BS64_E100_clean'
     #OUTPUT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe5_BS64_E100_clean'
 snowfreetbl_path = '/datadrive/vmData/snowfree_table.csv'
 manual_labels_path = '/datadrive/vmData/manuallylabeled_CUBM02corr.csv' #'/datadrive/vmData/SNEX20_SD_TLI_clean.csv'
@@ -37,7 +37,7 @@ AUG = False ## True for Aug; False for None
 keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
 
 # Fine-tuning set-up
-FINETUNE = True ## True for test/val dataset to be the subset 
+FINETUNE = False ## True for test/val dataset to be the subset 
 FT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' ## model that you want to fine tune
 FT_sample = 10
 FT_IMG_PATH = '/datadrive/vmData/WAsubset_every10'

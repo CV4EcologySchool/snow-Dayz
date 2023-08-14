@@ -125,7 +125,7 @@ def vis_predicted_keypoints(args, file, image, keypoints, color=(0,255,0), diame
         if p == 0: 
             plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.') ## top
         else:
-            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'y.') ## bottom
+            plt.plot(output_keypoint[p, 0], output_keypoint[p, 1], 'r.') ## bottom
     plt.savefig(f"{args.output_path}/predictions/image_{file}.png")
     plt.close()
    
