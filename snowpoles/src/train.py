@@ -118,7 +118,7 @@ for epoch in range(config.EPOCHS):
     ####### early stopping #########
     #IPython.embed()
     if val_epoch_loss < best_loss_val:
-                best_loss_val = val_epoch_lossß
+                best_loss_val = val_epoch_loss
                 best_loss_val_epoch = epoch
     elif epoch > best_loss_val_epoch + 10:
             break
