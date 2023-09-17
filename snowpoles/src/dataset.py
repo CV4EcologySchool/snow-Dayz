@@ -96,7 +96,7 @@ def train_test_split(csv_path, path, split, aug):
     co_testdata = co_testdata[co_testdata['filename'].isin(filenames)].reset_index()
 
     print(f'# of examples we will now train on {len(training_samples)}, val on {len(valid_samples)}')
-    print('LATEST CODE CHECK!!!!!!')
+    print('LATEST CODE CHECK 2')
     return training_samples, valid_samples, wa_testdata, co_testdata
 
 
