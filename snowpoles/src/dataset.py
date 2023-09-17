@@ -60,7 +60,8 @@ def train_test_split(csv_path, path, split, aug):
 
     ######### EXP #2 train just on SNEX cameras 
     #if snex == True:
-    snex_data = df_data[df_data['Camera'].isin(snex_cams)] 
+    snex_data = df_data[df_data['Camera'].isin(snex_cams+wa_cams)] 
+
     training_samples = snex_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
     valid_samples = snex_data[~snex_data.index.isin(training_samples.index)]
         # else:
