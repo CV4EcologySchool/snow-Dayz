@@ -131,6 +131,7 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
             'automated_depth':automated_sds,'manual_snowdepth':manual_sds,'difference':diff_sds, 'mape':mape_errors,'mape_sd':mape_errors_sd})
     
     if eval == 'wa_wo_trainingdata':
+        IPython.embed()
         FT_training_data = pd.read_csv(f'{config.OUTPUT_PATH}/FT_training_samples.csv') ## this isn't the training data!
         FT_training_data = FT_training_data['filename']
         print(f"# of training examples in FT model, {len(FT_training_data)}")
