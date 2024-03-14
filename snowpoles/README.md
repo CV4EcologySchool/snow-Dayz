@@ -9,10 +9,11 @@ We present a model that faciltates snow depth extraction from snow poles by iden
 This model contains a neural network with ResNet50 architecture (pre-trained with ImageNet) trained on 9721 images of snowpoles installed in front of time-lapse cameras. The images are from 32 different sites in Okanogan County, Washington, USA, and Grand Mesa, Colorado, USA. We welcome testing of the model on your site, but we recommend an additional training step for best results in your area of interest. We will first describe how to use the model for predictions, then we will explain how to re-train the model for best results. 
 
 ## predictions
-1) To test the model on your own sites of interest, run 'predict.py'. The script saves the results as a .csv as well as pictures of the predictions. On a local machine, the script can process about XX images/ second. The script contains three arguments to allow the user to customize predictions: 1) dir_path, 2) folder_path, and 3) output_path. 
-    - "dir_path" is the argument if you would like to predict  for a directory of camera folders. It assumes that original images are saved in a nested subfolder from a root folder, and that each camera folder has a unique folder ID that matches the camera ID. For example the directory may be called "data" and then each folder within "data" is "camera1," "camera2," etc, where within each camera folder are the .jpg images. This is the most efficient way to run the code, because you only have to run one line, and the model will make predictions across all your camera folders. It takes about XX to process. 
-    - "folder_path" is similiar to "dir_path" except that it does not assume a nested folder structure. This can be used if all your images are in one folder, or you simply want to run predictions on one folder only. 
-    - 'output_path'is the folder where you would like to save the model predictions. The script will automatically create a subfolder called "predictions" where it will save the .csv of the top and bottom coordinates as well as the length in pixels. It will also save the pictures of the predictions in this folder as well. 
+1) To test the model on your own sites of interest, run 'predict.py'. The script saves the results as a .csv as well as pictures of the predictions. On a local machine, the script can process about XX images/ second. The script contains four arguments to allow the user to customize predictions: 1) model_folder, 2) dir_path, 3) folder_path, and 4) output_path. 
+    - 'model_path' if the user has retrained the model and would like to point it to the new folder, they can update the path here. If the user leaves this blank, it will automatically use the model developed in the corresponding paper. (not mandatory)
+    - "dir_path" is the argument if you would like to predict  for a directory of camera folders. It assumes that original images are saved in a nested subfolder from a root folder, and that each camera folder has a unique folder ID that matches the camera ID. For example the directory may be called "data" and then each folder within "data" is "camera1," "camera2," etc, where within each camera folder are the .jpg images. This is the most efficient way to run the code, because you only have to run one line, and the model will make predictions across all your camera folders. It takes about XX to process. (not mandatory)
+    - "folder_path" is similiar to "dir_path" except that it does not assume a nested folder structure. This can be used if all your images are in one folder, or you simply want to run predictions on one folder only. If left blank, it will default to example images. 
+    - 'output_path'is the folder where you would like to save the model predictions. The script will automatically create a subfolder called "predictions" where it will save the .csv of the top and bottom coordinates as well as the length in pixels. It will also save the pictures of the predictions in this folder as well. (mandtory) 
 
 An example for a directory of  from the command line is as follows: 
 on local or GPU machine:
@@ -28,7 +29,7 @@ on local or GPU machine:
 python src/predict.py --folder_path '/Users/Documents/data/CAMERA1' --output_folder '/Users/Documents/data/CAMERA1'
 ```
 
-**Note: the script only allows for a dir_path OR a folder_path because of how it uploads the images to local memory. Please use only one argument or the other. If both are provided, it will default to dir_path.
+**Note: the script only allows for a dir_path OR a folder_path because of how it uploads the images to local memory. Please use only one argument or the other. If both are provided, it will default to folder_path.
 
 ## snow depth extraction
 
