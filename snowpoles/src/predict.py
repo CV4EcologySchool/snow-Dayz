@@ -35,7 +35,7 @@ def load_model(args):
     model = snowPoleResNet50(pretrained=False, requires_grad=False).to(config.DEVICE)
     # load the model checkpoint
     ## katie's settings:
-    if args.model_path != 'NULL':
+    if args.model_path == 'NULL':
         checkpoint = torch.load(config.OUTPUT_PATH + '/model_epoch50.pth', map_location=torch.device('mps'))
     else: #### Load the model based on how the user download the code folder to computer 
         current_directory = os.getcwd()
@@ -60,10 +60,13 @@ def predict(model, args): ## try this without a dataloader
     x1s_pred, y1s_pred, x2s_pred, y2s_pred = [], [], [], []
     total_length_pixels = []
     
-    if args.dir_path == 'NULL':
-        snowpolefiles = glob.glob(f"{args.folder_path}/*") ## if just doing a folder at a time!! 
-    else: snowpolefiles = glob.glob(f"{args.dir_path}/**/*")
-    #snowpoleList = [item.split('/')[-1] for item in snowpolefiles]
+    if args.dir_path != '/example_data':
+        snowpolefiles = glob.glob(f"{args.dir_path}/**/*")
+    else: snowpolefiles = glob.glob(f"{args.dir_path}/**/*") 
+    
+    if args.folder_path != '/example_data/cam1':
+        snowpolefiles = glob.glob(f"{args.dir_path}/*")
+    else: snowpolefiles = glob.glob(f"{args.folder_path}/*") 
  
     #num_batches = int(len(data)/dataloader.batch_size)
     with torch.no_grad():
@@ -133,9 +136,9 @@ def main():
     # python code/train.py --output model_runs
     parser = argparse.ArgumentParser(description='Predict top and bottom coordinates.')
     parser.add_argument('--model_path', required=False, help = 'Path to model', default = 'NULL')
-    parser.add_argument('--dir_path', required=False, help='Path to camera image directory', default = 'NULL')
-    parser.add_argument('--folder_path', required=False, help='Path to camera image folder', default = "image_path")
-    parser.add_argument('--output_path', required=True, help='Path to output folder', default = "output_path")
+    parser.add_argument('--dir_path', required=False, help='Path to camera image directory', default = '/example_data')
+    parser.add_argument('--folder_path', required=False, help='Path to camera image folder', default = "/example_data/cam1")
+    parser.add_argument('--output_path', required=True, help='Path to output folder', default = "/example_data")
     args = parser.parse_args()
 
 
