@@ -130,7 +130,7 @@ def predict(model, args): ## try this without a dataloader
 def main():
     # Argument parser for command-line arguments:
     # python code/train.py --output model_runs
-    parser = argparse.ArgumentParser(description='Train deep learning model.')
+    parser = argparse.ArgumentParser(description='Predict top and bottom coordinates.')
     parser.add_argument('--image_path', required=True, help='Path to image directory', default = "image_path")
     parser.add_argument('--output_path', required=True, help='Path to output folder', default = "output_path")
     args = parser.parse_args()
