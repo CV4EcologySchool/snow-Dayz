@@ -25,30 +25,29 @@ import glob
 import IPython
 import utils
 import pandas as pd
-#from dataset import valid_data, valid_loader # don't need for predictions
 from tqdm import tqdm
 from scipy.spatial import distance
 import os
 import matplotlib.pyplot as plt
 from scipy.spatial import distance
 
-def load_model():
+def load_model(args):
     model = snowPoleResNet50(pretrained=False, requires_grad=False).to(config.DEVICE)
     # load the model checkpoint
-    checkpoint = torch.load(config.OUTPUT_PATH + '/model_epoch50.pth', map_location=torch.device('mps'))
+    ## katie's settings:
+    if args.model_path != 'NULL':
+        checkpoint = torch.load(config.OUTPUT_PATH + '/model_epoch50.pth', map_location=torch.device('mps'))
+    else: #### Load the model based on how the user download the code folder to computer 
+        current_directory = os.getcwd()
+        neighboring_directory = os.path.join(current_directory, '/model_folder')
+        model_path = os.path.join(neighboring_directory, 'model_epoch50.pth')
+        checkpoint = torch.load(model_path, map_location=torch.device('mps'))
+        
+    #checkpoint = torch.load()
     # load model weights state_dict
     model.load_state_dict(checkpoint['model_state_dict'])
     model.eval()
     return model
-
-
-'''
-We will use part of the valid function to write our predict function. It will be very similiar except
-that it will use the last model, and we will just use the dataset, not the dataloader.
-
-It is a little bit easier to flatten this way. 
-
-'''
 
 def predict(model, args): ## try this without a dataloader
     #files =  glob.glob(args.image_path + ('/**/*.JPG'))
@@ -133,8 +132,9 @@ def main():
     # Argument parser for command-line arguments:
     # python code/train.py --output model_runs
     parser = argparse.ArgumentParser(description='Predict top and bottom coordinates.')
-    parser.add_argument('--dir_path', required=True, help='Path to camera image directory', default = 'NULL')
-    parser.add_argument('--folder_path', required=True, help='Path to camera image folder', default = "image_path")
+    parser.add_argument('--model_path', required=False, help = 'Path to model', default = 'NULL')
+    parser.add_argument('--dir_path', required=False, help='Path to camera image directory', default = 'NULL')
+    parser.add_argument('--folder_path', required=False, help='Path to camera image folder', default = "image_path")
     parser.add_argument('--output_path', required=True, help='Path to output folder', default = "output_path")
     args = parser.parse_args()
 
