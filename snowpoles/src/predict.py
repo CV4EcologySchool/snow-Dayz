@@ -61,7 +61,9 @@ def predict(model, args): ## try this without a dataloader
     x1s_pred, y1s_pred, x2s_pred, y2s_pred = [], [], [], []
     total_length_pixels = []
     
-    snowpolefiles = glob.glob(f"{args.image_path}/*") ## if just doing a folder at a time!! 
+    if args.dir_path == 'NULL':
+        snowpolefiles = glob.glob(f"{args.folder_path}/*") ## if just doing a folder at a time!! 
+    else: snowpolefiles = glob.glob(f"{args.dir_path}/**/*")
     #snowpoleList = [item.split('/')[-1] for item in snowpolefiles]
  
     #num_batches = int(len(data)/dataloader.batch_size)
@@ -131,7 +133,8 @@ def main():
     # Argument parser for command-line arguments:
     # python code/train.py --output model_runs
     parser = argparse.ArgumentParser(description='Predict top and bottom coordinates.')
-    parser.add_argument('--image_path', required=True, help='Path to image directory', default = "image_path")
+    parser.add_argument('--dir_path', required=True, help='Path to camera image directory', default = 'NULL')
+    parser.add_argument('--folder_path', required=True, help='Path to camera image folder', default = "image_path")
     parser.add_argument('--output_path', required=True, help='Path to output folder', default = "output_path")
     args = parser.parse_args()
 
