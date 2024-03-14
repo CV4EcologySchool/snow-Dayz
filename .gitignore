@@ -9,12 +9,9 @@ command_lines.txt
 Lectures/OfflineEvaluationandModelAnalysis_Sara.txt
 Lectures/BennyLectureImproveResults.txt
 classifier/experiments/*
-Lectures/BjornLecture.txt
-Lectures/TarunLecture.txt
-Lectures/DataAblationEli.txt
 Lectures/EfficientModelsSpeedvAccuracy.txt
 Lectures/*
-
+data_processing/*
 
 datadrive/vmData/weather/experiments/exp_resnet50_2classes_None/runs
 datadrive/vmData/weather/experiments/exp_resnet50_2classes_seq6hr/runs
