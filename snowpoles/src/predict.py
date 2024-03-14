@@ -10,6 +10,8 @@ python src/predict.py --image_path '/Volumes/CatBreen/Chewelah_resized/samples/C
 
 python src/predict.py --image_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean/CHE2' --output_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/448res_results/CNNkeypoint'
 
+
+
 '''
 
 import torch

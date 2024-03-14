@@ -1,5 +1,7 @@
 ## overview
-This model identifies snow depth from snow poles by identifying the top and bottom of the pole and converting the length in pixels to centimeters using a unique pixel to cm conversion for each camera. The pixel/cm ratio is derived using an image of the pole without snow, counting the pixels that represent the pole in the image, and dividing by the full length of the pole in centimeters (Breen et al. 2022). 
+This model identifies snow depth from snow poles by identifying the top and bottom of the pole and converting the length in pixels to centimeters using a unique pixel to cm conversion for each camera. cd ..
+
+The pixel/cm ratio is derived using an image of the pole without snow, counting the pixels that represent the pole in the image, and dividing by the full length of the pole in centimeters (Breen et al. 2022). 
 
 ## data structure information
 1) original images are saved in a nested subfolder from the root folder called "Data". Each camera folder has a unique folder ID that matches the camera ID. It is critical that the first part of the image name is the camera ID followed by an "_". For example, for camera E9E, an example image is E9E_0024.JPG, where E9E corresponds to the folder and the camera ID. 

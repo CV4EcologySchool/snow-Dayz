@@ -43,10 +43,11 @@ def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do
     '''
     # this is an empty model that we will load our model into
     #print(exp_name)
+    #IPython.embed()
     model_instance = CustomResNet50(num_of_classes)         # create an object instance of our CustomResNet18 class
     # load all model states
    
-    model_states = glob.glob(exp_name+'/*.pt')
+    model_states = glob.glob(exp_name) #+'/*.pt')
  
     ## if there is more than one model state, take the most recent one
     if len(model_states) > 0:
@@ -62,7 +63,7 @@ def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do
         
         # load state dict and apply weights to model
         #print(f'Evaluating from epoch {eval_epoch}')
-        state = torch.load(open('/Users/catherinebreen/Documents/Chapter 1/weather_model/exp_resnet50_2classes_None/119.pt', 'rb'), map_location='cpu')  ### what is this doing? 
+        state = torch.load(open('/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt', 'rb'), map_location='cpu')  ### what is this doing? 
         model_instance.load_state_dict(state['model'])
         model_instance.eval()
         ### how do I get to a model?? 
@@ -144,8 +145,8 @@ def main():
     filenames, predicted_labels, confidences = predict(2, files, model)  
     #IPython.embed()
     results = pd.DataFrame({'filename':filenames, 'predicted_labels': predicted_labels, 'confidences': confidences})
-
-    results.to_csv(f'{args.exp_name}/results_predictions_2018.csv')
+    IPython.embed()
+    results.to_csv(f'results_predictions_IN_N_K0380.csv')
 
 if __name__ == '__main__':
     main()
@@ -159,5 +160,21 @@ python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter 1/weather_
 
 #2018
 python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter 1/weather_model/exp_resnet50_2classes_None' --images_folder '/Users/catherinebreen/Documents/Chapter 3/corresponding wetransfer images 2018'
+
+## 2023 field data: 
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Users/catherinebreen/Documents/Chapter3/fieldwork/TRO_S_K0060'
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Users/catherinebreen/Documents/Chapter3/fieldwork/TRO_N_K0158'
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Users/catherinebreen/Documents/Chapter3/fieldwork/OSL_S_K0076'
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Users/catherinebreen/Documents/Chapter3/fieldwork/OSL_N_K0381'
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Users/catherinebreen/Documents/Chapter3/fieldwork/IN_S_K0077'
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Users/catherinebreen/Documents/Chapter3/fieldwork/IN_N_K0380'
+
+#snowpole data
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Volumes/CatBreen/Okanagan_Timelapse_Photos/**'
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Volumes/CatBreen/Chelewah_Timelapse_Photos/**'
+python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Volumes/CatBreen/LabeledData_Wynoochee/all_Cameras/**'
+
+#scandcam images
+
 
 '''
