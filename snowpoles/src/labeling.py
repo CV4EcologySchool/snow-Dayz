@@ -3,7 +3,7 @@ written by Catherine M. Breen
 cbreen@uw.edu 
 
 Use of our keypoint detection model currently requires ~10 images per camera. We provide a labeling script below that when pointed 
-at a camera directory (i.e., data > cam1 or data > cam2, etc), walks the user through labeling and saves as labels.csv in a specified direrctory. 
+at a camera directory (i.e., data > cam1 or data > cam2, etc), walks the user through labeling every 10th image and saves as labels.csv in a specified direrctory. 
 
 We estimate it will take about 5 imgs/min or about 300 imgs per hour. 
 
