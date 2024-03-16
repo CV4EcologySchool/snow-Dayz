@@ -10,6 +10,7 @@ python src/predict.py --image_path '/Volumes/CatBreen/Chewelah_resized/samples/C
 
 python src/predict.py --image_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean/CHE2' --output_path '/Users/catherinebreen/Documents/Chapter 1/WRRsubmission/data/448res_results/CNNkeypoint'
 
+python src/predict.py --model_path '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/manuscript/model' --folder_path '/Users/catherinebreen/code/snow-Dayz/snowpoles/example_data/cam1' --output_path '/Users/catherinebreen/Documents' --dir_path '/Users/catherinebreen/code/snow-Dayz/snowpoles/example_data'
 
 
 '''
@@ -36,12 +37,13 @@ def load_model(args):
     # load the model checkpoint
     ## katie's settings:
     if args.model_path == 'NULL':
-        checkpoint = torch.load(config.OUTPUT_PATH + '/model_epoch50.pth', map_location=torch.device('mps'))
+        checkpoint = torch.load(config.OUTPUT_PATH + '/model_epoch50.pth', map_location=torch.device('mps')) ##config.OUTPUT_PATH
     else: #### Load the model based on how the user download the code folder to computer 
-        current_directory = os.getcwd()
-        neighboring_directory = os.path.join(current_directory, '/model_folder')
-        model_path = os.path.join(neighboring_directory, 'model_epoch50.pth')
-        checkpoint = torch.load(model_path, map_location=torch.device('mps'))
+        checkpoint = torch.load(args.model_path + '/model_epoch50.pth', map_location=torch.device('cpu')) 
+        # current_directory = os.getcwd()
+        # neighboring_directory = os.path.join(current_directory, '/model_folder')
+        # model_path = os.path.join(neighboring_directory, 'model_epoch50.pth')
+        # checkpoint = torch.load(model_path, map_location=torch.device('mps'))
         
     #checkpoint = torch.load()
     # load model weights state_dict
@@ -60,14 +62,14 @@ def predict(model, args): ## try this without a dataloader
     x1s_pred, y1s_pred, x2s_pred, y2s_pred = [], [], [], []
     total_length_pixels = []
     
-    if args.dir_path != '/example_data':
-        snowpolefiles = glob.glob(f"{args.dir_path}/**/*")
-    else: snowpolefiles = glob.glob(f"{args.dir_path}/**/*") 
+    snowpolefiles1 = glob.glob(f"{args.folder_path}/*")
+    snowpolefiles2 = glob.glob(f"{args.dir_path}/**/*")
     
-    if args.folder_path != '/example_data/cam1':
-        snowpolefiles = glob.glob(f"{args.dir_path}/*")
-    else: snowpolefiles = glob.glob(f"{args.folder_path}/*") 
- 
+    if args.dir_path != '/example_data':
+        snowpolefiles = snowpolefiles2
+    else:
+        snowpolefiles = snowpolefiles1
+
     #num_batches = int(len(data)/dataloader.batch_size)
     with torch.no_grad():
         for i, file in tqdm(enumerate(snowpolefiles)): #, total=num_batches):
@@ -105,7 +107,7 @@ def predict(model, args): ## try this without a dataloader
             image = np.array(image, dtype='float32')
             #image = cv2.resize(image, (448,448))
             #pred_keypoint = pred_keypoint * [448 / 224] #keypoints * [self.resize / orig_w, self.resize / orig_h]
-            #IPython.embed()
+            IPython.embed()
             image = cv2.resize(image, (w, h))
             pred_keypoint[0] = pred_keypoint[0] * (w / 224)
             pred_keypoint[2] = pred_keypoint[2] * (w /224)
@@ -143,7 +145,7 @@ def main():
 
 
     #args = parser.parse_args()
-    model = load_model()
+    model = load_model(args)
 
     ## returns a set of images of outputs
     outputs = predict(model, args)  
