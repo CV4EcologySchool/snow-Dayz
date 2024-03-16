@@ -31,12 +31,12 @@ def main():
 
     # Argument parser for command-line arguments:
     parser = argparse.ArgumentParser(description='Label snowpole images')
-    parser.add_argument('--filepath', help='Path to image dir', default = '/Volumes/CatBreen/Okanagan_Timelapse_Photos/CUB-U-01')
+    parser.add_argument('--datapath', help='Path to image dir', default = '/Volumes/CatBreen/Okanagan_Timelapse_Photos/CUB-U-01')
     parser.add_argument('--savedir', help='Path to save csv', default = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/data/conversions') 
     parser.add_argument('--pole_length', help='Length of pole in cm', default = 304.8)
     args = parser.parse_args()
         
-    dir = glob.glob(f"{args.filepath}/**/*") #/*") ## path to data directory 
+    dir = glob.glob(f"{args.datapath}/**/*") #/*") ## path to data directory 
     dir = sorted(dir)
 
     filename = []
