@@ -33,7 +33,7 @@ def main():
     parser = argparse.ArgumentParser(description='Label snowpole images')
     parser.add_argument('--datapath', help='Path to image dir', default = '/Volumes/CatBreen/Okanagan_Timelapse_Photos/CUB-U-01')
     parser.add_argument('--savedir', help='Path to save csv', default = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/data/conversions') 
-    parser.add_argument('--pole_length', help='Length of pole in cm', default = 304.8)
+    parser.add_argument('--pole_length', help='Length of pole in cm', default = '304.8')
     args = parser.parse_args()
         
     dir = glob.glob(f"{args.datapath}/**/*") #/*") ## path to data directory 
@@ -45,7 +45,7 @@ def main():
     creationTimes = []
     conversions = []
 
-    pole_length = args.pole_length
+    pole_length = np.fromstring(args.pole_length)
 
     ### loop to label every 10th photo!
     for i, file in tqdm.tqdm(enumerate(dir)): 
