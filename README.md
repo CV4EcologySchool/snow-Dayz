@@ -4,7 +4,7 @@ This github respository is to facilitate weather detection in camera trap images
 
 ### Example images (image: left; model prediction: right)
 
-<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/E6A_WSCT0293.JPG" style="width: 350px;"> <img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/eval_E6A_WSCT0293.JPG.png" width="50%">
+<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/exp_imgs/weather_example.png" style="width: 350px;">
 
 ## background
 
@@ -17,5 +17,5 @@ on local or GPU machine:
 python classifier/predict.py --exp_name [model folder] --images_folder [image folder]
 ```
 
---'exp_name' folder for CNN model 
---'images_folder' folder for images that you would like to test the model on. 
+- 'exp_name' folder for CNN model 
+- 'images_folder' folder for images that you would like to test the model on. 
