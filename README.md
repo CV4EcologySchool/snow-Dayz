@@ -2,9 +2,9 @@
 
 This github respository is to facilitate weather detection in camera trap images. 
 
-### Example images (image: left; model prediction: right)
+### Examples of model predictions
 
-<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/exp_imgs/weather_example.png">
+<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/exp_imgs/Picture1.jpg">
 
 ## background
 
