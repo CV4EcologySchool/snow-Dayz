@@ -30,12 +30,69 @@ def main():
     args = parser.parse_args()
 
 
-    #args = parser.parse_args()
-    model = load_model(args)
+    import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import glob
+from PIL import Image
+import IPython
+from scipy.spatial import distance
 
-    ## returns a set of images of outputs
-    outputs = predict(model, args)  
+IPython.embed()
 
+data = pd.read_csv('/Users/catherinebreen/Dropbox/Chapter1/dendrite_outputs/OUT/snow_poles_outputs_resized_LRe4_BS64_clean_wWA_OUT_earlystop/results.csv')
+snwfreetbl = pd.read_csv('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/snowfree_table.csv') # updated, make sure these tables have the meta information for the sites of interest
+
+nativeRes_imgs = glob.glob("/Users/catherinebreen/Documents/Chapter1/WRRsubmission/resolution_info/*")
+camIDs = []
+nativeRes = []
+
+## turn into dictionary 
+for img in nativeRes_imgs:
+    camID = img.split('/')[-1].split('_')[0]
+    image = cv2.imread(img)
+    orig_h, orig_w, channel = image.shape
+    camIDs.append(camID)
+    nativeRes.append([orig_h, orig_w])
+
+resDic = dict(zip(camIDs, nativeRes))
+
+# dates = pd.read_csv('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/labeledImgs_datetime_info.csv') # updated, make sure these tables have the meta information for the sites of interest
+# dates.rename(columns = {'filenames' : 'filename'}, inplace = True)
+
+# data = data.merge(dates, on='filename', how='left') ## make sure that the datetime format is right
+
+files = []
+# che_ok_dates = []
+cam = []
+length_cm = []
+sd = []
+
+for filename in data['filename']:
+    camera = filename.split('_')[0]
+    res = resDic[camera]
+    conversion = snwfreetbl.loc[snwfreetbl['camera'] == camera, 'conversion'].iloc[0]
+    snwfreestake = snwfreetbl.loc[snwfreetbl['camera'] == camera, 'snow_free_cm'].iloc[0]
+    #IPython.embed()
+    ## need to scale back up 
+    x1 = data.loc[data['filename'] == filename, 'x1_pred'].iloc[0] * (res[1] / 224)
+    y1 = data.loc[data['filename'] == filename, 'y1s_pred'].iloc[0] * (res[0] / 224)
+    x2 = data.loc[data['filename'] == filename, 'x2_pred'].iloc[0] * (res[1] / 224)
+    y2 = data.loc[data['filename'] == filename, 'y2_pred'].iloc[0] * (res[0] / 224)
+
+    pixelLengths = distance.euclidean([x1,y1],[x2,y2])
+    cmLengths = pixelLengths * float(conversion)
+    snowdepth = snwfreestake - cmLengths
+
+    #if snowdepth < 0: snowdepth = 0 # so that we reduce the noise
+
+    files.append(filename), 
+    cam.append(camera), length_cm.append(cmLengths), sd.append(snowdepth)
+
+df = pd.DataFrame({'camera': cam, 'filename': files, 'cmLengths': length_cm,'snowDepth':sd})
+df.to_csv('/Users/catherinebreen/Documents/Chapter1/dendrite_outputs/OUT/snow_poles_outputs_resized_LRe4_BS64_clean_wWA_OUT_earlystop/results_cm.csv')
+
+IPython.embed()
     #results = eval(outputs)
 
 if __name__ == '__main__':

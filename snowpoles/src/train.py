@@ -1,9 +1,11 @@
+import time
 import torch
 import torch.optim as optim
 import matplotlib.pyplot as plt
 import torch.nn as nn
 import matplotlib
-import config
+#import config
+import config_cpu as config
 import utils
 from model import snowPoleResNet50
 from dataset import train_data, train_loader, valid_data, valid_loader
@@ -13,6 +15,7 @@ import os
 import numpy as np 
 
 matplotlib.style.use('ggplot')
+start_time = time.time() 
 
 ## create output path
 if not os.path.exists(f"{config.OUTPUT_PATH}"):
@@ -25,10 +28,11 @@ else: print(f'THIS EXPERIMENT USES GPUS: {config.DEVICE}')
 # model 
 model = snowPoleResNet50(pretrained=True, requires_grad=True).to(config.DEVICE)
 ## model ## load previous model 
-# if config.FINETUNE == True:
-#     checkpoint = torch.load(config.FT_PATH + '/model.pth')
-#         # load model weights state_dict
-#     model.load_state_dict(checkpoint['model_state_dict'])
+if config.FINETUNE == True:
+    checkpoint = torch.load(config.FT_PATH + '/model.pth', map_location=torch.device('cpu'))
+        # load model weights state_dict
+    model.load_state_dict(checkpoint['model_state_dict'])
+    print('fine-tuned model loaded...')
 
 # optimizer
 optimizer = optim.Adam(model.parameters(), lr=config.LR)
@@ -139,3 +143,4 @@ torch.save({
             'loss': criterion,
             }, f"{config.OUTPUT_PATH}/model.pth") ### the last model
 print('DONE TRAINING')
+print("My program took", time.time() - start_time, "to run")

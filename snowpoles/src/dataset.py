@@ -18,7 +18,8 @@ import torch
 import cv2
 import pandas as pd
 import numpy as np
-import config
+#import config
+import config_cpu as config ## for cpu training
 import utils
 from torch.utils.data import Dataset, DataLoader
 import IPython
@@ -32,6 +33,18 @@ import albumentations as A ### better for keypoint augmentations, pip install al
 from torchvision.transforms import Compose, Resize, ToTensor
 from sklearn.model_selection import train_test_split
 import os
+
+## to get a systematic sample: (already sorted)
+# def sort_within_camera_group(group):
+#     return group.sort_values(by='Filename')
+
+# Define a function to sample every third photo
+def sample_every_x(group, x):
+    indices = np.arange(len(group[1]))
+    every_x = len(group[1])//x
+    selected_indices = indices[2::every_x]  # Select every third index starting from index 2
+    return group[1].iloc[selected_indices]
+#####
 
 ##### re-write this for out of domain testing
 def train_test_split(csv_path, path, split, aug):
@@ -76,11 +89,28 @@ def train_test_split(csv_path, path, split, aug):
         print(f"FINETUNING MODEL n\ ")
         stratsmp = glob.glob(f"{config.FT_IMG_PATH}/**/*")
         stratsmp = [item.split('/')[-1] for item in stratsmp]
-        df_data = wa_testdata[wa_testdata['filename'].isin(stratsmp)].reset_index()
-        # df_data = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index() # X images per camera
-        #df_data = wa_testdata.sample(config.FT_sample).reset_index() # random sample
-        training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
-        valid_samples = df_data[~df_data.index.isin(training_samples.index)]
+        # certain number every x from camera
+        groups = wa_testdata.groupby('Camera')
+        training_samples = pd.DataFrame()
+        for group in groups: 
+            y = sample_every_x(group, config.FT_sample)
+            training_samples = pd.concat([training_samples, y])
+
+        training_samples = training_samples
+        valid_samples = wa_testdata[~wa_testdata['filename'].isin(training_samples['filename'])].sample(frac=0.2, random_state=100)  
+        
+        ## random x from each camera 
+        # training_samples = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index() # X images per camera
+        # valid_samples = wa_testdata[~wa_testdata.index.isin(training_samples.index)].sample(frac=0.2, random_state=100) ## could also just make this wa_testdata (all data)
+        
+        ## random sample
+        # df_data = wa_testdata.sample(config.FT_sample).reset_index() # random sample
+        
+        # code before mar 21 2024
+        # df_data = wa_testdata[wa_testdata['filename'].isin(stratsmp)].reset_index()
+        # training_samples = df_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
+        # valid_samples = df_data[~df_data.index.isin(training_samples.index)]
+        ######
         # valid_samples = wa_testdata.sample(frac=0.1, random_state=100)
         if not os.path.exists(f"{config.OUTPUT_PATH}"):
             os.makedirs(f"{config.OUTPUT_PATH}", exist_ok=True)
