@@ -5,7 +5,7 @@ import os
 # manual_labels_path = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/SNEX20_SD_TLI_clean.csv'
 
 ROOT_PATH = '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized_clean'
-OUTPUT_PATH = '/Users/catherinebreen/Documents/Chapter1/aurora_outputsJul26/snow_poles_outputs_resized_FT1p_LRe4_BS64_E100_clean_OKonly_CPU'
+OUTPUT_PATH = '/Users/catherinebreen/Documents/Chapter1/aurora_outputsJul26/snow_poles_outputs_resized_WAonly10_LRe4_BS64_E10000_clean_OKonly_CPU_v1'
 snowfreetbl_path = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/snowfree_table.csv'
 manual_labels_path = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/manuallylabeled_CUBM02corr.csv'
 datetime_info = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/labeledImgs_datetime_info.csv'
@@ -40,5 +40,5 @@ keypointColumns = ['x1', 'y1', 'x2', 'y2'] ## update
 FINETUNE = True ## True for test/val dataset to be the subset 
 # FT_PATH = '/datadrive/vmData/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' ## model that you want to fine tune
 FT_PATH = '/Users/catherinebreen/Documents/Chapter1/aurora_outputsJul26/snow_poles_outputs_resized_LRe4_BS64_E100_clean_SNEX_IN' ## model that you want to fine tune
-FT_sample = 1
-FT_IMG_PATH = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/data/WAsubset_every10'
+FT_sample = 10
+#FT_IMG_PATH = '/Users/catherinebreen/Documents/Chapter1/WRRsubmission/data/WAsubset_every10'

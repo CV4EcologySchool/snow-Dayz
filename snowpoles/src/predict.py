@@ -19,8 +19,8 @@ import torch
 import numpy as np
 import cv2
 import albumentations  ## may need to do pip install
-# import config
-import config_cpu as config
+import config
+#import config_cpu as config
 from model import snowPoleResNet50
 import argparse
 import glob

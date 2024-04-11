@@ -40,7 +40,8 @@ from scipy.spatial import distance
 
 IPython.embed()
 
-data = pd.read_csv('/Users/catherinebreen/Dropbox/Chapter1/dendrite_outputs/OUT/snow_poles_outputs_resized_LRe4_BS64_clean_wWA_OUT_earlystop/results.csv')
+# data = pd.read_csv('/Users/catherinebreen/Dropbox/Chapter1/dendrite_outputs/OUT/snow_poles_outputs_resized_LRe4_BS64_clean_wWA_OUT_earlystop/results.csv')
+data = pd.read_csv('/Users/catherinebreen/Documents/Chapter1/dendrite_outputs/OUT/snow_poles_outputs_resized_LRe4_BS64_clean_wWAOK_OUT/eval/results.csv')
 snwfreetbl = pd.read_csv('/Users/catherinebreen/Documents/Chapter1/WRRsubmission/snowfree_table.csv') # updated, make sure these tables have the meta information for the sites of interest
 
 nativeRes_imgs = glob.glob("/Users/catherinebreen/Documents/Chapter1/WRRsubmission/resolution_info/*")
@@ -69,28 +70,30 @@ length_cm = []
 sd = []
 
 for filename in data['filename']:
-    camera = filename.split('_')[0]
-    res = resDic[camera]
-    conversion = snwfreetbl.loc[snwfreetbl['camera'] == camera, 'conversion'].iloc[0]
-    snwfreestake = snwfreetbl.loc[snwfreetbl['camera'] == camera, 'snow_free_cm'].iloc[0]
-    #IPython.embed()
-    ## need to scale back up 
-    x1 = data.loc[data['filename'] == filename, 'x1_pred'].iloc[0] * (res[1] / 224)
-    y1 = data.loc[data['filename'] == filename, 'y1s_pred'].iloc[0] * (res[0] / 224)
-    x2 = data.loc[data['filename'] == filename, 'x2_pred'].iloc[0] * (res[1] / 224)
-    y2 = data.loc[data['filename'] == filename, 'y2_pred'].iloc[0] * (res[0] / 224)
+    try: 
+        camera = filename.split('_')[0]
+        res = resDic[camera]
+        conversion = snwfreetbl.loc[snwfreetbl['camera'] == camera, 'conversion'].iloc[0]
+        snwfreestake = snwfreetbl.loc[snwfreetbl['camera'] == camera, 'snow_free_cm'].iloc[0]
+        #IPython.embed()
+        ## need to scale back up 
+        x1 = data.loc[data['filename'] == filename, 'x1_pred'].iloc[0] * (res[1] / 224)
+        y1 = data.loc[data['filename'] == filename, 'y1s_pred'].iloc[0] * (res[0] / 224)
+        x2 = data.loc[data['filename'] == filename, 'x2_pred'].iloc[0] * (res[1] / 224)
+        y2 = data.loc[data['filename'] == filename, 'y2_pred'].iloc[0] * (res[0] / 224)
 
-    pixelLengths = distance.euclidean([x1,y1],[x2,y2])
-    cmLengths = pixelLengths * float(conversion)
-    snowdepth = snwfreestake - cmLengths
+        pixelLengths = distance.euclidean([x1,y1],[x2,y2])
+        cmLengths = pixelLengths * float(conversion)
+        snowdepth = snwfreestake - cmLengths
 
-    #if snowdepth < 0: snowdepth = 0 # so that we reduce the noise
+        #if snowdepth < 0: snowdepth = 0 # so that we reduce the noise
 
-    files.append(filename), 
-    cam.append(camera), length_cm.append(cmLengths), sd.append(snowdepth)
+        files.append(filename), 
+        cam.append(camera), length_cm.append(cmLengths), sd.append(snowdepth)
+    except: pass
 
 df = pd.DataFrame({'camera': cam, 'filename': files, 'cmLengths': length_cm,'snowDepth':sd})
-df.to_csv('/Users/catherinebreen/Documents/Chapter1/dendrite_outputs/OUT/snow_poles_outputs_resized_LRe4_BS64_clean_wWA_OUT_earlystop/results_cm.csv')
+df.to_csv('/Users/catherinebreen/Dropbox/Chapter1/dendrite_outputs/OUT/snow_poles_outputs_resized_LRe4_BS64_clean_wWAOK_OUT/results_cm.csv')
 
 IPython.embed()
     #results = eval(outputs)

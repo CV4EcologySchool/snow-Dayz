@@ -4,8 +4,8 @@ import torch.optim as optim
 import matplotlib.pyplot as plt
 import torch.nn as nn
 import matplotlib
-#import config
-import config_cpu as config
+import config
+#import config_cpu as config
 import utils
 from model import snowPoleResNet50
 from dataset import train_data, train_loader, valid_data, valid_loader

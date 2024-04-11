@@ -18,8 +18,8 @@ import torch
 import cv2
 import pandas as pd
 import numpy as np
-#import config
-import config_cpu as config ## for cpu training
+import config
+#import config_cpu as config ## for cpu training
 import utils
 from torch.utils.data import Dataset, DataLoader
 import IPython
@@ -75,7 +75,7 @@ def train_test_split(csv_path, path, split, aug):
     #if snex == True:
     snex_data = df_data[df_data['Camera'].isin(snex_cams+wa_cams)] 
 
-    training_samples = snex_data.sample(frac=0.9, random_state=100) ## same shuffle everytime
+    training_samples = snex_data.sample(frac=0.8, random_state=100) ## same shuffle everytime
     valid_samples = snex_data[~snex_data.index.isin(training_samples.index)]
         # else:
         #     print('SNEX_WAOK cameras')
@@ -87,8 +87,9 @@ def train_test_split(csv_path, path, split, aug):
 
     if config.FINETUNE == True:
         print(f"FINETUNING MODEL n\ ")
-        stratsmp = glob.glob(f"{config.FT_IMG_PATH}/**/*")
-        stratsmp = [item.split('/')[-1] for item in stratsmp]
+        #IPython.embed()
+        # stratsmp = glob.glob(f"{config.FT_IMG_PATH}/**/*")
+        # stratsmp = [item.split('/')[-1] for item in stratsmp]
         # certain number every x from camera
         groups = wa_testdata.groupby('Camera')
         training_samples = pd.DataFrame()
@@ -97,7 +98,7 @@ def train_test_split(csv_path, path, split, aug):
             training_samples = pd.concat([training_samples, y])
 
         training_samples = training_samples
-        valid_samples = wa_testdata[~wa_testdata['filename'].isin(training_samples['filename'])].sample(frac=0.2, random_state=100)  
+        valid_samples = wa_testdata[~wa_testdata['filename'].isin(training_samples['filename'])].sample(frac=0.1, random_state=100)  # just test on 10$ of WA data
         
         ## random x from each camera 
         # training_samples = wa_testdata.groupby('Camera').sample(config.FT_sample).reset_index() # X images per camera
@@ -124,6 +125,9 @@ def train_test_split(csv_path, path, split, aug):
     training_samples = training_samples[training_samples['filename'].isin(filenames)].reset_index()
     wa_testdata = wa_testdata[wa_testdata['filename'].isin(filenames)].reset_index()
     co_testdata = co_testdata[co_testdata['filename'].isin(filenames)].reset_index()
+    
+    training_samples.to_csv(f"{config.OUTPUT_PATH}/training_samples.csv")
+    valid_samples.to_csv(f"{config.OUTPUT_PATH}/valid_samples.csv")
 
     print(f'# of examples we will now train on {len(training_samples)}, val on {len(valid_samples)}')
     print('LATEST CODE CHECK 2')
