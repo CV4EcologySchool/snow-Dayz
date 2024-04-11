@@ -126,6 +126,8 @@ def train_test_split(csv_path, path, split, aug):
     wa_testdata = wa_testdata[wa_testdata['filename'].isin(filenames)].reset_index()
     co_testdata = co_testdata[co_testdata['filename'].isin(filenames)].reset_index()
     
+    if not os.path.exists(f"{config.OUTPUT_PATH}"):
+            os.makedirs(f"{config.OUTPUT_PATH}", exist_ok=True)
     training_samples.to_csv(f"{config.OUTPUT_PATH}/training_samples.csv")
     valid_samples.to_csv(f"{config.OUTPUT_PATH}/valid_samples.csv")
 
