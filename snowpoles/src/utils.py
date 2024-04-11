@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
-# import config
-import config_cpu as config ## for cpu training
+import config
+#import config_cpu as config ## for cpu training
 import IPython
 import cv2 
 import argparse
