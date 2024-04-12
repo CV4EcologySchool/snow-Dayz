@@ -162,15 +162,15 @@ def predict(model, data, eval='eval'): ## try this without a dataloader
 def main():
     model = load_model()
 
-    ## returns a set of images of outputs
-    outputs = predict(model, valid_data, eval='eval')  
+    # ## returns a set of images of outputs
+    # outputs = predict(model, valid_data, eval='eval')  
 
-    # print(f"the results for all WA images... \n")
-    # outputs = predict(model, wa_data, eval='wa')
+    # # print(f"the results for all WA images... \n")
+    # # outputs = predict(model, wa_data, eval='wa')
 
-    print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
-    print(f"the results for all 892 CO val images... \n ")
-    outputs = predict(model, co_data, eval='co')
+    # print(f"FINE-TUNED results (only relevant if fine-tuned model) \n")
+    # print(f"the results for all 892 CO val images... \n ")
+    # outputs = predict(model, co_data, eval='co')
 
     print(f"Results for the wa imags without the training data \n")
     outputs = predict(model, wa_data, eval='wa')
