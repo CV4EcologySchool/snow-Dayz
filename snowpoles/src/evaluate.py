@@ -22,7 +22,7 @@ import glob
 import IPython
 import utils
 import pandas as pd
-from dataset import train_data, valid_data, wa_data, co_data
+from dataset import train_data, valid_data, wa_data, co_data, wa_testdata, co_testdata
 from tqdm import tqdm
 from scipy.spatial import distance
 import os
@@ -173,7 +173,7 @@ def main():
     outputs = predict(model, co_data, eval='co')
 
     print(f"Results for the wa imags without the training data \n")
-    outputs = predict(model, wa_data, eval='wa_wo_trainingdata')
+    outputs = predict(model, wa_data, eval='wa')
 
 if __name__ == '__main__':
     main()
