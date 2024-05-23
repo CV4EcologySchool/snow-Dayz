@@ -1,0 +1,132 @@
+'''
+    PyTorch dataset class for COCO-CT-formatted datasets. Note that you could
+    use the official PyTorch MS-COCO wrappers:
+    https://pytorch.org/vision/master/generated/torchvision.datasets.CocoDetection.html
+
+    We just hack our way through the COCO JSON files here for demonstration
+    purposes.
+
+    See also the MS-COCO format on the official Web page:
+    https://cocodataset.org/#format-data
+
+    2022 Benjamin Kellenberger
+'''
+
+import os
+import json
+import torch
+from torch.utils.data import Dataset
+from torchvision.transforms import Compose, Resize, ToTensor
+from torchvision.transforms import RandomVerticalFlip, RandomVerticalFlip, RandomErasing
+from PIL import Image
+import pandas as pd
+import glob
+import random
+from PIL import Image, ImageFile
+import ipdb
+import IPython
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+
+def train_test_split(cfg, images_path, labels):
+    df_data = pd.read_csv(labels)
+    training_samples = df_data.sample(frac=0.8, random_state=100) ## same shuffle everytime
+    valid_samples = df_data[~df_data.index.isin(training_samples.index)]
+    ##### only images that exist
+    all_images = glob.glob(images_path + ('/*'))
+    filenames = [item.split('/')[-1] for item in all_images]
+    valid_samples = valid_samples[valid_samples['filename'].isin(filenames)]
+    training_samples = training_samples[training_samples['filename'].isin(filenames)]
+    
+    if not os.path.exists(f"{cfg['output_path']}"):
+            os.makedirs(f"{cfg['output_path']}", exist_ok=True)
+    training_samples.to_csv(f"{cfg['output_path']}/training_samples.csv")
+    valid_samples.to_csv(f"{cfg['output_path']}/valid_samples.csv")
+
+    return training_samples, valid_samples
+
+
+class CTDataset(Dataset):
+
+    # label class name to index ordinal mapping. This stays constant for each CTDataset instance.
+    LABEL_CLASSES = {
+        0:0, 
+        1:1, 
+        2:2
+    }
+    LABEL_CLASSES_BINARY = {
+        0:0, 
+        1:1, 
+        2:1
+    }
+
+    def __init__(self, cfg, dataframe, labels): #folder)
+        '''
+            Constructor. Here, we collect and index the dataset inputs and
+            labels.
+        '''
+        self.data_root = cfg['data_root']
+        self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
+            Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
+            # RandomErasing(p=0.2),
+            # RandomVerticalFlip(p=0.3),
+            # RandomVerticalFlip(p=0.3),
+            ToTensor()                          # ...and convert them to torch.Tensor.
+        ])
+        
+        # index data into list
+        self.data = []
+
+        # meta = pd.read_csv(self.annoPath)
+        meta = dataframe
+        meta = meta[meta['filename'] != '2015_04_05_09_00_00.jpg']
+        meta = meta.drop_duplicates(subset=['filename']).reset_index() ## maybe I should keep the original indices??
+
+        ## add a check to make sure it exists in the folder of interest
+        list_of_images = glob.glob(os.path.join(self.data_root)+'/*') 
+        list_of_images = [file.split('/')[-1] for file in list_of_images]
+    
+        #######maybe instead walk through list_of_images
+        for file, weather in zip(meta['filename'], meta['label']):
+            # if random.uniform(0.0, 1.0) <= 0.99:
+            #     continue
+                # (random.uniform(0.0, 1.0) <= 0.005) and
+            if file in list_of_images: 
+                imgFileName = file ## make sure there is the image file in the train folder
+                if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+
+    def __len__(self):
+        '''
+            Returns the length of the dataset.
+        '''
+        return len(self.data)
+
+    def __shape__(self):
+        return (self.data)
+
+    def __sequenceType__(self):
+        return (self.sequenceType)
+
+    def __getitem__(self, idx):
+        '''
+            Returns a single data point at given idx.
+            Here's where we actually load the image.
+        '''
+        image_name, label = self.data[idx]              # see line 57 above where we added these two items to the self.data list
+
+        # load image
+        image_path = os.path.join(self.data_root, image_name) ## should specify train folder and get image name 
+        img = Image.open(image_path).convert('RGB')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
+
+        # transform: see lines 31ff above where we define our transformations
+        img_tensor = self.transform(img)
+        #print(img_tensor.shape)
+
+        return img_tensor, label
+
+
+
+
+  
