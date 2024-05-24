@@ -1,0 +1,26 @@
+# Here's where you define experiment-specific hyperparameters.
+# You can also create lists and group parameters together into nested sub-parts.
+# In Python, this is all read as a dict.
+
+# environment/computational parameters
+device: cuda
+num_workers: 4
+
+# dataset parameters
+data_root: /datadrive/LABELEDresize
+labels: /datadrive/all_labels_may2024.csv #/Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024.csv ## UPDATE
+output_path: /datadrive/classifier_results
+num_classes: 2 ## precip vs. none
+sequenceType: 'None'
+
+#pos_label: [1, 2, 3, 4]
+#neg_label: [0]
+
+# training hyperparameters
+image_size: [224, 224]
+num_epochs: 2000 ##200
+batch_size: 64
+learning_rate: 0.001
+weight_decay: 0.001
+
+# python classifier_may24/train.py --config configs/exp_resnet50_2classes_cuda.yaml 
