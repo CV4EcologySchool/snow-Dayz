@@ -10,7 +10,7 @@ num_workers: 4
 data_root: /datadrive/LABELEDresize
 labels: /datadrive/all_labels_may2024.csv #/Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024.csv ## UPDATE
 output_path: /datadrive/classifier_results
-exp_name: data_augmentation_4_001_8010_weighted
+exp_name: dataug_4_001_8010_weighted_grey
 
 # model parameters
 num_classes: 2 ## precip vs. none

@@ -17,7 +17,7 @@ import json
 import torch
 from torch.utils.data import Dataset
 from torchvision.transforms import Compose, Resize, ToTensor
-from torchvision.transforms import RandomVerticalFlip, RandomVerticalFlip, RandomErasing, RandomCrop
+from torchvision.transforms import RandomVerticalFlip, RandomVerticalFlip, RandomGrayscale #RandomErasing, RandomCrop
 from PIL import Image
 import pandas as pd
 import glob
@@ -74,6 +74,7 @@ class CTDataset(Dataset):
             # RandomCrop(size=(224, 224)),
             RandomVerticalFlip(p=0.3),
             RandomVerticalFlip(p=0.3),
+            RandomGrayscale(p=0.3),
             ToTensor()                          # ...and convert them to torch.Tensor.
         ])
         
