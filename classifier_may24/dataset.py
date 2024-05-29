@@ -91,7 +91,7 @@ class CTDataset(Dataset):
     
         #######maybe instead walk through list_of_images
         for file, weather in zip(meta['filename'], meta['label']):
-            # if (random.uniform(0.0, 1.0) <= 0.) and weather == 0:
+            # if (random.uniform(0.0, 1.0) <= 0.5) and weather == 0:
             #     continue
                 # (random.uniform(0.0, 1.0) <= 0.005) and
             if file in list_of_images: 
