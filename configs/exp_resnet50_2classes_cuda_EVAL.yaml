@@ -32,6 +32,6 @@ weight_decay: 0.001
 data_root: /Users/catherinebreen/Dropbox/Chapter4/LIBRARY
 test_labels: '/Users/catherinebreen/Dropbox/Chapter4/LIBRARY_LABELS.csv'
 output_path: /Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results
-exp_name: cv4_exp_resnet50_2classes_wyn1wyn2
+exp_name: data_augmentation_4_001_8010
 
-# python classifier_may24/evaluate.py --config configs/exp_resnet50_2classes_cuda.yaml 
+# python classifier_may24/evaluate.py --config configs/exp_resnet50_2classes_cuda_EVAL.yaml 

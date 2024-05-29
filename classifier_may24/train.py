@@ -119,10 +119,12 @@ def train(cfg, dataLoader, model, optimizer):
     model.train()
 
     # loss function
-    criterion = nn.CrossEntropyLoss() 
+    #criterion = nn.CrossEntropyLoss() 
     
     #
-    #criterion = nn.CrossEntropyLoss(weight = torch.tensor([0.25, 1])) #0.0
+    # Define class weights and move them to the correct device
+    class_weights = torch.tensor([0.25, 1.0], device=device)
+    criterion = nn.CrossEntropyLoss(weight=class_weights)
 
     # running averages
     loss_total, oa_total = 0.0, 0.0                         # for now, we just log the loss and overall accuracy (OA)

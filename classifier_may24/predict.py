@@ -48,13 +48,17 @@ def save_image(filename, image) :
     #### make the path if it doesn't exist
     if not os.path.exists(save_path):  
         os.makedirs(save_path, exist_ok=True)
-    IPython.embed()
     image = image.detach().cpu()
     image = image.squeeze(0) ## drop the dimension because no longer need it for model 
     img = np.array(image, dtype='float32')
+    # If img is in the range [0, 1], scale it to [0, 255]
+    img = np.clip(img, 0, 1) * 255.0
+    img = img.astype(np.uint8)
     img = np.transpose(img, (1, 2, 0))
     img = Image.fromarray(img)
-    img = img.save(f'{save_path}/{filename}') 
+    resized_image = img.resize((448, 448))
+    resized_image.save(f'{save_path}/{filename}')
+    print('filesaved')
 
 def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do in function? 
     '''
@@ -78,13 +82,10 @@ def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do
 
     return model_instance
 
-    
-########## extracting true_labels and predicted_labels for later use in the accuracy metrics
 def predict(num_of_classes, files, model):
     with torch.no_grad(): # no gradients needed for prediction
         filenames = []
         predicted_labels = [] ## labels as 0, 1 .. (classes)
-        confidences0list = [] ## soft max of probabilities 
         confidences1list = []
  
         print(len(files))
@@ -105,19 +106,17 @@ def predict(num_of_classes, files, model):
 
             confidence = torch.nn.Softmax(dim=1)(prediction).detach().numpy() ## had to add .detach()
 
-            #predicted_labels.extend(predict_label)
-            #print(predict_label)
-            #IPython.embed()
-            if num_of_classes == 2:
-                confidence1 = confidence[:,1]
-                confidences1list.extend(confidence1)
-                if confidence1 > 0.8: 
-                    predict_label = 1
-                    save_image(filename, img_tensor) ## visualize points
-                else: predict_label = 0 
-                predicted_labels.append(predict_label)
-        
+            confidence1 = confidence[:,1]
+            confidences1list.extend(confidence1)
+            if confidence1 > 0.8: 
+                predict_label = 1
+                save_image(filename, data1)
+            else: predict_label = 0 
+            predicted_labels.append(predict_label)
+
         return filenames, predicted_labels, confidences1list
+   
+   
    
 
 def main():
