@@ -7,9 +7,10 @@ device: cpu
 num_workers: 2
 
 # dataset parameters
-data_root: /Users/catherinebreen/Desktop/LABELED
+data_root: /Users/catherinebreen/Desktop/LABELEDresize
 labels: /Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024.csv
 output_path: /Users/catherinebreen/Documents/TEST
+exp_name: dataaug #baseline
 num_classes: 2 ## precip vs. none
 sequenceType: 'None'
 

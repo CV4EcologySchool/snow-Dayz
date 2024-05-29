@@ -54,7 +54,8 @@ def load_model(cfg):
     model_instance = CustomResNet50(cfg['num_classes'])         # create an object instance of our CustomResNet18 class
 
     # load latest model state
-    model_states = glob.glob('model_states/*.pt')
+    dir = os.path.join(cfg['output_path'], cfg['exp_name'], 'model_states')
+    model_states = glob.glob(f'{dir}/*.pt')
     if len(model_states):
         # at least one save state found; get latest
         model_epochs = [int(m.replace('model_states/','').replace('.pt','')) for m in model_states]
@@ -62,7 +63,7 @@ def load_model(cfg):
 
         # load state dict and apply weights to model
         print(f'Resuming from epoch {start_epoch}')
-        state = torch.load(open(f'model_states/{start_epoch}.pt', 'rb'), map_location='cpu')
+        state = torch.load(open(f'{dir}/{start_epoch}.pt', 'rb'), map_location='cpu')
         model_instance.load_state_dict(state['model'])
 
     else:
@@ -77,7 +78,7 @@ def load_model(cfg):
 def save_model(cfg, epoch, model, stats, args): ## dir
     # make sure save directory exists; create if not
 
-    dir = os.path.join(cfg['output_path'], 'model_states')
+    dir = os.path.join(cfg['output_path'], cfg['exp_name'], 'model_states')
    # full_save_path = os.path.join(dir, 'model_states')
     os.makedirs(dir, exist_ok=True) ####update here!
 #### it was just dir, 'model_states"
@@ -236,14 +237,6 @@ def main():
     # python ct_classifier/train.py --config configs/exp_resnet18.yaml
     parser = argparse.ArgumentParser(description='Train deep learning model.')
     parser.add_argument('--config', help='Path to config file', default='configs/exp_resnet50_2classes.yaml')
-    # add command line args for experiment folder, experiment name
-    parser.add_argument('--exp_dir', help='Path to experiment directory', default='experiments')
-    # parser.add_argument('--exp_name', help = 'Path to experiment name', default = 'experiment_name')
-    # parser.add_argument('--train_folder', help = 'Path to train folder', default = 'train_resized')
-    # # parser.add_argument('--train_labels', help = 'Path to train folder', default = 'trainLabels.csv')
-    # parser.add_argument('--val_folder', help = 'Path to val folder', default = 'val_resized')
-    # # parser.add_argument('--val_labels', help = 'Path to val labels', default = 'valLabels.csv')
-    # parser.add_argument('--drop', help = 'Whether to drop images of identical images', default = 'False')
  
     #
     args = parser.parse_args()
@@ -261,15 +254,11 @@ def main():
    ######################################################### this is technically in twice (make directory is in save model)
     # if not os.path.exists(cfg['output_path']) #os.path.join(cfg['data_root'], args.exp_dir)):
     #     os.makedirs(cfg['output_path']) #args.exp_dir, exist_ok=True) 
-
-    if not os.path.exists(cfg['output_path']): #os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)):
-        os.makedirs(cfg['output_path'], exist_ok=True) #os.path.join(cfg['data_root'], args.exp_dir, args.exp_name), exist_ok=True) 
-
-    save_path = os.path.join(cfg['output_path']) #cfg['data_root'], args.exp_dir, args.exp_name)
-    print(save_path)
+    save_path = os.path.join(cfg['output_path'],cfg['exp_name'])
+    if not os.path.exists(f'{save_path}'): #os.path.join(cfg['data_root'], args.exp_dir, args.exp_name)):
+        os.makedirs(f'{save_path}', exist_ok=True) #os.path.join(cfg['data_root'], args.exp_dir, args.exp_name), exist_ok=True) 
 
     print(f'Saving results to "{save_path}"')
-    
 
     # check if GPU is available
     device = cfg['device']

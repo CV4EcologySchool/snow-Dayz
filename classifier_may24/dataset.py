@@ -17,7 +17,7 @@ import json
 import torch
 from torch.utils.data import Dataset
 from torchvision.transforms import Compose, Resize, ToTensor
-from torchvision.transforms import RandomVerticalFlip, RandomVerticalFlip, RandomErasing
+from torchvision.transforms import RandomVerticalFlip, RandomVerticalFlip, RandomErasing, RandomCrop
 from PIL import Image
 import pandas as pd
 import glob
@@ -39,10 +39,10 @@ def train_test_split(cfg, images_path, labels):
     valid_samples = valid_samples[valid_samples['filename'].isin(filenames)]
     training_samples = training_samples[training_samples['filename'].isin(filenames)]
     
-    if not os.path.exists(f"{cfg['output_path']}"):
-            os.makedirs(f"{cfg['output_path']}", exist_ok=True)
-    training_samples.to_csv(f"{cfg['output_path']}/training_samples.csv")
-    valid_samples.to_csv(f"{cfg['output_path']}/valid_samples.csv")
+    if not os.path.exists(f"{cfg['output_path']}/{cfg['exp_name']}"):
+            os.makedirs(f"{cfg['output_path']}/{cfg['exp_name']}", exist_ok=True)
+    training_samples.to_csv(f"{cfg['output_path']}/{cfg['exp_name']}/training_samples.csv")
+    valid_samples.to_csv(f"{cfg['output_path']}/{cfg['exp_name']}/valid_samples.csv")
 
     return training_samples, valid_samples
 
@@ -53,12 +53,14 @@ class CTDataset(Dataset):
     LABEL_CLASSES = {
         0:0, 
         1:1, 
-        2:2
+        2:2,
+        3:3
     }
     LABEL_CLASSES_BINARY = {
         0:0, 
         1:1, 
-        2:1
+        2:1,
+        3:1
     }
 
     def __init__(self, cfg, dataframe, labels): #folder)
@@ -69,9 +71,9 @@ class CTDataset(Dataset):
         self.data_root = cfg['data_root']
         self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
-            # RandomErasing(p=0.2),
-            # RandomVerticalFlip(p=0.3),
-            # RandomVerticalFlip(p=0.3),
+            # RandomCrop(size=(224, 224)),
+            RandomVerticalFlip(p=0.3),
+            RandomVerticalFlip(p=0.3),
             ToTensor()                          # ...and convert them to torch.Tensor.
         ])
         
@@ -89,8 +91,8 @@ class CTDataset(Dataset):
     
         #######maybe instead walk through list_of_images
         for file, weather in zip(meta['filename'], meta['label']):
-            # if random.uniform(0.0, 1.0) <= 0.99:
-            #     continue
+            if (random.uniform(0.0, 1.0) <= 0.50) and weather == 0:
+                continue
                 # (random.uniform(0.0, 1.0) <= 0.005) and
             if file in list_of_images: 
                 imgFileName = file ## make sure there is the image file in the train folder
