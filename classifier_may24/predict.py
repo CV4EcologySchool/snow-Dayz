@@ -37,13 +37,30 @@ from torchvision import transforms
 
 ## documentation for saving and loading models https://pytorch.org/tutorials/beginner/saving_loading_models.html
 
+def save_image(filename, image) : 
+    """
+    This function plots the regressed (predicted) keypoints and the actual 
+    keypoints after each validation epoch for one image in the batch.
+    'eval' is the method to check the model, whether is the valid data (eval) or test data (test)
+    """
+    # detach the image, keypoints, and output tensors from GPU to CPU
+    save_path = '/Volumes/CatBreen/CV4ecology/WEATHER/Chewelah_weather_only'
+    #### make the path if it doesn't exist
+    if not os.path.exists(save_path):  
+        os.makedirs(save_path, exist_ok=True)
+    IPython.embed()
+    image = image.detach().cpu()
+    image = image.squeeze(0) ## drop the dimension because no longer need it for model 
+    img = np.array(image, dtype='float32')
+    img = np.transpose(img, (1, 2, 0))
+    img = Image.fromarray(img)
+    img = img.save(f'{save_path}/{filename}') 
+
 def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do in function? 
     '''
         Creates a model instance and loads the latest model state weights.
     '''
-    # this is an empty model that we will load our model into
-    #print(exp_name)
-    #IPython.embed()
+
     model_instance = CustomResNet50(num_of_classes)         # create an object instance of our CustomResNet18 class
     # load all model states
    
@@ -51,22 +68,9 @@ def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do
  
     ## if there is more than one model state, take the most recent one
     if len(model_states) > 0:
-    #     # at least one save state found; get latest
-    #     IPython.embed()
-    #     model_epochs = [int(m.replace((exp_name),'').replace('.pt','')) for m in model_states]
-    #     ##### if statement that if you set the epoch in your function to evaluate from there
-    #     ##### otherwise start at the most recent epoch
-    #     if epoch:
-    #         eval_epoch = str(epoch) ### if you set the epoch in the function, if it's none it will take the max
-    #     else:
-    #         eval_epoch = str(max(model_epochs))
-        
-        # load state dict and apply weights to model
-        #print(f'Evaluating from epoch {eval_epoch}')
-        state = torch.load(open('/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt', 'rb'), map_location='cpu')  ### what is this doing? 
+        state = torch.load(open('/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/baseline/model_states/29.pt', 'rb'), map_location='cpu')  ### what is this doing? 
         model_instance.load_state_dict(state['model'])
         model_instance.eval()
-        ### how do I get to a model?? 
 
     else:
         # no save state found; start anew
@@ -82,12 +86,12 @@ def predict(num_of_classes, files, model):
         predicted_labels = [] ## labels as 0, 1 .. (classes)
         confidences0list = [] ## soft max of probabilities 
         confidences1list = []
-        confidences2list = []
  
         print(len(files))
 
         for file in tqdm.tqdm(files):
-            filename = file.split('/')[-1]
+            cameraID = file.split('/')[-2]
+            filename = cameraID + '_' + file.split('/')[-1]
             filenames.append(filename)
 
             img = Image.open(file).convert('RGB')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
@@ -107,25 +111,13 @@ def predict(num_of_classes, files, model):
             if num_of_classes == 2:
                 confidence1 = confidence[:,1]
                 confidences1list.extend(confidence1)
-                if confidence1 > 0.3: predict_label = 1
+                if confidence1 > 0.8: 
+                    predict_label = 1
+                    save_image(filename, img_tensor) ## visualize points
                 else: predict_label = 0 
                 predicted_labels.append(predict_label)
-
-            if num_of_classes == 3:
-                confidence0 = confidence[:,0]
-                confidence1 = confidence[:,1]
-                confidence2 = confidence[:,2]
-
-                if confidence1 > 0.3: predict_label = 1
-                else: predict_label = 0 
-                predicted_labels.append(predict_label)
-
-                confidences0list.extend(confidence0)
-                confidences1list.extend(confidence1)
-                confidences2list.extend(confidence2)
         
-        if num_of_classes == 2: return filenames, predicted_labels, confidences1list
-        else: return filenames, predicted_labels, confidences0list, confidences1list, confidences2list
+        return filenames, predicted_labels, confidences1list
    
 
 def main():
@@ -146,7 +138,7 @@ def main():
     #IPython.embed()
     results = pd.DataFrame({'filename':filenames, 'predicted_labels': predicted_labels, 'confidences': confidences})
     IPython.embed()
-    results.to_csv(f'results_predictions_IN_N_K0380.csv')
+    results.to_csv(f'result_predictions.csv')
 
 if __name__ == '__main__':
     main()
@@ -154,6 +146,12 @@ if __name__ == '__main__':
 
 '''
 example parser argument: 
+
+
+python classifier_may24/predict.py --exp_name '/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/baseline/model_states/29.pt' --images_folder '/Volumes/CatBreen/Chelewah_Timelapse_Photos/**'
+
+
+
 
 #2019
 python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter 1/weather_model/exp_resnet50_2classes_None' --images_folder '/Users/catherinebreen/Documents/Chapter 3/corresponding wetransfer images 2019'
