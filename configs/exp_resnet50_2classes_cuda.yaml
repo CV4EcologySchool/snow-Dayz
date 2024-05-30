@@ -34,5 +34,5 @@ weight_decay: 0.001
 # exp_name: baseline
 # test_labels: '/Users/catherinebreen/Dropbox/Chapter4/LIBRARY_LABELS.csv'
 
-# conda activate co
-# python classifier_may24/evaluate.py --config configs/exp_resnet50_2classes_cuda.yaml 
+# conda activate keypoint
+# python classifier_may24/train.py --config configs/exp_resnet50_2classes_cuda.yaml 

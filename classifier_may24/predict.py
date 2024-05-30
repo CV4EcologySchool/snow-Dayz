@@ -44,7 +44,7 @@ def save_image(filename, image) :
     'eval' is the method to check the model, whether is the valid data (eval) or test data (test)
     """
     # detach the image, keypoints, and output tensors from GPU to CPU
-    save_path = '/Volumes/CatBreen/CV4ecology/WEATHER/Chewelah_weather_only'
+    save_path = '/Volumes/CatBreen/CV4ecology/WEATHER/snex17'  #Chewelah_weather_only'
     #### make the path if it doesn't exist
     if not os.path.exists(save_path):  
         os.makedirs(save_path, exist_ok=True)
@@ -92,6 +92,7 @@ def predict(num_of_classes, files, model):
 
         for file in tqdm.tqdm(files):
             cameraID = file.split('/')[-2]
+            # if np.int(cameraID) < 6: 
             filename = cameraID + '_' + file.split('/')[-1]
             filenames.append(filename)
 
@@ -108,11 +109,12 @@ def predict(num_of_classes, files, model):
 
             confidence1 = confidence[:,1]
             confidences1list.extend(confidence1)
-            if confidence1 > 0.8: 
+            if confidence1 > 0.9: 
                 predict_label = 1
                 save_image(filename, data1)
             else: predict_label = 0 
             predicted_labels.append(predict_label)
+            # else: pass
 
         return filenames, predicted_labels, confidences1list
    
@@ -148,8 +150,7 @@ example parser argument:
 
 
 python classifier_may24/predict.py --exp_name '/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/baseline/model_states/29.pt' --images_folder '/Volumes/CatBreen/Chelewah_Timelapse_Photos/**'
-
-
+python classifier_may24/predict.py --exp_name '/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/baseline/model_states/29.pt' --images_folder '/Volumes/CatBreen/CV4ecology/SNEX20_TLI_resized_clean/**'
 
 
 #2019

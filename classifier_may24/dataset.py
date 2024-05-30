@@ -17,7 +17,7 @@ import json
 import torch
 from torch.utils.data import Dataset
 from torchvision.transforms import Compose, Resize, ToTensor
-from torchvision.transforms import RandomVerticalFlip, RandomVerticalFlip, RandomGrayscale #RandomErasing, RandomCrop
+from torchvision.transforms import RandomVerticalFlip, RandomVerticalFlip, RandomGrayscale, ColorJitter #RandomResizedCrop #RandomErasing, RandomCrop
 from PIL import Image
 import pandas as pd
 import glob
@@ -25,6 +25,20 @@ import random
 from PIL import Image, ImageFile
 import ipdb
 import IPython
+import torchvision.transforms as transforms
+
+class RandomApplyTransform:
+    def __init__(self, transform, p=0.5):
+        self.transform = transform
+        self.p = p
+
+    def __call__(self, img):
+        if random.random() < self.p:
+            return self.transform(img)
+        return img
+
+
+
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
@@ -75,6 +89,8 @@ class CTDataset(Dataset):
             RandomVerticalFlip(p=0.3),
             RandomVerticalFlip(p=0.3),
             RandomGrayscale(p=0.3),
+            RandomApplyTransform(transforms.RandomResizedCrop(224, scale = (0.08, 1.0)), p=0.3),
+            #RandomApplyTransform(transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1), p=0.3),
             ToTensor()                          # ...and convert them to torch.Tensor.
         ])
         
