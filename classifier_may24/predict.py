@@ -139,7 +139,7 @@ def main():
     #IPython.embed()
     results = pd.DataFrame({'filename':filenames, 'predicted_labels': predicted_labels, 'confidences': confidences})
     IPython.embed()
-    results.to_csv(f'result_predictions.csv')
+    results.to_csv(f'/Volumes/CatBreen/CV4ecology/WEATHER/chewelah_result_predictions.csv')
 
 if __name__ == '__main__':
     main()
