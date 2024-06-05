@@ -1,22 +1,19 @@
 ## overview
-We present a model that faciltates snow depth extraction from snow poles by identifying the top and bottom of the pole and calculating the length of the pole in pixels. Additionally, we provide a script (depth_conversion.py) to convert from length in pixels to snow depth to run after receiving the model predictions. More info on each script in the codebase is below. 
+We present a model that faciltates snow depth extraction from snow poles by identifying the top and bottom of the pole and calculating the length of the pole in pixels. The model contains a neural network with ResNet50 architecture (pre-trained with ImageNet) trained on 9721 images of snowpoles installed in front of time-lapse cameras. The images are from 32 different sites in Okanogan County, Washington, USA, and Grand Mesa, Colorado, USA. We welcome testing of the model on your site, but we recommend an additional training step for best results in your area of interest. More info on each script in the codebase is below. 
 
 ### Example images (image: left; model prediction: right)
 
 <img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/E6A_WSCT0293.JPG" style="width: 350px;"> <img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/eval_E6A_WSCT0293.JPG.png" width="50%">
 
-## background
-This model contains a neural network with ResNet50 architecture (pre-trained with ImageNet) trained on 9721 images of snowpoles installed in front of time-lapse cameras. The images are from 32 different sites in Okanogan County, Washington, USA, and Grand Mesa, Colorado, USA. We welcome testing of the model on your site, but we recommend an additional training step for best results in your area of interest. We will first describe how to use the model for predictions, then we will explain how to re-train the model for best results. The overall workflow is summarized in the flowchart below. 
-
-<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/flowchart.png" style="width: 350px;"> 
-
 > [!IMPORTANT]  
-> Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below). Otherwise, you can skip right to step 3 (Predictions), which will run the model as is on your data without fine-tuning. ![Warning](https://img.shields.io/badge/Warning-red.svg)
-
+> Because the model was trained on data in Washington and Colorado, the accuracy on your data for the model "off the shelf" may be lower than what we reported in the paper. To obtain better accuracy, we recommend fine-tuning the model (more on that below). If you'd just like to try the model off the shelf, you can skip right to step 3 (Predictions), which will run the model as is on your data without fine-tuning. 
 
 ## Retraining for more accurate predictions
 
-Our findings suggested that some labeling of the dataset of interest improved the performance of the model on new datasets. We recommend following the steps below to 1) label a subset of images from each camera from your study for best results. 
+Our findings suggested that some labeling of the dataset of interest improved the performance of the model on new datasets. We recommend following the steps below to 1) label a subset of images from each camera from your study for best results. 2) Fine-tune the model using the subset. Then 3) predict on all of your data, and 4) convert to snow depth. We will first describe how to use the model for predictions, then we will explain how to re-train the model for best results. The overall workflow is summarized in the flowchart below. 
+
+<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/flowchart.png" style="width: 350px;"> 
+
 
 
 ## 1. Labeling subset of images 
