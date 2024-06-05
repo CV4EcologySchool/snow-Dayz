@@ -11,7 +11,7 @@ This model contains a neural network with ResNet50 architecture (pre-trained wit
 <img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/flowchart.png" style="width: 350px;"> 
 
 
-![Important]
+[!Important]
 Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below). Otherwise, you can skip right to step 3 (Predictions), which will run the model as is on your data without fine-tuning. ![Warning](https://img.shields.io/badge/Warning-red.svg)
 
 
