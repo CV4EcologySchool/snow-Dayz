@@ -39,12 +39,6 @@ python src/predict.py --folder_path '/Users/Documents/data/CAMERA1' --output_fol
 
 **Note: the script only allows for a dir_path OR a folder_path because of how it uploads the images to local memory. Please use only one argument or the other. If both are provided, it will default to folder_path.
 
-## snow depth extraction
-
-Once the model has predicted the top and bottom of the pole, it is time to convert to snow depth. The script is called 'cm_conversion.py'.
-
-
-
 ## Retraining for more accurate predictions
 
 Our findings suggested that some labeling of the dataset of interest improved the performance of the model on new datasets. We recommend labeling a subset of images from each camera from your study for best results. We provide labeling.py to facilitate labeling. The labels are then saved in the right format for re-training the model. To label your own images run the following updated the arguments with your specific data paths and pole measurements. 
@@ -57,13 +51,13 @@ python src/labeling.py --datapath '/Users/Documents/data' --savedir '/Users/Docu
 '--savedir' will save the labels.csv in your data directory 
 '--pole_length' height of your poles. If they are varying you will need to run this on each individual folder and then combine all the labels into one csv. 
 
-It will also create a folder called 'train_data' that will serve 
+It will also create a folder called 'train_data' that will serve as the training folder for model training. 
 
 
 ## Training and evaluation
-1) Before training on GPU, change the dataset root in the configuration files in `config` file. 
+1) Before training on GPU, change the dataset root in the configuration files in `config` file. We have tried to simplify the training steps and the eval
 
-2) Train: 
+2) Train (model will automatically default to CPU if no cuda found): 
 
 on local or GPU machine: 
 ```
@@ -71,9 +65,21 @@ python src/train.py
 ```
 
 
-3) Evaluate:
+3) Predictions:
 ```
-python src/evaluate.py 
+python src/predict.py 
+```
+
+## Predictions
+
+As said earlier, 
+
+## snow depth extraction
+
+Once the model has predicted the top and bottom of the pole, it is time to convert to snow depth. The script is called 'depth_conversion.py'.
+
+```
+python src/depth_conversion.py --folder_path '/Users/Documents/data/CAMERA1' --output_folder '/Users/Documents/data/CAMERA1'
 ```
 
 ## Basic packages:
