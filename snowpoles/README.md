@@ -18,20 +18,20 @@ Our findings suggested that some labeling of the dataset of interest improved th
 ## 1. Labeling subset of images 
 
 - We provide labeling.py to facilitate labeling. The labels are then saved in the right format for re-training the model. To label your own images run the following updated the arguments with your specific data paths and pole measurements. 
-
 ```
 python src/labeling.py --datapath '/Users/Documents/data' --savedir '/Users/Documents/data' --pole_length '304.8'
 ```
 
-'--datapath' assumes that your original iamges are saved in a nested subfolder from the root folder called "data". Each camera folder has a unique folder ID that matches the camera ID.
-'--savedir' will save the labels.csv in your data directory 
-'--pole_length' height of your poles. If they are varying you will need to run this on each individual folder and then combine all the labels into one csv. 
+- '--datapath' assumes that your original iamges are saved in a nested subfolder from the root folder called "data". Each camera folder has a unique folder ID that matches the camera ID.
+- '--savedir' will save the labels.csv in your data directory 
+- '--pole_length' height of your poles. If they are varying you will need to run this on each individual folder and then combine all the labels into one csv. 
 
-It will also create a folder called 'train_data' that will serve as the training folder for model training. 
+> [!NOTE]  
+> It will also create a folder called 'train_data' that will serve as the training folder for model training. 
 
 
 ## 2. Fine-tuning model without GPU
-- Before training, change the dataset root in the configuration files in `config` file. Then, train (model will automatically default to CPU if no cuda found). We simplified the training step, so that if you use the labeling script no other prep is needed except for updating the paths in the config file
+- Before training, change the dataset root in the configuration files in `config` file. Then, train (model will automatically default to CPU if no cuda found). We simplified the training step, so that if you use the labeling script no other prep is needed except for updating the paths in the config file.
 
 on local or GPU machine: 
 ```
