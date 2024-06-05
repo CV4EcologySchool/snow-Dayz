@@ -10,10 +10,45 @@ This model contains a neural network with ResNet50 architecture (pre-trained wit
 
 <img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/flowchart.png" style="width: 350px;"> 
 
-## predictions
-**Start here if you don't want to fine-tune the model, but just want to try the model on your data**
 
-![Warning](https://img.shields.io/badge/Warning-red.svg) Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below). ![Warning](https://img.shields.io/badge/Warning-red.svg)
+![Important]
+Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below). Otherwise, you can skip right to step 3 (Predictions), which will run the model as is on your data without fine-tuning. ![Warning](https://img.shields.io/badge/Warning-red.svg)
+
+
+## Retraining for more accurate predictions
+
+Our findings suggested that some labeling of the dataset of interest improved the performance of the model on new datasets. We recommend following the steps below to 1) label a subset of images from each camera from your study for best results. 
+
+
+## 1. Labeling subset of images 
+
+We provide labeling.py to facilitate labeling. The labels are then saved in the right format for re-training the model. To label your own images run the following updated the arguments with your specific data paths and pole measurements. 
+
+```
+python src/labeling.py --datapath '/Users/Documents/data' --savedir '/Users/Documents/data' --pole_length '304.8'
+```
+
+'--datapath' assumes that your original iamges are saved in a nested subfolder from the root folder called "data". Each camera folder has a unique folder ID that matches the camera ID.
+'--savedir' will save the labels.csv in your data directory 
+'--pole_length' height of your poles. If they are varying you will need to run this on each individual folder and then combine all the labels into one csv. 
+
+It will also create a folder called 'train_data' that will serve as the training folder for model training. 
+
+
+## 2. Fine-tuning model without GPU
+A) Before training, change the dataset root in the configuration files in `config` file. 
+
+B) Train (model will automatically default to CPU if no cuda found). We simplified the training step, so that if you use the labeling script no other prep is needed except for updating the paths in the config file
+
+on local or GPU machine: 
+```
+python src/train.py
+```
+
+
+## 3. Predictions (see above)
+
+**Start here if you don't want to fine-tune the model, but just want to try the model on your data**
 
 
 1) To test the model on your own sites of interest, run 'predict.py'. The script saves the results as a .csv as well as pictures of the predictions. On a local machine, the script can process about 1.1 image/ second. So, 1000 images would take ~18 min to run. The script contains four arguments to allow the user to customize predictions: 1) model_folder, 2) dir_path, 3) folder_path, and 4) output_path. 
@@ -39,42 +74,12 @@ python src/predict.py --folder_path '/Users/Documents/data/CAMERA1' --output_fol
 
 **Note: the script only allows for a dir_path OR a folder_path because of how it uploads the images to local memory. Please use only one argument or the other. If both are provided, it will default to folder_path.
 
-## Retraining for more accurate predictions
 
-Our findings suggested that some labeling of the dataset of interest improved the performance of the model on new datasets. We recommend labeling a subset of images from each camera from your study for best results. We provide labeling.py to facilitate labeling. The labels are then saved in the right format for re-training the model. To label your own images run the following updated the arguments with your specific data paths and pole measurements. 
-
-```
-python src/labeling.py --datapath '/Users/Documents/data' --savedir '/Users/Documents/data' --pole_length '304.8'
-```
-
-'--datapath' assumes that your original iamges are saved in a nested subfolder from the root folder called "data". Each camera folder has a unique folder ID that matches the camera ID.
-'--savedir' will save the labels.csv in your data directory 
-'--pole_length' height of your poles. If they are varying you will need to run this on each individual folder and then combine all the labels into one csv. 
-
-It will also create a folder called 'train_data' that will serve as the training folder for model training. 
-
-
-## Training and evaluation
-1) Before training on GPU, change the dataset root in the configuration files in `config` file. We have tried to simplify the training steps and the eval
-
-2) Train (model will automatically default to CPU if no cuda found): 
-
-on local or GPU machine: 
-```
-python src/train.py
-```
-
-
-3) Predictions:
 ```
 python src/predict.py 
 ```
 
-## Predictions
-
-As said earlier, 
-
-## snow depth extraction
+4) snow depth extraction
 
 Once the model has predicted the top and bottom of the pole, it is time to convert to snow depth. The script is called 'depth_conversion.py'.
 
