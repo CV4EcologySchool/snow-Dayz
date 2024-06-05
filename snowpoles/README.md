@@ -17,7 +17,7 @@ Our findings suggested that some labeling of the dataset of interest improved th
 
 ## 1. Labeling subset of images 
 
-We provide labeling.py to facilitate labeling. The labels are then saved in the right format for re-training the model. To label your own images run the following updated the arguments with your specific data paths and pole measurements. 
+- We provide labeling.py to facilitate labeling. The labels are then saved in the right format for re-training the model. To label your own images run the following updated the arguments with your specific data paths and pole measurements. 
 
 ```
 python src/labeling.py --datapath '/Users/Documents/data' --savedir '/Users/Documents/data' --pole_length '304.8'
@@ -31,7 +31,7 @@ It will also create a folder called 'train_data' that will serve as the training
 
 
 ## 2. Fine-tuning model without GPU
-Before training, change the dataset root in the configuration files in `config` file. Then, train (model will automatically default to CPU if no cuda found). We simplified the training step, so that if you use the labeling script no other prep is needed except for updating the paths in the config file
+- Before training, change the dataset root in the configuration files in `config` file. Then, train (model will automatically default to CPU if no cuda found). We simplified the training step, so that if you use the labeling script no other prep is needed except for updating the paths in the config file
 
 on local or GPU machine: 
 ```
@@ -51,14 +51,14 @@ python src/train.py
         **Note:** You only need to use dir_path or folder_path not both. 
     - 'output_path'is the folder where you would like to save the model predictions. The script will automatically create a subfolder called "predictions" where it will save the .csv of the top and bottom coordinates as well as the length in pixels. It will also save the pictures of the predictions in this folder as well. (mandatory) 
 
-An example for a directory of  from the command line is as follows: 
+- An example for a directory of  from the command line is as follows: 
 on local or GPU machine:
 
 ```
 python src/predict.py --dir_path '/Users/Documents/data' --output_folder '/Users/Documents/data'
 ```
 
-An example for a single folder from the command line is as follows: 
+- An example for a single folder from the command line is as follows: 
 on local or GPU machine:
 
 ```
@@ -69,7 +69,7 @@ python src/predict.py --folder_path '/Users/Documents/data/CAMERA1' --output_fol
 
 ## 4. Snow Depth Extraction
 
-Once the model has predicted the top and bottom of the pole, it is time to convert to snow depth. The script is called 'depth_conversion.py'. The script contains two arguments to allow the user to customize the predictions path. 
+- Once the model has predicted the top and bottom of the pole, it is time to convert to snow depth. The script is called 'depth_conversion.py'.The script contains two arguments to allow the user to customize the predictions path. 
     - 'predictions_path' the folder where the predictions are stored (created automatically from predict.py)
 
 ```
