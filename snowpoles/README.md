@@ -44,7 +44,7 @@ python src/train.py
 > [!TIP]
 > Start here if you don't want to fine-tune the model, but just want to try the model on your data.
 
-To test the model on your own sites of interest, run 'predict.py'. The script saves the results as a .csv as well as pictures of the predictions. On a local machine, the script can process about 1.1 image/ second. So, 1000 images would take ~18 min to run. The script contains four arguments to allow the user to customize predictions: 1) model_folder, 2) dir_path, 3) folder_path, and 4) output_path. 
+3.1 To test the model on your own sites of interest, run 'predict.py'. The script saves the results as a .csv as well as pictures of the predictions. On a local machine, the script can process about 1.1 image/ second. So, 1000 images would take ~18 min to run. The script contains four arguments to allow the user to customize predictions: 1) model_folder, 2) dir_path, 3) folder_path, and 4) output_path. 
     - 'model_path' if the user has retrained the model and would like to point it to the new folder, they can update the path here. If the user leaves this blank, it will automatically use the model developed in the corresponding paper which is saved in this directory. 
     - "dir_path" is the argument if you would like to predict  for a directory of camera folders. It assumes that original images are saved in a nested subfolder from a root folder, and that each camera folder has a unique folder ID that matches the camera ID. For example the directory may be called "data" and then each folder within "data" is "camera1," "camera2," etc, where within each camera folder are the .jpg images. This is the most efficient way to run the code, because you only have to run one line, and the model will make predictions across all your camera folders. It takes about XX to process. 
     - "folder_path" is similiar to "dir_path" except that it does not assume a nested folder structure. This can be used if all your images are in one folder, or you simply want to run predictions on one folder only. If left blank, it will default to example images. 
@@ -72,7 +72,7 @@ python src/predict.py --folder_path '/Users/Documents/data/CAMERA1' --output_fol
 python src/predict.py 
 ```
 
-4) snow depth extraction
+## 4. Snow Depth Extraction
 
 Once the model has predicted the top and bottom of the pole, it is time to convert to snow depth. The script is called 'depth_conversion.py'.
 
