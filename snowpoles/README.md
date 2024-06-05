@@ -10,24 +10,8 @@ This model contains a neural network with ResNet50 architecture (pre-trained wit
 
 <img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/flowchart.png" style="width: 350px;"> 
 
-> [!IMPORTANT] 
-> critical 
-
-> [!NOTE]  
-> Highlights information that users should take into account, even when skimming.
-
-> [!TIP]
-> Optional information to help a user be more successful.
-
 > [!IMPORTANT]  
-> Crucial information necessary for users to succeed.
-
-> [!WARNING]  
-> Critical content demanding immediate user attention due to potential risks.
-
-> [!CAUTION]
-> Negative potential consequences of an action.
-Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below). Otherwise, you can skip right to step 3 (Predictions), which will run the model as is on your data without fine-tuning. ![Warning](https://img.shields.io/badge/Warning-red.svg)
+> Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below). Otherwise, you can skip right to step 3 (Predictions), which will run the model as is on your data without fine-tuning. ![Warning](https://img.shields.io/badge/Warning-red.svg)
 
 
 ## Retraining for more accurate predictions
