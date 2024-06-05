@@ -122,7 +122,7 @@ def predict(cfg, dataLoader, model):
 
             confidence1 = confidence[:,1]
             confidences1list.extend(confidence1)
-            if confidence1 > 0.5: predict_label = 1
+            if confidence1 > 0.3: predict_label = 1
             else: predict_label = 0 
             predicted_labels.append(predict_label)
 
