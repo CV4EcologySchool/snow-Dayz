@@ -12,8 +12,7 @@ We present a model that faciltates snow depth extraction from snow poles by iden
 
 Our findings suggested that some labeling of the dataset of interest improved the performance of the model on new datasets. We recommend following the steps below to 1) label a subset of images from each camera from your study for best results. 2) Fine-tune the model using the subset. Then 3) predict on all of your data, and 4) convert to snow depth. We will first describe how to use the model for predictions, then we will explain how to re-train the model for best results. The overall workflow is summarized in the flowchart below. 
 
-<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/flowchart.png" style="width: 350px;"> 
-
+<img src="https://github.com/CV4EcologySchool/snow-Dayz/blob/main/snowpoles/example_imgs/flowchart3.png" style="width: 350px;"> 
 
 
 ## 1. Labeling subset of images 
@@ -42,10 +41,10 @@ python src/train.py
 ```
 
 
-## 3. Predictions (see above)
+## 3. Predictions
 
-**Start here if you don't want to fine-tune the model, but just want to try the model on your data**
-
+> [!TIP]
+> Start here if you don't want to fine-tune the model, but just want to try the model on your data
 
 1) To test the model on your own sites of interest, run 'predict.py'. The script saves the results as a .csv as well as pictures of the predictions. On a local machine, the script can process about 1.1 image/ second. So, 1000 images would take ~18 min to run. The script contains four arguments to allow the user to customize predictions: 1) model_folder, 2) dir_path, 3) folder_path, and 4) output_path. 
     - 'model_path' if the user has retrained the model and would like to point it to the new folder, they can update the path here. If the user leaves this blank, it will automatically use the model developed in the corresponding paper which is saved in this directory. 
