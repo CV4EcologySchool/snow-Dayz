@@ -22,9 +22,9 @@ Our findings suggested that some labeling of the dataset of interest improved th
 python src/labeling.py --datapath '/Users/Documents/data' --savedir '/Users/Documents/data' --pole_length '304.8'
 ```
 
-- '--datapath' assumes that your original iamges are saved in a nested subfolder from the root folder called "data". Each camera folder has a unique folder ID that matches the camera ID.
-- '--savedir' will save the labels.csv in your data directory 
-- '--pole_length' height of your poles. If they are varying you will need to run this on each individual folder and then combine all the labels into one csv. 
+    - '--datapath' assumes that your original iamges are saved in a nested subfolder from the root folder called "data". Each camera folder has a unique folder ID that matches the camera ID.
+    - '--savedir' will save the labels.csv in your data directory 
+    - '--pole_length' height of your poles. If they are varying you will need to run this on each individual folder and then combine all the labels into one csv. 
 
 > [!NOTE]  
 > It will also create a folder called 'train_data' that will serve as the training folder for model training. 
