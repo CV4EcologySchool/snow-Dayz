@@ -12,7 +12,8 @@ This model contains a neural network with ResNet50 architecture (pre-trained wit
 
 ## predictions
 ** Start here if you don't want to fine-tune the model, but just want to try the model on your data **
-Warning: Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below).
+
+<span style="color:red">Warning: </span> Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below).
 
 
 1) To test the model on your own sites of interest, run 'predict.py'. The script saves the results as a .csv as well as pictures of the predictions. On a local machine, the script can process about 1.1 image/ second. So, 1000 images would take ~18 min to run. The script contains four arguments to allow the user to customize predictions: 1) model_folder, 2) dir_path, 3) folder_path, and 4) output_path. 
