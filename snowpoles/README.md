@@ -12,6 +12,7 @@ This model contains a neural network with ResNet50 architecture (pre-trained wit
 
 ## predictions
 **Start here if you don't want to fine-tune the model, but just want to try the model on your data**
+
 ![Warning](https://img.shields.io/badge/Warning-red.svg) Because the model was trained on data in Washington and Colorado, the accuracy may be lower than what we reported in the paper. To obtain the accuracy, we recommend fine-tuning the model (more on that below).
 
 
