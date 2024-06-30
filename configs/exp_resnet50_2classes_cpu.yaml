@@ -27,3 +27,4 @@ weight_decay: 0.001
 # python classifier_may24/train.py --config configs/exp_resnet50_2classes_cpu.yaml 
 
 # python classifier_may24/train_rebalance.py --config configs/exp_resnet50_2classes_cpu.yaml 
+# python classifier_may24/train_weightedbalance.py --config configs/exp_resnet50_2classes_cpu.yaml 

@@ -13,7 +13,7 @@ from tqdm import trange
 import numpy as np 
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader, Sampler
+from torch.utils.data import DataLoader, Sampler, WeightedRandomSampler
 from torch.optim import SGD
 #from torch.utils.tensorboard import SummaryWriter 
 from sklearn.metrics import balanced_accuracy_score
@@ -24,51 +24,6 @@ import IPython
 # let's import our own classes and functions!
 from dataset import CTDataset, train_test_split
 from model import CustomResNet50
-
-class BalancedBatchSampler(Sampler):
-    def __init__(self, dataset, batch_size):
-        self.dataset = dataset
-        self.batch_size = batch_size
-        self.labels = [dataset[i][1] for i in range(len(dataset))]
-        self.class_indices = {}
-        
-        ## creates a dic of {0: indices of 0 labels, 1: indcies of 1 labels}
-        for idx, label in enumerate(self.labels):
-            if label not in self.class_indices:
-                self.class_indices[label] = []
-            self.class_indices[label].append(idx)
-        
-        #print(self.class_indices)
-        self.num_classes = 2 # len(self.class_indices)
-        self.class_batch_size = batch_size // self.num_classes
-        self.labels0 = self.class_indices[0]
-        self.labels1 = self.class_indices[1]
-
-    def __iter__(self):
-        class_iters = {cls: iter(indices) for cls, indices in self.class_indices.items()}
-        while True:
-            batch = []
-            for cls in self.class_indices:
-                class_batch = []
-                while len(class_batch) < self.class_batch_size:
-                    try:
-                        class_batch.append(next(class_iters[cls]))
-                    except StopIteration:
-                        class_iters[cls] = iter(self.class_indices[cls])
-                        class_batch.append(next(class_iters[cls]))
-                batch.extend(class_batch)
-            np.random.shuffle(batch)
-            yield batch
-        # batch = []
-        # # class_iters = {cls: iter(indices) for cls, indices in self.class_indices.items()}
-        # if len(batch) <= self.class_batch_size:
-        #     class0_batch = np.random(self.labels0, self.class_batch_size)
-        #     class1_batch =  np.random(self.labels1, self.class_batch_size)
-        #     batch = [class0_batch, class1_batch]
-        #     return batch 
-
-    def __len__(self):
-        return len(self.dataset) // self.batch_size
 
 
 def create_dataloader(cfg, dataframe, labels):
@@ -82,9 +37,20 @@ def create_dataloader(cfg, dataframe, labels):
 
     dataset_instance = CTDataset(labels=labels, cfg=cfg, dataframe=dataframe)
     
-    #IPython.embed()
-    sampler = BalancedBatchSampler(dataset_instance, cfg['batch_size'])
-    
+    # Compute class counts
+    class_counts = np.bincount(dataset_instance.labels)
+    print("Class counts:", class_counts)
+
+    # Compute class weights
+    class_weights = 1. / class_counts
+    print("Class weights:", class_weights)
+
+    # Create sample weights
+    sample_weights = class_weights[dataset_instance.labels]
+
+    # Create the WeightedRandomSampler
+    sampler = WeightedRandomSampler(weights=sample_weights, num_samples=len(sample_weights), replacement=True)
+
     dataLoader = DataLoader(
             dataset=dataset_instance,
             #batch_size=cfg['batch_size'],
@@ -353,10 +319,10 @@ def main():
         # IPython.embed()
         # item = dl_train.dataset.__getitem__(10)
         #  # Validate the DataLoader
-        # for batch_idx, (data, labels) in enumerate(dl_train):
-        #     print(f"Batch {batch_idx}: {labels}")
-        #     if batch_idx == 5:  # Just check the first few batches
-        #         break
+        for batch_idx, (data, labels) in enumerate(dl_train):
+            print(f"Batch {batch_idx}: {labels}")
+            if batch_idx == 5:  # Just check the first few batches
+                break
 
         loss_train, oa_train = train(cfg, dl_train, model, optim)
         loss_val, oa_val = validate(cfg, dl_test, model)

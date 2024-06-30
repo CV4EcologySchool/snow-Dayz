@@ -94,6 +94,7 @@ class CTDataset(Dataset):
         
         # index data into list
         self.data = []
+        self.labels = []
 
         # meta = pd.read_csv(self.annoPath)
         meta = dataframe
@@ -111,7 +112,9 @@ class CTDataset(Dataset):
                 # (random.uniform(0.0, 1.0) <= 0.005) and
             if file in list_of_images: 
                 imgFileName = file ## make sure there is the image file in the train folder
-                if cfg['num_classes'] == 2: self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                if cfg['num_classes'] == 2: 
+                    self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                    self.labels.append(self.LABEL_CLASSES_BINARY[weather])
                 elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
     def __len__(self):
