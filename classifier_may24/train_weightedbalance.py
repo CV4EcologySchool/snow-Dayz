@@ -25,6 +25,8 @@ import IPython
 from dataset import CTDataset, train_test_split
 from model import CustomResNet50
 
+### borrowing code from Zhonqi Miao
+
 
 def create_dataloader(cfg, dataframe, labels):
     ###### added labels and folder argument
