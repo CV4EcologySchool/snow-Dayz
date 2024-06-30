@@ -10,7 +10,7 @@ num_workers: 2
 data_root: /Users/catherinebreen/Desktop/LABELEDresize
 labels: /Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024_updated.csv
 output_path: /Users/catherinebreen/Documents/TEST
-exp_name: dataaug_weighted_crop #baseline
+exp_name: dataaug_weighted_crop_rebalance #baseline
 num_classes: 2 ## precip vs. none
 sequenceType: 'None'
 
@@ -25,3 +25,5 @@ learning_rate: 0.001
 weight_decay: 0.001
 
 # python classifier_may24/train.py --config configs/exp_resnet50_2classes_cpu.yaml 
+
+# python classifier_may24/train_rebalance.py --config configs/exp_resnet50_2classes_cpu.yaml 

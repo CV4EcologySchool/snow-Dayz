@@ -39,7 +39,6 @@ class RandomApplyTransform:
 
 
 
-
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
@@ -85,9 +84,9 @@ class CTDataset(Dataset):
         self.data_root = cfg['data_root']
         self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
-            # RandomVerticalFlip(p=0.3),
-            # RandomVerticalFlip(p=0.3),
-            # RandomGrayscale(p=0.3),
+            RandomVerticalFlip(p=0.3),
+            RandomVerticalFlip(p=0.3),
+            RandomGrayscale(p=0.5),
             # RandomApplyTransform(transforms.RandomResizedCrop(224, scale = (0.08, 1.0)), p=0.3),
             #RandomApplyTransform(transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1), p=0.3),
             ToTensor()                          # ...and convert them to torch.Tensor.
@@ -127,12 +126,32 @@ class CTDataset(Dataset):
     def __sequenceType__(self):
         return (self.sequenceType)
 
+    # def __getitem__(self, idx):
+    #     '''
+    #         Returns a single data point at given idx.
+    #         Here's where we actually load the image.
+    #     '''
+    #     image_name, label = self.data[idx]              # see line 57 above where we added these two items to the self.data list
+
+    #     # load image
+    #     image_path = os.path.join(self.data_root, image_name) ## should specify train folder and get image name 
+    #     img = Image.open(image_path).convert('RGB')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
+
+    #     # transform: see lines 31ff above where we define our transformations
+    #     img_tensor = self.transform(img)
+    #     #print(img_tensor.shape)
+
+    #     return img_tensor, label
+    
     def __getitem__(self, idx):
-        '''
-            Returns a single data point at given idx.
-            Here's where we actually load the image.
-        '''
-        image_name, label = self.data[idx]              # see line 57 above where we added these two items to the self.data list
+        if isinstance(idx, list):
+            # IPython.embed()
+            return [self._get_single_item(i) for i in idx]
+        else:
+            return self._get_single_item(idx)
+
+    def _get_single_item(self, idx):
+        image_name, label = self.data[idx] # see line 57 above where we added these two items to the self.data list
 
         # load image
         image_path = os.path.join(self.data_root, image_name) ## should specify train folder and get image name 
@@ -143,8 +162,3 @@ class CTDataset(Dataset):
         #print(img_tensor.shape)
 
         return img_tensor, label
-
-
-
-
-  

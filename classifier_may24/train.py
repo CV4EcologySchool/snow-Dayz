@@ -13,7 +13,7 @@ from tqdm import trange
 import numpy as np 
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Sampler
 from torch.optim import SGD
 #from torch.utils.tensorboard import SummaryWriter 
 from sklearn.metrics import balanced_accuracy_score
