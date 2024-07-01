@@ -107,15 +107,15 @@ class CTDataset(Dataset):
     
         #######maybe instead walk through list_of_images
         for file, weather in zip(meta['filename'], meta['label']):
-            # if (random.uniform(0.0, 1.0) <= 0.5) and weather == 0:
-            #     continue
-                # (random.uniform(0.0, 1.0) <= 0.005) and
-            if file in list_of_images: 
-                imgFileName = file ## make sure there is the image file in the train folder
-                if cfg['num_classes'] == 2: 
-                    self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-                    self.labels.append(self.LABEL_CLASSES_BINARY[weather])
-                elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+            if (random.uniform(0.0, 1.0) <= 0.1):
+                #continue
+                # (random.uniform(0.0, 1.0) <= 0.005) ands
+                if file in list_of_images: 
+                    imgFileName = file ## make sure there is the image file in the train folder
+                    if cfg['num_classes'] == 2: 
+                        self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                        self.labels.append(self.LABEL_CLASSES_BINARY[weather])
+                    elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
     def __len__(self):
         '''
@@ -129,32 +129,12 @@ class CTDataset(Dataset):
     def __sequenceType__(self):
         return (self.sequenceType)
 
-    # def __getitem__(self, idx):
-    #     '''
-    #         Returns a single data point at given idx.
-    #         Here's where we actually load the image.
-    #     '''
-    #     image_name, label = self.data[idx]              # see line 57 above where we added these two items to the self.data list
-
-    #     # load image
-    #     image_path = os.path.join(self.data_root, image_name) ## should specify train folder and get image name 
-    #     img = Image.open(image_path).convert('RGB')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
-
-    #     # transform: see lines 31ff above where we define our transformations
-    #     img_tensor = self.transform(img)
-    #     #print(img_tensor.shape)
-
-    #     return img_tensor, label
-    
     def __getitem__(self, idx):
-        if isinstance(idx, list):
-            # IPython.embed()
-            return [self._get_single_item(i) for i in idx]
-        else:
-            return self._get_single_item(idx)
-
-    def _get_single_item(self, idx):
-        image_name, label = self.data[idx] # see line 57 above where we added these two items to the self.data list
+        '''
+            Returns a single data point at given idx.
+            Here's where we actually load the image.
+        '''
+        image_name, label = self.data[idx]              # see line 57 above where we added these two items to the self.data list
 
         # load image
         image_path = os.path.join(self.data_root, image_name) ## should specify train folder and get image name 
@@ -165,3 +145,23 @@ class CTDataset(Dataset):
         #print(img_tensor.shape)
 
         return img_tensor, label
+    
+    # def __getitem__(self, idx):
+    #     if isinstance(idx, list):
+    #         # IPython.embed()
+    #         return [self._get_single_item(i) for i in idx]
+    #     else:
+    #         return self._get_single_item(idx)
+
+    # def _get_single_item(self, idx):
+    #     image_name, label = self.data[idx] # see line 57 above where we added these two items to the self.data list
+
+    #     # load image
+    #     image_path = os.path.join(self.data_root, image_name) ## should specify train folder and get image name 
+    #     img = Image.open(image_path).convert('RGB')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
+
+    #     # transform: see lines 31ff above where we define our transformations
+    #     img_tensor = self.transform(img)
+    #     #print(img_tensor.shape)
+
+    #     return img_tensor, label
