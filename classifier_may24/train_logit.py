@@ -127,9 +127,13 @@ def train(cfg, dataLoader, model, optimizer):
     # Define class weights and move them to the correct device
     class_weights = torch.tensor([0.25, 1.0], device=device)
    
-    # LOGIT
+    # LDAM
     class_freqs = torch.tensor([0.78023932, 0.21976068]) ## hard coded 
     class_margins = 1.0 / torch.sqrt(class_freqs)
+
+    # LOGIT
+    logit_bias = torch.log(class_freqs).to(device)
+
     criterion = nn.CrossEntropyLoss()
 
     # running averages
@@ -154,8 +158,14 @@ def train(cfg, dataLoader, model, optimizer):
            #     loss = criterion(prediction, labels) * 2
            # else:  loss = criterion(prediction, labels)
         #loss = criterion(prediction, labels)
+        ## LDAM
+        # class_margins = torch.tensor([1.1321, 2.1332]).to(device)
+        # adjusted_logits = prediction - class_margins
+        # loss = criterion(adjusted_logits, labels)
+
+        ## LOGIT
         class_margins = torch.tensor([1.1321, 2.1332]).to(device)
-        adjusted_logits = prediction - class_margins
+        adjusted_logits = prediction + logit_bias ## update whether it is ldam or logit ## 
         loss = criterion(adjusted_logits, labels)
 
         # backward pass (calculate gradients of current batch)
