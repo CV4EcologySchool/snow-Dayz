@@ -4,13 +4,13 @@
 
 # environment/computational parameters
 device: cuda
-num_workers: 2 #4 
+num_workers: 4 #4 
 
 # dataset parameters: VM AURORA
 data_root: /datadrive/LABELEDresize
 labels: /datadrive/all_labels_may2024_updated.csv #/Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024.csv ## UPDATE
 output_path: /datadrive/classifier_results
-exp_name: dataug_4_001_8010_weighted_grey_newdata_bs16s448
+exp_name: dataug_4_001_8010_weighted_grey_newdata_logit
 
 # model parameters
 num_classes: 2 ## precip vs. none
@@ -20,9 +20,9 @@ sequenceType: 'None'
 #neg_label: [0]
 
 # training hyperparameters
-image_size: [448, 448]
+image_size: [224, 224]
 num_epochs: 2000 ##200
-batch_size: 16 #64
+batch_size: 64 #64
 learning_rate: 0.001
 weight_decay: 0.001
 
