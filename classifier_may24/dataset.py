@@ -107,15 +107,15 @@ class CTDataset(Dataset):
     
         #######maybe instead walk through list_of_images
         for file, weather in zip(meta['filename'], meta['label']):
-            if (random.uniform(0.0, 1.0) <= 0.1):
-                #continue
+            # if (random.uniform(0.0, 1.0) <= 0.1):
+            #     #continue
                 # (random.uniform(0.0, 1.0) <= 0.005) ands
-                if file in list_of_images: 
-                    imgFileName = file ## make sure there is the image file in the train folder
-                    if cfg['num_classes'] == 2: 
-                        self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
-                        self.labels.append(self.LABEL_CLASSES_BINARY[weather])
-                    elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
+            if file in list_of_images: 
+                imgFileName = file ## make sure there is the image file in the train folder
+                if cfg['num_classes'] == 2: 
+                    self.data.append([imgFileName, self.LABEL_CLASSES_BINARY[weather]])
+                    self.labels.append(self.LABEL_CLASSES_BINARY[weather])
+                elif cfg['num_classes'] != 2: self.data.append([imgFileName, self.LABEL_CLASSES[weather]]) ## why label index and not label?
 
     def __len__(self):
         '''

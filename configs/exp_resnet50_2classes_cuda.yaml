@@ -37,3 +37,4 @@ weight_decay: 0.001
 # conda activate keypoint
 # python classifier_may24/train.py --config configs/exp_resnet50_2classes_cuda.yaml 
 # python classifier_may24/train_rebalance.py --config configs/exp_resnet50_2classes_cuda.yaml 
+# python classifier_may24/train_logit.py --config configs/exp_resnet50_2classes_cuda.yaml 
