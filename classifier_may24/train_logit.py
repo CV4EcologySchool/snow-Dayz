@@ -154,6 +154,7 @@ def train(cfg, dataLoader, model, optimizer):
            #     loss = criterion(prediction, labels) * 2
            # else:  loss = criterion(prediction, labels)
         #loss = criterion(prediction, labels)
+        class_margins = torch.tensor([1.1321, 2.1332]).to(device)
         adjusted_logits = prediction - class_margins
         loss = criterion(adjusted_logits, labels)
 
