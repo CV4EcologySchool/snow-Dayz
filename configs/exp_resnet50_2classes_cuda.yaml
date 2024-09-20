@@ -27,6 +27,8 @@ batch_size: 64 #64
 learning_rate: 0.001
 weight_decay: 0.001
 
+test_labels: '/datadrive/classifier_results/baseline_4_001_30cam_wslab/valid_samples.csv'
+
 # python classifier_may24/train.py --config configs/exp_resnet50_2classes_cuda.yaml 
 
 # ## FOR EVAL
