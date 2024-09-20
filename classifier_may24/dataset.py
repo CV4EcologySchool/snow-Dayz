@@ -38,7 +38,6 @@ class RandomApplyTransform:
         return img
 
 
-
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 

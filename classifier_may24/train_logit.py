@@ -165,6 +165,8 @@ def train(cfg, dataLoader, model, optimizer):
 
         ## LOGIT
         class_margins = torch.tensor([1.1321, 2.1332]).to(device)
+        #IPython.embed()
+        scaling_factor = 0.5 ## could fine tune this as needed
         adjusted_logits = prediction + logit_bias ## update whether it is ldam or logit ## 
         loss = criterion(adjusted_logits, labels)
 
