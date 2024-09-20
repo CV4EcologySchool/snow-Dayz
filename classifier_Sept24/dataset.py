@@ -48,8 +48,8 @@ def train_test_split(cfg, images_path, labels):
                      '2029', '518', '1495', '850', '1613', '842', '1263', '656', '1150', '1192', '1121', '1438']
 
 
-    training_samples = df_data[~df_data['Camera'].isin(valid_cameras)] 
-    valid_samples = df_data[df_data['Camera'].isin(valid_cameras)] 
+    training_samples = df_data[~df_data['cameraID'].isin(valid_cameras)] 
+    valid_samples = df_data[df_data['cameraID'].isin(valid_cameras)] 
 
     ##### only images that exist
     all_images = glob.glob(images_path + ('/*'))
