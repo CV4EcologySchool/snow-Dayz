@@ -67,6 +67,7 @@ def load_model(cfg, epoch=None): ## what does epoch=None do in function?
     # load all model states
     #exp_name
     model_states = glob(cfg['output_path'] + '/' + cfg['exp_name'] + '/model_states/*.pt')
+    print(cfg['output_path'] + '/' + cfg['exp_name'] + '/model_states/*.pt')
     ##glob('/datadrive/vmData/weather/experiments/exp_resnet50_2classes_seqSliding/model_states/*')
     #IPython.embed()
     #print(model_states)

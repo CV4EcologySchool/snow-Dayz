@@ -56,20 +56,22 @@ def load_model(cfg):
     # load latest model state
     dir = os.path.join(cfg['output_path'], cfg['exp_name'], 'model_states')
     model_states = glob.glob(f'{dir}/*.pt')
-    if len(model_states):
-        # at least one save state found; get latest
-        model_epochs = [int(m.replace('model_states/','').replace('.pt','')) for m in model_states]
-        start_epoch = max(model_epochs)
+    # if len(model_states): # pass
+    #     # at least one save state found; get latest
+    #     model_epochs = [int(m.split('/')[-1].split('.')[0]) for m in model_states]
+    #     start_epoch = max(model_epochs)
 
-        # load state dict and apply weights to model
-        print(f'Resuming from epoch {start_epoch}')
-        state = torch.load(open(f'{dir}/{start_epoch}.pt', 'rb'), map_location='cpu')
-        model_instance.load_state_dict(state['model'])
+    #     # load state dict and apply weights to model
+    #     print(f'Resuming from epoch {start_epoch}')
+    #     state = torch.load(open(f'{dir}/{start_epoch}.pt', 'rb'), map_location='cpu')
+    #     model_instance.load_state_dict(state['model'])
 
-    else:
-        # no save state found; start anew
-        print('Starting new model')
-        start_epoch = 0
+    # else:
+    #     # no save state found; start anew
+    #     print('Starting new model')
+    #     start_epoch = 0
+
+    start_epoch = 0
 
     return model_instance, start_epoch
 
@@ -123,8 +125,8 @@ def train(cfg, dataLoader, model, optimizer):
     
     # WEIGHTS
     # Define class weights and move them to the correct device
-    class_weights = torch.tensor([0.25, 1.0], device=device)
-    criterion = nn.CrossEntropyLoss(weight=class_weights)
+    #class_weights = torch.tensor([0.25, 1.0], device=device)
+    criterion = nn.CrossEntropyLoss() #weight=class_weights)
 
     # LOGIT
 
@@ -160,6 +162,7 @@ def train(cfg, dataLoader, model, optimizer):
         loss_total += loss.item()                       # the .item() command retrieves the value of a single-valued tensor, regardless of its data type and device of tensor
 
         pred_label = torch.argmax(prediction, dim=1)    # the predicted label is the one at position (class index) with highest predicted value
+        
         oa = torch.mean((pred_label == labels).float()) # OA: number of correct predictions divided by batch size (i.e., average/mean)
         oa_total += oa.item()
 
@@ -332,7 +335,8 @@ def main():
        #     break
        # previousLoss = loss_val
         
-        # save_model(cfg, current_epoch, model, stats, args)
+    ## just the last epoch
+    save_model(cfg, current_epoch, model, stats, args)
     
 
 

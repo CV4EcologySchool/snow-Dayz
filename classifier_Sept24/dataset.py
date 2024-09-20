@@ -42,12 +42,22 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
 def train_test_split(cfg, images_path, labels):
+    #IPython.embed()
     df_data = pd.read_csv(labels)
-    valid_cameras = ['175', '54', '484', '1376', '486', '1175', '3036', '1746', '970', '1142', '1185', '688', 
-                     '2027', '638', '870', '317', '1184', '953', 
+    df_data = df_data[df_data['filename'] != '2015_04_05_09_00_00.jpg']
+    df_data = df_data[(df_data['label'] != 2) & (df_data['label'] != 3)]
+    df_data['cameraID'] = df_data['cameraID'].astype(str)
+    df_data = df_data[(df_data['cameraID'] != '842')]
+
+    valid_cameras = ['175', '54', '484', '1376', '486', '1175', '3036', '1746', '970', '1142', '1185', '688', \
+                     '2027', '638', '870', '317', '1184', '953', \
                      '2029', '518', '1495', '850', '1613', '842', '1263', '656', '1150', '1192', '1121', '1438']
-
-
+                        #'1120', '426','415']
+    # valid_cameras = ['747', '696', '621']
+    # valid_cameras = ['175', '54', '484', '1376', '486', '1175', '3036', '1746', '970', '1142', '1185', '688', 
+    #                  '2027', '638', '870', '317', '1184', '953', 
+    #                  '2029', '518', '1495', '850', '1613', '842', '1263', '656', '1150', '1192', '1121', '1438']
+    
     training_samples = df_data[~df_data['cameraID'].isin(valid_cameras)] 
     valid_samples = df_data[df_data['cameraID'].isin(valid_cameras)] 
 
@@ -55,7 +65,9 @@ def train_test_split(cfg, images_path, labels):
     all_images = glob.glob(images_path + ('/*'))
     filenames = [item.split('/')[-1] for item in all_images]
     valid_samples = valid_samples[valid_samples['filename'].isin(filenames)]
+    print('valid',valid_samples['label'].value_counts())
     training_samples = training_samples[training_samples['filename'].isin(filenames)]
+    print('train',training_samples['label'].value_counts())
     
     if not os.path.exists(f"{cfg['output_path']}/{cfg['exp_name']}"):
             os.makedirs(f"{cfg['output_path']}/{cfg['exp_name']}", exist_ok=True)
@@ -103,10 +115,8 @@ class CTDataset(Dataset):
 
         # meta = pd.read_csv(self.annoPath)
         meta = dataframe
-        meta = meta[meta['filename'] != '2015_04_05_09_00_00.jpg']
-        meta = meta[(meta['classification'] != 2) & (meta['classification'] != 3)]
-        IPython.embed()
-        meta = meta[meta['cameraID'] > 0]
+        #IPython.embed()
+        #meta = meta[meta['cameraID'] > 0]
         meta = meta.drop_duplicates(subset=['filename']).reset_index() ## maybe I should keep the original indices??
 
         ## add a check to make sure it exists in the folder of interest
@@ -115,9 +125,8 @@ class CTDataset(Dataset):
     
         #######maybe instead walk through list_of_images
         for file, weather in zip(meta['filename'], meta['label']):
-            if (random.uniform(0.0, 1.0) <= 0.1):
-                continue
-                # (random.uniform(0.0, 1.0) <= 0.005) ands
+            # if (random.uniform(0.0, 1.0) <= 0.005): continue
+            #     # (random.uniform(0.0, 1.0) <= 0.005) ands
             if file in list_of_images: 
                 imgFileName = file ## make sure there is the image file in the train folder
                 if cfg['num_classes'] == 2: 

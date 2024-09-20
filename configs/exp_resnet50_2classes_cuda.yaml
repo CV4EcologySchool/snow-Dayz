@@ -8,7 +8,7 @@ num_workers: 4 #4
 
 # dataset parameters: VM AURORA
 data_root: /datadrive/LABELEDresize
-labels: /datadrive/all_labels_may2024_updated.csv #/Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024.csv ## UPDATE
+labels: /datadrive/all_labels_may2024_updated_Sept2.csv #/Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024.csv ## UPDATE
 output_path: /datadrive/classifier_results
 exp_name: baseline_4_001_30cam_wslab
 #dataug_4_001_8010_weighted_grey_newdata_logit2
