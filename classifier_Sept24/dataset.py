@@ -45,9 +45,9 @@ def train_test_split(cfg, images_path, labels):
     #IPython.embed()
     df_data = pd.read_csv(labels)
     df_data = df_data[df_data['filename'] != '2015_04_05_09_00_00.jpg']
-    df_data = df_data[(df_data['label'] != 2) & (df_data['label'] != 3)]
+    #df_data = df_data[(df_data['label'] != 2) & (df_data['label'] != 3)]
     df_data['cameraID'] = df_data['cameraID'].astype(str)
-    df_data = df_data[(df_data['cameraID'] != '842')]
+    #df_data = df_data[(df_data['cameraID'] != '842')]
 
     valid_cameras = ['175', '54', '484', '1376', '486', '1175', '3036', '1746', '970', '1142', '1185', '688', \
                      '2027', '638', '870', '317', '1184', '953', \
@@ -57,9 +57,21 @@ def train_test_split(cfg, images_path, labels):
     # valid_cameras = ['175', '54', '484', '1376', '486', '1175', '3036', '1746', '970', '1142', '1185', '688', 
     #                  '2027', '638', '870', '317', '1184', '953', 
     #                  '2029', '518', '1495', '850', '1613', '842', '1263', '656', '1150', '1192', '1121', '1438']
-    
+    valid_cameras = ['1345', '1501', '526', '747', '639', '831', '1712', '231', '1149', '1381', '1951', '1361', '954', '598', \
+                       '1194', '535', '704', '1180', '1147', '1403', '297', '1117', '953', '1197', '1374', '1190', '1789', '673', \
+                       '827', '506', '692', '1431', '699', '1585', '1592', '3043', \
+                      '1152', '636', '965', '1185', '1662', '1423', '484', '1252', '1410', '468', '1486', '843', '664', '317']
+
+
+    print(len(valid_cameras))
+    #IPython.embed()
     training_samples = df_data[~df_data['cameraID'].isin(valid_cameras)] 
     valid_samples = df_data[df_data['cameraID'].isin(valid_cameras)] 
+
+    print(len(pd.unique(training_samples['cameraID'])))
+    print(len(pd.unique(valid_samples['cameraID'])))
+    print(len((training_samples['cameraID'])))
+    print(len((valid_samples['cameraID'])))
 
     ##### only images that exist
     all_images = glob.glob(images_path + ('/*'))
@@ -89,8 +101,8 @@ class CTDataset(Dataset):
     LABEL_CLASSES_BINARY = {
         0:0, 
         1:1, 
-        2:1,
-        3:1
+        2:0,
+        3:0
     }
 
     def __init__(self, cfg, dataframe, labels): #folder)
@@ -101,8 +113,8 @@ class CTDataset(Dataset):
         self.data_root = cfg['data_root']
         self.transform = Compose([              # Transforms. Here's where we could add data augmentation (see Björn's lecture on August 11).
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
-            RandomVerticalFlip(p=0.3),
-            RandomVerticalFlip(p=0.3),
+            # RandomVerticalFlip(p=0.3),
+            # RandomVerticalFlip(p=0.3),
             #RandomGrayscale(p=0.5),
             # RandomApplyTransform(transforms.RandomResizedCrop(224, scale = (0.08, 1.0)), p=0.3),
             #RandomApplyTransform(transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1), p=0.3),

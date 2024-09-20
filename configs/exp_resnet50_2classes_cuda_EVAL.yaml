@@ -28,9 +28,11 @@ learning_rate: 0.001
 weight_decay: 0.001
 
 # ## FOR EVAL
+#data_root: /Users/catherinebreen/Desktop/LABELEDresize
 data_root: /Users/catherinebreen/Dropbox/Chapter4/LIBRARY
+#test_labels: '/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/baseline_4_001_30cam_wslab/valid_samples.csv'
 test_labels: '/Users/catherinebreen/Dropbox/Chapter4/LIBRARY_LABELS.csv'
 output_path: /Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results
-exp_name: dataug_4_001_8010_weighted_grey_newdata_logit2
+exp_name: baseline_4_001_30cam_wslab
 
-# python classifier_may24/evaluate.py --config configs/exp_resnet50_2classes_cuda_EVAL.yaml 
+# python classifier_Sept24/evaluate.py --config configs/exp_resnet50_2classes_cuda_EVAL.yaml 
