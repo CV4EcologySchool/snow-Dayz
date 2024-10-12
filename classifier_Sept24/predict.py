@@ -138,8 +138,8 @@ def main():
     filenames, predicted_labels, confidences = predict(2, files, model)  
     #IPython.embed()
     results = pd.DataFrame({'filename':filenames, 'predicted_labels': predicted_labels, 'confidences': confidences})
-    IPython.embed()
-    results.to_csv(f'/Volumes/CatBreen/CV4ecology/WEATHER/chewelah_result_predictions.csv')
+    #IPython.embed()
+    results.to_csv(f'/Users/catherinebreen/Documents/TEST/library_predictions.csv')
 
 if __name__ == '__main__':
     main()

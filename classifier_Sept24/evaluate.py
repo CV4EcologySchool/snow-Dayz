@@ -99,7 +99,7 @@ def load_model(cfg, epoch=None): ## what does epoch=None do in function?
 
     
 ########## extracting true_labels and predicted_labels for later use in the accuracy metrics
-def predict(cfg, dataLoader, model):
+def predict_eval(cfg, dataLoader, model):
     with torch.no_grad(): # no gradients needed for prediction
         filenames = []
         #predictions = [] ## predictions as tensor probabilites
@@ -167,7 +167,7 @@ def save_precision_recall_curve(true_labels, confidences, cfg, epoch='128'):
 
 def binaryMetrics(cfg, dl_val, model, epoch):
     print('generating binary predicted labels')
-    filenames, true_labels, predicted_labels, confidences = predict(cfg, dl_val, model)   
+    filenames, true_labels, predicted_labels, confidences = predict_eval(cfg, dl_val, model)   
     print('done generating predicted labels')
         
         # get accuracy score

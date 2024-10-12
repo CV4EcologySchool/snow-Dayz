@@ -1,0 +1,41 @@
+# Here's where you define experiment-specific hyperparameters.
+# You can also create lists and group parameters together into nested sub-parts.
+# In Python, this is all read as a dict.
+
+# environment/computational parameters
+device: cpu
+num_workers: 2
+
+# dataset parameters
+#data_root: /Users/catherinebreen/Desktop/LABELEDresize
+data_root: /Users/catherinebreen/Dropbox/Chapter4/LIBRARY
+labels: /Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024_updated_Sept2.csv
+val_labels: '/Users/catherinebreen/Dropbox/Chapter4/LIBRARY_LABELS.csv'
+val_root: /Users/catherinebreen/Dropbox/Chapter4/LIBRARY
+output_path: /Users/catherinebreen/Documents/TEST
+exp_name: exp_resnet50_2classes_None
+#newbaseline_wslabeled #dataaug_weighted_crop_rebalance #baseline
+num_classes: 2 ## precip vs. none
+sequenceType: 'None'
+
+#pos_label: [1, 2, 3, 4]
+#neg_label: [0]
+
+# training hyperparameters
+image_size: [224, 224]
+num_epochs: 20 ##200
+batch_size: 4
+learning_rate: 0.001
+weight_decay: 0.001
+
+# ## FOR EVAL
+#test_labels: '/Users/catherinebreen/Documents/TEST/newbaseline_wslabeled/valid_samples.csv'
+test_labels: '/Users/catherinebreen/Dropbox/Chapter4/LIBRARY_LABELS.csv'
+# python classifier_may24/train.py --config configs/exp_resnet50_2classes_cpu.yaml 
+
+# python classifier_may24/train_rebalance.py --config configs/exp_resnet50_2classes_cpu.yaml 
+# python classifier_may24/train_weightedbalance.py --config configs/exp_resnet50_2classes_cpu.yaml 
+# python classifier_may24/train_logit.py --config configs/exp_resnet50_2classes_cpu.yaml 
+
+# python classifier_Sept24/train.py --config configs/exp_resnet50_2classes_cpu_RAIN.yaml
+# python classifier_Sept24/evaluate.py --config configs/exp_resnet50_2classes_cpu_Rain.yaml

@@ -26,6 +26,7 @@ from PIL import Image, ImageFile
 import ipdb
 import IPython
 import torchvision.transforms as transforms
+from PIL import ExifTags
 
 class RandomApplyTransform:
     def __init__(self, transform, p=0.5):
@@ -168,9 +169,10 @@ class CTDataset(Dataset):
         # load image
         image_path = os.path.join(self.data_root, image_name) ## should specify train folder and get image name 
         img = Image.open(image_path).convert('RGB')     # the ".convert" makes sure we always get three bands in Red, Green, Blue order
-
+        #print(image_path)
+        #IPython.embed()
         ## add in temp information to the array 
-
+        #exif_info = img._getexif()
 
         # transform: see lines 31ff above where we define our transformations
         img_tensor = self.transform(img)
