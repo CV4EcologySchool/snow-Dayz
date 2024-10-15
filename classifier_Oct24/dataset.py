@@ -86,9 +86,9 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     remaining_cameras = list(set(remaining_cameras) - set(val_cameras))  # Remaining cameras after val selection
     test_cameras = random.sample(remaining_cameras, 150)
         
-    training_samples = labels[~labels['cameraID'].astype(str).isin(test_cameras) & ~labels['cameraID'].astype(str).isin(val_cameras)]
-    valid_samples = labels[labels['cameraID'].astype(str).isin(val_cameras)]
-    test_samples = labels[labels['cameraID'].astype(str).isin(test_cameras)] 
+    training_samples = df_data[~df_data['cameraID'].astype(str).isin(test_cameras) & ~df_data['cameraID'].astype(str).isin(val_cameras)]
+    valid_samples = df_data[df_data['cameraID'].astype(str).isin(val_cameras)]
+    test_samples = df_data[df_data['cameraID'].astype(str).isin(test_cameras)] 
 
     print(len(pd.unique(training_samples['cameraID'])))
     print(len(pd.unique(valid_samples['cameraID'])))
