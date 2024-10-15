@@ -13,7 +13,7 @@ labels: /datadrive/all_labels_may2024_updated_Oct12.csv
 #/Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024.csv ## UPDATE
 
 output_path: /datadrive/classifier_results
-exp_name: year2019_wslab_4_64_20 
+exp_name: cameras_50_50_150
 #baseline_4_001_wslab_50cams_snowis0
 #dataug_4_001_8010_weighted_grey_newdata_logit2
 
@@ -42,6 +42,7 @@ weight_decay: 0.001
 # test_labels: '/Users/catherinebreen/Dropbox/Chapter4/LIBRARY_LABELS.csv'
 
 # conda activate keypoint
+# python classifier_Oct24/train.py --config configs/exp_resnet50_2classes_cuda.yaml 
 # python classifier_Sept24/train.py --config configs/exp_resnet50_2classes_cuda.yaml 
 # python classifier_may24/train_rebalance.py --config configs/exp_resnet50_2classes_cuda.yaml 
 # python classifier_may24/train_logit.py --config configs/exp_resnet50_2classes_cuda.yaml 

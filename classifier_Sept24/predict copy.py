@@ -68,12 +68,11 @@ def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do
     model_instance = CustomResNet50(num_of_classes)         # create an object instance of our CustomResNet18 class
     # load all model states
    
-    IPython.embed()
-    model_states = glob.glob(f'{exp_name}/*.pt')
+    model_states = glob.glob(exp_name) #+'/*.pt')
  
     ## if there is more than one model state, take the most recent one
     if len(model_states) > 0:
-        state = torch.load(open(f'/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/baseline/model_states/29.pt', 'rb'), map_location='cpu')  ### what is this doing? 
+        state = torch.load(open('/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/baseline/model_states/29.pt', 'rb'), map_location='cpu')  ### what is this doing? 
         model_instance.load_state_dict(state['model'])
         model_instance.eval()
 
@@ -110,9 +109,9 @@ def predict(num_of_classes, files, model):
 
             confidence1 = confidence[:,1]
             confidences1list.extend(confidence1)
-            if confidence1 > 0.5: 
+            if confidence1 > 0.9: 
                 predict_label = 1
-                #save_image(filename, data1)
+                save_image(filename, data1)
             else: predict_label = 0 
             predicted_labels.append(predict_label)
             # else: pass
@@ -131,7 +130,7 @@ def main():
     args = parser.parse_args()
 
     # setup dataloader validation
-    files = glob.glob(f"{args.images_folder}/*.JPG")
+    files = glob.glob(f"{args.images_folder}/*")
     print(len(files))
 
     model = load_model(2, args.exp_name)
@@ -140,7 +139,7 @@ def main():
     #IPython.embed()
     results = pd.DataFrame({'filename':filenames, 'predicted_labels': predicted_labels, 'confidences': confidences})
     #IPython.embed()
-    results.to_csv(f'/Users/catherinebreen/Documents/TEST/scandcam2018_exp_resnet50_2classes_None.csv')
+    results.to_csv(f'/Users/catherinebreen/Documents/TEST/library_predictions.csv')
 
 if __name__ == '__main__':
     main()
@@ -174,7 +173,6 @@ python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_m
 python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt' --images_folder '/Volumes/CatBreen/LabeledData_Wynoochee/all_Cameras/**'
 
 #scandcam images
-python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None' --images_folder '/Volumes/CBreen/2018_VILTKAMERA_BACKUP_IS PUT IN TO IMPORT AND RUN TROUGH THE PROGRAM/**'
 
 
 '''
