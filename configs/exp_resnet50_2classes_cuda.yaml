@@ -13,7 +13,7 @@ labels: /datadrive/all_labels_may2024_updated_Oct12.csv
 #/Users/catherinebreen/code/Chapter4/4_validateRSproducts/all_labels_may2024.csv ## UPDATE
 
 output_path: /datadrive/classifier_results
-exp_name: cameras_50_50_150
+exp_name: cameras_75_75_103
 #baseline_4_001_wslab_50cams_snowis0
 #dataug_4_001_8010_weighted_grey_newdata_logit2
 

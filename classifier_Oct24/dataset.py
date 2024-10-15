@@ -80,11 +80,11 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     # valid_samples = df_data[(df_data['year'] == '2019') & (df_data['cameraID'].astype(str).isin(cameras)) & (df_data['month'].isin([10,11,12,
     #                                                                                                                         1,2,3,4]))]
     # Split into train, val, and test sets ensuring no overlap
-    train_cameras = random.sample(cameras, 50)
-    remaining_cameras = list(set(cameras) - set(train_cameras))  # Remaining cameras after train selection
-    val_cameras = random.sample(remaining_cameras, 50)
+    #train_cameras = random.sample(cameras, 50)
+    #remaining_cameras = list(set(cameras) - set(train_cameras))  # Remaining cameras after train selection
+    val_cameras = random.sample(remaining_cameras, 75)
     remaining_cameras = list(set(remaining_cameras) - set(val_cameras))  # Remaining cameras after val selection
-    test_cameras = random.sample(remaining_cameras, 150)
+    test_cameras = random.sample(remaining_cameras, 100)
         
     training_samples = df_data[~df_data['cameraID'].astype(str).isin(test_cameras) & ~df_data['cameraID'].astype(str).isin(val_cameras)]
     valid_samples = df_data[df_data['cameraID'].astype(str).isin(val_cameras)]

@@ -30,10 +30,11 @@ weight_decay: 0.001
 # ## FOR EVAL
 data_root: /Users/catherinebreen/Desktop/LABELEDresize
 #data_root: /Users/catherinebreen/Dropbox/Chapter4/LIBRARY
-test_labels: '/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/year2019_wslab_4_64_20/valid_samples.csv'
+#test_labels: '/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/cameras_50_50_150/valid_samples.csv'
+test_labels: '/Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results/cameras_50_50_150/test_samples.csv'
 #test_labels: '/Users/catherinebreen/Dropbox/Chapter4/LIBRARY_LABELS.csv'
 output_path: /Users/catherinebreen/Dropbox/Chapter4/WEATHER_MODEL/classifier_results
-exp_name: year2019_wslab_4_64_20
+exp_name: cameras_50_50_150
 
 # python classifier_Sept24/evaluate.py --config configs/exp_resnet50_2classes_cuda_EVAL.yaml 
 # python classifier_Oct24/evaluate.py --config configs/exp_resnet50_2classes_cuda_EVAL.yaml 
