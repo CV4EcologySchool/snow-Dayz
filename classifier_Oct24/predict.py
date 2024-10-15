@@ -38,8 +38,7 @@ from torchvision import transforms
 ## documentation for saving and loading models https://pytorch.org/tutorials/beginner/saving_loading_models.html
 
 
-
-def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do in function? 
+def load_model(num_of_classes, exp_name, epoch=None, device = 'mps'): ## what does epoch=None do in function? 
     '''
         Creates a model instance and loads the latest model state weights.
     '''
@@ -49,6 +48,7 @@ def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do
     
     state = torch.load(open(f'/Users/catherinebreen/Dropbox/Chapter1/weather_model/exp_resnet50_2classes_None/119.pt', 'rb'), map_location='cpu')  ### what is this doing? 
     model_instance.load_state_dict(state['model'])
+    model_instance.to('mps')
     model_instance.eval()
 
     return model_instance
@@ -89,7 +89,7 @@ def load_model(num_of_classes, exp_name, epoch=None): ## what does epoch=None do
 
 #         return filenames, predicted_labels, confidences1list
    
-def predict(num_of_classes, files, model, device='cpu', batch_size=2):
+def predict(num_of_classes, files, model, device='cpu', batch_size=1):
     with torch.no_grad():
         filenames = []
         predicted_labels = []
@@ -104,7 +104,7 @@ def predict(num_of_classes, files, model, device='cpu', batch_size=2):
                 filename = cameraID + '_' + file.split('/')[-1]
                 batch_filenames.append(filename)
                 img = Image.open(file).convert('RGB')
-                img_tensor = convert_tensor(img).unsqueeze(0).to(device)  # Move image tensor to GPU
+                img_tensor = convert_tensor(img).unsqueeze(0).to('mps') #device)  # Move image tensor to GPU
                 images.append(img_tensor)
 
             batch_data = torch.cat(images)
@@ -115,7 +115,6 @@ def predict(num_of_classes, files, model, device='cpu', batch_size=2):
             predict_labels = (confidence1 > 0.5).astype(int)
             predicted_labels.extend(predict_labels)
             filenames.extend(batch_filenames)
-
 
 def main():
     # Argument parser for command-line arguments:
@@ -131,7 +130,7 @@ def main():
 
     device = torch.device('mps') if torch.backends.mps.is_available() else torch.device('cpu')
     print(device)
-    model = load_model(2, args.exp_name)
+    model = load_model(2, args.exp_name, device = 'mps')
 
     filenames, predicted_labels, confidences = predict(2, files, model)  
     #IPython.embed()
@@ -142,13 +141,11 @@ def main():
 if __name__ == '__main__':
     main()
 
-
 '''
 example parser argument: 
-
 
 #scandcam images
 python predict.py --exp_name '/Users/catherinebreen/Documents/Chapter1/weather_model/exp_resnet50_2classes_None' --images_folder '/Volumes/CBreen/2018_VILTKAMERA_BACKUP_IS PUT IN TO IMPORT AND RUN TROUGH THE PROGRAM/**'
 
-
 '''
+
