@@ -125,8 +125,8 @@ def train(cfg, dataLoader, model, optimizer):
     
     # WEIGHTS
     # Define class weights and move them to the correct device
-    #class_weights = torch.tensor([0.25, 1.0], device=device)
-    criterion = nn.CrossEntropyLoss() #weight=class_weights)
+    class_weights = torch.tensor([0.5, 1.0], device=device)
+    criterion = nn.CrossEntropyLoss(weight=class_weights)
 
     # LOGIT
 
