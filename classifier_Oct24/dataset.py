@@ -82,9 +82,9 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     # Split into train, val, and test sets ensuring no overlap
     #train_cameras = random.sample(cameras, 50)
     #remaining_cameras = list(set(cameras) - set(train_cameras))  # Remaining cameras after train selection
-    val_cameras = random.sample(cameras, 75)
+    val_cameras = random.sample(cameras, 50)
     remaining_cameras = list(set(cameras) - set(val_cameras))  # Remaining cameras after val selection
-    test_cameras = random.sample(remaining_cameras, 100)
+    test_cameras = random.sample(remaining_cameras, 150)
         
     training_samples = df_data[~df_data['cameraID'].astype(str).isin(test_cameras) & ~df_data['cameraID'].astype(str).isin(val_cameras)]
     valid_samples = df_data[df_data['cameraID'].astype(str).isin(val_cameras)]
