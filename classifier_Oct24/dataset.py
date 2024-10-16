@@ -140,9 +140,9 @@ class CTDataset(Dataset):
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
             # RandomVerticalFlip(p=0.3),
             # RandomVerticalFlip(p=0.3),
-            #RandomGrayscale(p=0.5),
+            RandomGrayscale(p=0.5),
             # RandomApplyTransform(transforms.RandomResizedCrop(224, scale = (0.08, 1.0)), p=0.3),
-            #RandomApplyTransform(transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1), p=0.3),
+            RandomApplyTransform(transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1), p=0.3),
             ToTensor()                          # ...and convert them to torch.Tensor.
         ])
         
