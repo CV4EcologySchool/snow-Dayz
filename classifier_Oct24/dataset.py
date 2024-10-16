@@ -82,9 +82,9 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     # Split into train, val, and test sets ensuring no overlap
     #train_cameras = random.sample(cameras, 50)
     #remaining_cameras = list(set(cameras) - set(train_cameras))  # Remaining cameras after train selection
-    val_cameras = random.sample(cameras, 100)
+    val_cameras = random.sample(cameras, 75)
     remaining_cameras = list(set(cameras) - set(val_cameras))  # Remaining cameras after val selection
-    test_cameras = random.sample(remaining_cameras, 50)
+    test_cameras = random.sample(remaining_cameras, 100)
         
     training_samples = df_data[~df_data['cameraID'].astype(str).isin(test_cameras) & ~df_data['cameraID'].astype(str).isin(val_cameras)]
     valid_samples = df_data[df_data['cameraID'].astype(str).isin(val_cameras)]
@@ -140,7 +140,7 @@ class CTDataset(Dataset):
             Resize((cfg['image_size'])),        # For now, we just resize the images to the same dimensions...
             # RandomVerticalFlip(p=0.3),
             # RandomVerticalFlip(p=0.3),
-            RandomGrayscale(p=0.5),
+            #RandomGrayscale(p=0.5),
             # RandomApplyTransform(transforms.RandomResizedCrop(224, scale = (0.08, 1.0)), p=0.3),
             RandomApplyTransform(transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.1), p=0.3),
             ToTensor()                          # ...and convert them to torch.Tensor.
