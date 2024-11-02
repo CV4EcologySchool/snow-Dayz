@@ -82,7 +82,7 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     "1152", "1599", "1712", "850", "1705", "1144", "694", "916", "3033", "1718", "851",
     "869", "1626", "1142", "706", "1184", "868", "1192", "257", "979", "747", "696"]
     
-    df_data = df_data[df_data['cameraID'].isn(cameras)]
+    df_data = df_data[df_data['cameraID'].isin(cameras)]
 
     # df_data['year'] = [i.split(':')[0] for i in df_data['datetime']]
     # df_data['month'] = [int(i.split(':')[1]) if ":" in i else i for i in df_data['datetime']]
