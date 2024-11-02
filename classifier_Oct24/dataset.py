@@ -54,9 +54,9 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     #df_data1 = df_data[~df_data['filename'].str.contains('artifical', case=False, na=False)]
     #df_data = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
 
-    test1 = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
-    test2 = df_data[df_data['filename'].str.contains('camera', case=False, na=False)] ## olympex and wynoochee
-    df_data = pd.concat([test1,test2])
+    # test1 = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
+    # test2 = df_data[df_data['filename'].str.contains('camera', case=False, na=False)] ## olympex and wynoochee
+    # df_data = pd.concat([test1,test2])
     #####
     cameras = ["639", "1480", "1620", "641", "1761", "1571", "1570", "1760", "953", "1180", "1803",
     "3034", "1802", "3036", "1788", "1557", "870", "1725", "1409", "513", "1825", "244",
@@ -82,6 +82,8 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     "1152", "1599", "1712", "850", "1705", "1144", "694", "916", "3033", "1718", "851",
     "869", "1626", "1142", "706", "1184", "868", "1192", "257", "979", "747", "696"]
     
+    df_data = df_data[df_data['cameraID'].isn(cameras)]
+
     # df_data['year'] = [i.split(':')[0] for i in df_data['datetime']]
     # df_data['month'] = [int(i.split(':')[1]) if ":" in i else i for i in df_data['datetime']]
     # valid_samples = df_data[(df_data['year'] == '2019') & (df_data['cameraID'].astype(str).isin(cameras)) & (df_data['month'].isin([10,11,12,
@@ -89,9 +91,9 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     # Split into train, val, and test sets ensuring no overlap
     #train_cameras = random.sample(cameras, 50)
     #remaining_cameras = list(set(cameras) - set(train_cameras))  # Remaining cameras after train selection
-    val_cameras = random.sample(cameras, 100)
+    val_cameras = random.sample(cameras, 75)
     remaining_cameras = list(set(cameras) - set(val_cameras))  # Remaining cameras after val selection
-    test_cameras = random.sample(remaining_cameras, 50)
+    test_cameras = random.sample(remaining_cameras, 103)
         
     training_samples = df_data[~df_data['cameraID'].astype(str).isin(test_cameras) & ~df_data['cameraID'].astype(str).isin(val_cameras)]
     valid_samples = df_data[df_data['cameraID'].astype(str).isin(val_cameras)]
