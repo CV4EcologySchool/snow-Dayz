@@ -52,7 +52,7 @@ def train_test_split(cfg, images_path, labels): # val_labels):
 
     ## cut all data but scandcam data ##
     #df_data1 = df_data[~df_data['filename'].str.contains('artifical', case=False, na=False)]
-    df_data = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
+    #df_data = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
 
     # test1 = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
     test2 = df_data[df_data['filename'].str.contains('camera', case=False, na=False)] ## olympex and wynoochee
@@ -109,10 +109,10 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     #train_cameras = random.sample(cameras, 50)
     #remaining_cameras = list(set(cameras) - set(train_cameras))  # Remaining cameras after train selection
     #val_cameras = random.sample(cameras, 75)
-    val_cameras = df_data[df_data['cameraID'].isin(vallist)]
+    val_cameras = vallist
     remaining_cameras = list(set(cameras) - set(val_cameras))  # Remaining cameras after val selection
     #test_cameras = random.sample(remaining_cameras, 103)
-    test_cameras = df_data[df_data['cameraID'].isin(testlist)] 
+    test_cameras = testlist
 
     training_samples = df_data[~df_data['cameraID'].astype(str).isin(test_cameras) & ~df_data['cameraID'].astype(str).isin(val_cameras)]
     valid_samples = df_data[df_data['cameraID'].astype(str).isin(val_cameras)]
