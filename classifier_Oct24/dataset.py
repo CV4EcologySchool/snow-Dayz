@@ -54,9 +54,9 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     #df_data1 = df_data[~df_data['filename'].str.contains('artifical', case=False, na=False)]
     #df_data = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
 
-    # test1 = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
+    test1 = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])] ## scandcam
     test2 = df_data[df_data['filename'].str.contains('camera', case=False, na=False)] ## olympex and wynoochee
-    # df_data = pd.concat([test1,test2])
+    df_data = pd.concat([test1,test2])
     #####
     cameras = ["639", "1480", "1620", "641", "1761", "1571", "1570", "1760", "953", "1180", "1803",
     "3034", "1802", "3036", "1788", "1557", "870", "1725", "1409", "513", "1825", "244",
@@ -99,8 +99,8 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     "1612", "1620", "1669", "1725", "2027", "2029", "3043", "1355", "1425", "1754", "1761",
     "1789", "1760", "1788", "1557", "1409", "1585", "1726", "1655", "1424", "554", "1403",
     "1529", "1382", "1494", "696"]
-    df_data = df_data[df_data['cameraID'].isin(cameras)]
-    df_data = pd.concat([df_data,test2])
+    #df_data = df_data[df_data['cameraID'].isin(cameras)]
+    #df_data = pd.concat([df_data,test2])
     # df_data['year'] = [i.split(':')[0] for i in df_data['datetime']]
     # df_data['month'] = [int(i.split(':')[1]) if ":" in i else i for i in df_data['datetime']]
     # valid_samples = df_data[(df_data['year'] == '2019') & (df_data['cameraID'].astype(str).isin(cameras)) & (df_data['month'].isin([10,11,12,
