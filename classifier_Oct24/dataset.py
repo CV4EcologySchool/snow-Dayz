@@ -55,7 +55,7 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     df_data = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
 
     # test1 = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
-    # test2 = df_data[df_data['filename'].str.contains('camera', case=False, na=False)] ## olympex and wynoochee
+    test2 = df_data[df_data['filename'].str.contains('camera', case=False, na=False)] ## olympex and wynoochee
     # df_data = pd.concat([test1,test2])
     #####
     cameras = ["639", "1480", "1620", "641", "1761", "1571", "1570", "1760", "953", "1180", "1803",
@@ -82,8 +82,25 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     "1152", "1599", "1712", "850", "1705", "1144", "694", "916", "3033", "1718", "851",
     "869", "1626", "1142", "706", "1184", "868", "1192", "257", "979", "747", "696"]
     
-    #df_data = df_data[df_data['cameraID'].isin(cameras)]
-
+    vallist = ["694", "928", "835", "640", "1486", "1376", "896", "688", "938", "868", "871",
+    "1194", "1591", "328", "728", "1718", "25", "270", "317", "507", "521", "526",
+    "580", "598", "600", "625", "827", "843", "870", "194", "897", "240", "246",
+    "258", "292", "456", "468", "517", "925", "895", "651", "704", "1135", "1149",
+    "1150", "1180", "1184", "1193", "1263", "1395", "1487", "1528", "1565", "1571", "1613",
+    "1662", "1719", "1803", "1825", "3033", "3034", "1162", "1361", "1446", "1551", "1705",
+    "1739", "1747", "1634", "1746", "1417", "1647", "1438", "1501", "1683"]
+    testlist = ["1120", "585", "699", "457", "662", "953", "1250", "1466", "341", "447", "869",
+    "1626", "1267", "1951", "1495", "1635", "249", "309", "330", "459", "494", "535",
+    "555", "127", "618", "621", "641", "175", "664", "193", "709", "710", "824",
+    "839", "845", "850", "231", "244", "460", "470", "513", "903", "929", "954",
+    "965", "979", "518", "415", "631", "636", "638", "673", "894", "916", "566",
+    "693", "831", "851", "859", "865", "944", "1107", "1144", "1147", "1152", "1156",
+    "1175", "1181", "1196", "1252", "1262", "1397", "1431", "1444", "1480", "43", "1570",
+    "1612", "1620", "1669", "1725", "2027", "2029", "3043", "1355", "1425", "1754", "1761",
+    "1789", "1760", "1788", "1557", "1409", "1585", "1726", "1655", "1424", "554", "1403",
+    "1529", "1382", "1494", "696"]
+    df_data = df_data[df_data['cameraID'].isin(cameras)]
+    df_data = pd.concat([df_data,test2])
     # df_data['year'] = [i.split(':')[0] for i in df_data['datetime']]
     # df_data['month'] = [int(i.split(':')[1]) if ":" in i else i for i in df_data['datetime']]
     # valid_samples = df_data[(df_data['year'] == '2019') & (df_data['cameraID'].astype(str).isin(cameras)) & (df_data['month'].isin([10,11,12,
@@ -91,10 +108,12 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     # Split into train, val, and test sets ensuring no overlap
     #train_cameras = random.sample(cameras, 50)
     #remaining_cameras = list(set(cameras) - set(train_cameras))  # Remaining cameras after train selection
-    val_cameras = random.sample(cameras, 75)
+    #val_cameras = random.sample(cameras, 75)
+    val_cameras = df_data[df_data['cameraID'].isin(vallist)]
     remaining_cameras = list(set(cameras) - set(val_cameras))  # Remaining cameras after val selection
-    test_cameras = random.sample(remaining_cameras, 103)
-        
+    #test_cameras = random.sample(remaining_cameras, 103)
+    test_cameras = df_data[df_data['cameraID'].isin(testlist)] 
+
     training_samples = df_data[~df_data['cameraID'].astype(str).isin(test_cameras) & ~df_data['cameraID'].astype(str).isin(val_cameras)]
     valid_samples = df_data[df_data['cameraID'].astype(str).isin(val_cameras)]
     test_samples = df_data[df_data['cameraID'].astype(str).isin(test_cameras)] 
