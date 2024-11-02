@@ -51,8 +51,8 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     #df_data = df_data[(df_data['cameraID'] != '842')]
 
     ## cut all data but scandcam data ##
-    df_data1 = df_data[~df_data['filename'].str.contains('artifical', case=False, na=False)]
-    df_data = df_data1[~df_data1['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
+    #df_data1 = df_data[~df_data['filename'].str.contains('artifical', case=False, na=False)]
+    df_data = df_data[~df_data['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
     #####
     cameras = ["639", "1480", "1620", "641", "1761", "1571", "1570", "1760", "953", "1180", "1803",
     "3034", "1802", "3036", "1788", "1557", "870", "1725", "1409", "513", "1825", "244",
