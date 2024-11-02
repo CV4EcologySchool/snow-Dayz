@@ -50,6 +50,9 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     df_data['cameraID'] = df_data['cameraID'].astype(str)
     #df_data = df_data[(df_data['cameraID'] != '842')]
 
+    ## cut all data but scandcam data ##
+    df_data1 = df_data[~df_data['filename'].str.contains('artifical', case=False, na=False)]
+    df_data = df_data1[~df_data1['cameraID'].isin(['0','2','3','4','5','6','7','8','9','10'])]
     #####
     cameras = ["639", "1480", "1620", "641", "1761", "1571", "1570", "1760", "953", "1180", "1803",
     "3034", "1802", "3036", "1788", "1557", "870", "1725", "1409", "513", "1825", "244",
@@ -89,6 +92,11 @@ def train_test_split(cfg, images_path, labels): # val_labels):
     training_samples = df_data[~df_data['cameraID'].astype(str).isin(test_cameras) & ~df_data['cameraID'].astype(str).isin(val_cameras)]
     valid_samples = df_data[df_data['cameraID'].astype(str).isin(val_cameras)]
     test_samples = df_data[df_data['cameraID'].astype(str).isin(test_cameras)] 
+
+    # training_samples = pd.read_csv('/datadrive/')
+    # valid_samples = pd.read_csv('/datadrive/')
+    # test_samples = pd.read_csv('/datadrive/')
+    
 
     print('train', len(pd.unique(training_samples['cameraID'])))
     print('val',len(pd.unique(valid_samples['cameraID'])))
