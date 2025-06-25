@@ -83,11 +83,12 @@ def validate(model, dataloader, data, epoch):
             outputs = model(image)
             loss = criterion(outputs, keypoints) ## cross entropy loss between input and output
             valid_running_loss += loss.item()
-            # plot the predicted validation keypoints after every...
-            # ... predefined number of epochs
+            # plot the predicted validation keypoints after every 5 epochs
             if not os.path.exists(config.OUTPUT_PATH):
                 os.makedirs(config.OUTPUT_PATH, exist_ok=True)
-            if (epoch+1) % 1 == 0 and i == 20:  # make this not 0 to get a different image
+            if (
+                epoch
+            ) % 5 == 0: 
                 utils.valid_keypoints_plot(image, outputs, keypoints, epoch)
         
     valid_loss = valid_running_loss/counter
