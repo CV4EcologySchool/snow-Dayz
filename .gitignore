@@ -24,3 +24,5 @@ Lectures/ServingHostingDeployingModels.txt
 
 snowpoles/src/__pycache__/*.pyc
 
+snowpoles_ViT/__pycache__/*.pyc
+
