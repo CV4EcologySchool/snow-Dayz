@@ -1,6 +1,8 @@
 import timm
 import torch.nn as nn
 
+## chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://arxiv.org/pdf/1706.03762
+
 def get_model():
     model = timm.create_model('vit_base_patch16_224', pretrained=True)
     # Replace classifier head with regression head

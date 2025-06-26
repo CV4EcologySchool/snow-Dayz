@@ -1,5 +1,0 @@
-move to snow-Dayz
-git push 
-git pull on azure 
-ask Alexej for data 
-organize and run model 

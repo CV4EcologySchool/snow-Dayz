@@ -25,4 +25,11 @@ Lectures/ServingHostingDeployingModels.txt
 snowpoles/src/__pycache__/*.pyc
 
 snowpoles_ViT/__pycache__/*.pyc
+snowpoles_ViT/model.pth
+snowpoles_ViT/predictions_last5epochs.png
+snowpoles_ViT/snowdepth_vit.pt
+snowpoles_ViT/test_image_predicted.jpg
+snowpoles_ViT/loss.png
+
+
 

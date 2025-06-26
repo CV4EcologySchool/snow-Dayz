@@ -20,14 +20,22 @@ import IPython
 from torch.utils.data import DataLoader, random_split
 import tqdm
 
+## viz predictions
+from torchvision.utils import make_grid
 
 # early stopping 
 import numpy as np
 
 
 image_paths = glob.glob(f"{config.images}/**/*.JPG")
-snow_depths = pd.read_csv(config.labels)
-snow_depths = snow_depths['Snow Depth (cm)']
+metadata = pd.read_csv(config.labels)
+#snow_depths = snow_depths['snowdepth_cm']
+
+### little but of data cleaning: 
+k = set(metadata['image_filename'])
+# Filter image paths that have a matching basename in metadata
+filenames_from_image_paths =  [p.split('/')[-1] for p in image_paths]
+image_paths = [j for (i, j) in zip(filenames_from_image_paths, image_paths) if i in k]
 
 # Preprocessing
 transform = transforms.Compose([
@@ -36,28 +44,32 @@ transform = transforms.Compose([
 ])
 
 #dataset = SnowDepthDataset(image_paths, snow_depths, transform=transform) 
+# Set seed for reproducibility
 random.seed(42)
-dataset = Subset(SnowDepthDataset(image_paths, snow_depths, transform=transform),
-                 random.sample(range(len(image_paths)), int(0.1 * len(image_paths))))
+random.shuffle(image_paths)
 
-# Split lengths
-total_size = len(dataset) 
-train_size = int(0.7 * total_size) 
-val_size = int(0.15 * total_size) 
-test_size = total_size - train_size - val_size
+# Compute sizes
+total = len(image_paths) * 0.1 ## we just want 10% of data for testing
+train_size = int(0.75 * total) 
+val_size = int(0.15 * total)
+test_size = total - train_size - val_size
 
-train_dataset, val_dataset, test_dataset = random_split(dataset, [train_size, val_size, test_size])
+# Split
+train_paths = image_paths[:train_size]
+val_paths = image_paths[train_size:train_size + val_size]
+test_paths = image_paths[train_size + val_size:]
+
+print(f"Train: {len(train_paths)}, Val: {len(val_paths)}, Test: {len(test_paths)}")
+
+# Create dataset
+train_dataset = SnowDepthDataset(train_paths, metadata, transform=transform)
+val_dataset = SnowDepthDataset(val_paths, metadata, transform=transform)
+test_dataset = SnowDepthDataset(test_paths, metadata, transform=transform)
 
 # Create data loaders
 train_loader = DataLoader(train_dataset, batch_size=config.batch_size, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=config.batch_size, shuffle=False)
 test_loader = DataLoader(test_dataset, batch_size=config.batch_size, shuffle=False)
-
-# Print split sizes
-print(f"Total dataset size: {total_size}")
-print(f"Training set size: {len(train_dataset)}")
-print(f"Validation set size: {len(val_dataset)}")
-print(f"Test set size: {len(test_dataset)}")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model = get_model().to(device)
@@ -75,8 +87,10 @@ def fit(model, dataloader):
     counter = 0
     # calculate the number of batches #
     # num_batches = int(len(dataloader) / dataloader.batch_size)
-    for images, labels in tqdm.tqdm(dataloader):
+    for i, data in tqdm.tqdm(enumerate(dataloader)):
         counter+=1
+        ## each of these is a batch ## 
+        images, labels, filenames = data['image'], data['label'], data['filename']
         images, labels = images.to(device), labels.to(device).unsqueeze(1)
 
         outputs = model(images)
@@ -98,15 +112,17 @@ def validate(model, dataloader, epoch):
     valid_running_loss = 0.0
     counter = 0
     # calculate the number of batches
-    # num_batches = int(len(data) / dataloader.batch_size)
+    #num_batches = int(len(data) / dataloader.batch_size)
     with torch.no_grad():
-        for images, labels in tqdm.tqdm(dataloader):
+        for i, data in tqdm.tqdm(enumerate(dataloader)):
+            images, labels, filenames = data['image'], data['label'], data['filename']
             images, labels = images.to(device), labels.to(device).unsqueeze(1)
             counter += 1
             outputs = model(images)
             loss = criterion(outputs, labels)
             valid_running_loss += loss.item()
 
+    #filenames_batch = [f.split("/")[-1] for f in filenames_batch]  # or os.path.basename(f)
     valid_loss = valid_running_loss / counter
     return valid_loss
 
@@ -117,6 +133,9 @@ val_loss = []
 # early stopping inputs # 
 best_loss_val = np.inf
 best_loss_val_epoch = 0
+
+# Store predictions per epoch for the last 5 epochs
+epoch_visualizations = []
 
 for epoch in range(config.num_epochs):
     print(f"Epoch {epoch+1} of {config.num_epochs}")
@@ -137,6 +156,28 @@ for epoch in range(config.num_epochs):
             },
             f"{config.output_path}/model_epoch{epoch}.pth",
         )
+
+    # Save visualization for the last 5 epochs
+    if epoch >= config.num_epochs - 5:
+        model.eval()
+        #images_batch, labels_batch, filenames_batch = next(iter(test_loader))
+        batch = next(iter(test_loader))
+        images_batch = batch['image']
+        labels_batch = batch['label']
+        filenames_batch = batch['filename']
+        filenames_batch = [f.split("/")[-1] for f in filenames_batch] 
+        images_batch, labels_batch = images_batch.to(device), labels_batch.to(device).unsqueeze(1)
+        with torch.no_grad():
+            preds = model(images_batch)
+
+        images_np = images_batch.cpu()
+        labels_np = labels_batch.cpu().squeeze().numpy()
+        preds_np = preds.cpu().squeeze().numpy()
+        
+        # Store for later visualization
+        #epoch_visualizations.append((epoch + 1, images_np, labels_np, preds_np))
+        epoch_visualizations.append((epoch + 1, images_np, labels_np, preds_np, filenames_batch))
+
 
     ####### early stopping #########
     if val_epoch_loss < best_loss_val:
@@ -164,3 +205,20 @@ torch.save(
     f"{config.output_path}/model.pth",
 )  ### the last model
 print("DONE TRAINING")
+
+# Save image grid from last 5 epochs
+fig, axes = plt.subplots(len(epoch_visualizations), config.batch_size, figsize=(config.batch_size * 2, 4 * len(epoch_visualizations)))
+
+for row, (epoch_num, imgs, labels, preds, filenames) in enumerate(epoch_visualizations):
+    for col in range(config.batch_size):
+        ax = axes[row, col] if len(epoch_visualizations) > 1 else axes[col]
+        img = imgs[col].permute(1, 2, 0).numpy()
+        ax.imshow(img)
+        ax.axis('off')
+        title = f"Epoch {epoch_num}\nTrue: {labels[col]:.1f}, Pred: {preds[col]:.1f}\n \
+            {filenames[col]}"
+        ax.set_title(title, fontsize=8)
+
+plt.tight_layout()
+plt.savefig(f"{config.output_path}/predictions_last5epochs.png")
+plt.close()
