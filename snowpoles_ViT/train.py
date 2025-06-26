@@ -28,7 +28,7 @@ import numpy as np
 import os
 
 
-image_paths = glob.glob(f"{config.images}/**/*.JPG")
+image_paths = glob.glob(f"{config.images}/**/*.JPG", recursive=True)
 metadata = pd.read_csv(config.labels)
 #snow_depths = snow_depths['snowdepth_cm']
 
@@ -52,16 +52,25 @@ transform = transforms.Compose([
 random.seed(42)
 random.shuffle(image_paths)
 
-# Compute sizes
-total = len(image_paths) #* 0.1 ## we just want 10% of data for testing
-train_size = int(0.75 * total) 
-val_size = int(0.15 * total)
-test_size = total - train_size - val_size
+# 75 / 15 / 10 split 
+if config.split == 'traditional':
+    total = len(image_paths) #* 0.1 ## we just want 10% of data for testing
+    train_size = int(0.75 * total) 
+    val_size = int(0.15 * total)
+    test_size = total - train_size - val_size
+    train_paths = image_paths[:train_size]
+    val_paths = image_paths[train_size:train_size + val_size]
+    test_paths = image_paths[train_size + val_size:]
 
-# Split
-train_paths = image_paths[:train_size]
-val_paths = image_paths[train_size:train_size + val_size]
-test_paths = image_paths[train_size + val_size:]
+# split based off of camera # 
+snex_cams = ['E6A', 'E6B', 'E9A','E9E', 'E9F','W1A','W2A','W2B',
+        'W5A','W6A','W6B','W6C','W8A','W8C','W9A','W9B','W9C','W9D','W9E','W9G']
+wa_cams = ['TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02',
+    'CEDAR-H-01', 'CEDAR-L-01', 'CEDAR-M-01','CUB-H-01','CUB-M-01','CUB-U-01', 'BUNKHOUSE-01']
+
+train_paths = [i for i in image_paths if i.split('/')[-2] in (snex_cams)]
+val_paths = [i for i in image_paths if i.split('/')[-2] in (wa_cams)]
+test_paths = [i for i in image_paths if i.split('/')[-2] in (wa_cams)]
 
 print(f"Train: {len(train_paths)}, Val: {len(val_paths)}, Test: {len(test_paths)}")
 
@@ -76,6 +85,7 @@ val_loader = DataLoader(val_dataset, batch_size=config.batch_size, shuffle=False
 test_loader = DataLoader(test_dataset, batch_size=config.batch_size, shuffle=False)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f'This model will train with a {device}')
 model = get_model().to(device)
 
 # Loss and optimizer
