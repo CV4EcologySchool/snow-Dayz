@@ -3,15 +3,15 @@
 # images = '/Users/catherinebreen/Dropbox/Chapter1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean'
 # labels = '/Users/catherinebreen/code/snow-Dayz/snowpoles_ViT/snowex_sd_withfilenames.csv'
 images = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-labels = 
+labels = '/datadrive//snowex_sd_withfilenames.csv'
 
 # training hyperparameters
 image_size = [224, 224]
-num_epochs = 2
-batch_size = 6
+num_epochs = 200
+batch_size = 64
 learning_rate = 1e-4
 weight_decay = 0.001
 
 #output_path = "/Users/catherinebreen/Dropbox/snowpoles_ViT_outputs/ViT_bs6_10p"
-output_path = "/datadrive/vmData/snowpoles_ViT_outputs/ViT_bs6_10p"
+output_path = "/datadrive/vmData/snowpoles_ViT_outputs/ViT_bs64_75-15-10split"
 
