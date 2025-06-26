@@ -1,15 +1,17 @@
 
 ###
-images = '/Users/catherinebreen/Dropbox/Chapter1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean'
-labels = '/Users/catherinebreen/code/snow-Dayz/snowpoles_ViT/snowex_sd_withfilenames.csv'
+# images = '/Users/catherinebreen/Dropbox/Chapter1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean'
+# labels = '/Users/catherinebreen/code/snow-Dayz/snowpoles_ViT/snowex_sd_withfilenames.csv'
+images = '/datadrive/vmData/SNEX20_TLI_resized_clean'
+labels = 
 
 # training hyperparameters
 image_size = [224, 224]
-num_epochs = 5
+num_epochs = 2
 batch_size = 6
 learning_rate = 1e-4
 weight_decay = 0.001
 
-output_path = "/Users/catherinebreen/code/snow-Dayz/snowpoles_ViT"
-#device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+#output_path = "/Users/catherinebreen/Dropbox/snowpoles_ViT_outputs/ViT_bs6_10p"
+output_path = "/datadrive/vmData/snowpoles_ViT_outputs/ViT_bs6_10p"
 

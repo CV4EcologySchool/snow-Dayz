@@ -25,11 +25,15 @@ from torchvision.utils import make_grid
 
 # early stopping 
 import numpy as np
+import os
 
 
 image_paths = glob.glob(f"{config.images}/**/*.JPG")
 metadata = pd.read_csv(config.labels)
 #snow_depths = snow_depths['snowdepth_cm']
+
+if not os.path.exists(config.output_path):
+    os.makedirs(config.output_path)
 
 ### little but of data cleaning: 
 k = set(metadata['image_filename'])
@@ -49,7 +53,7 @@ random.seed(42)
 random.shuffle(image_paths)
 
 # Compute sizes
-total = len(image_paths) * 0.1 ## we just want 10% of data for testing
+total = len(image_paths) #* 0.1 ## we just want 10% of data for testing
 train_size = int(0.75 * total) 
 val_size = int(0.15 * total)
 test_size = total - train_size - val_size
