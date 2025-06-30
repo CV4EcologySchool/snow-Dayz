@@ -9,7 +9,7 @@ split = 'camera' # or traditional (for 75/10/10)
 
 # training hyperparameters
 image_size = [224, 224]
-num_epochs = 200
+num_epochs = 250
 batch_size = 64
 learning_rate = 1e-4
 weight_decay = 0.001
