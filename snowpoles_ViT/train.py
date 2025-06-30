@@ -222,6 +222,7 @@ torch.save(
 print("DONE TRAINING")
 
 # Save image grid from last 5 epochs
+IPython.embed()
 fig, axes = plt.subplots(len(epoch_visualizations), config.batch_size, figsize=(config.batch_size * 2, 4 * len(epoch_visualizations)))
 
 for row, (epoch_num, imgs, labels, preds, filenames) in enumerate(epoch_visualizations):
