@@ -91,7 +91,8 @@ print(f'This model will train with a {device}')
 model = get_model().to(device)
 
 # Loss and optimizer
-criterion = nn.MSELoss()
+#criterion = nn.MSELoss()
+criterion = nn.L1Loss() ## might be more robust to outliers
 optimizer = torch.optim.Adam(model.parameters(), lr=config.learning_rate)
 
 # Training
