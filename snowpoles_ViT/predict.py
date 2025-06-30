@@ -85,7 +85,7 @@ def predict(model, images_path, output_path):
 
 def main():
 
-    model_path = '/Users/catherinebreen/Dropbox/Chapter1/aurora_outputsJul26/ViT_bs64_75-15-10split/model_epoch150.pth'
+    model_path = '/Users/catherinebreen/Dropbox/Chapter1/aurora_outputsJul26/ViT_bs64_co_wa_wasplit/model_epoch150.pth'
     model = load_model(model_path)
 
     images_path = "/Users/catherinebreen/Dropbox/Chapter1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean/CHE6"
