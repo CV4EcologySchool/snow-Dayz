@@ -9,11 +9,11 @@ split = 'camera' # or traditional (for 75/10/10)
 
 # training hyperparameters
 image_size = [224, 224]
-num_epochs = 250
+num_epochs = 200
 batch_size = 64
 learning_rate = 1e-4
 weight_decay = 0.001
 
 #output_path = "/Users/catherinebreen/Dropbox/snowpoles_ViT_outputs/ViT_bs6_10p"
-output_path = "/datadrive/vmData/snowpoles_ViT_outputs/ViT_bs64_75-15-10split"
+output_path = "/datadrive/vmData/snowpoles_ViT_outputs/ViT_bs64_co-wa-wasplit"
 
