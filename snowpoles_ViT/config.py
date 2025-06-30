@@ -1,9 +1,9 @@
 
 ###
-images = '/Users/catherinebreen/Dropbox/Chapter1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean'
-labels = '/Users/catherinebreen/code/snow-Dayz/snowpoles_ViT/snowex_sd_withfilenames.csv'
-# images = '/datadrive/vmData/SNEX20_TLI_resized_clean'
-# labels = '/datadrive//snowex_sd_withfilenames.csv'
+#images = '/Users/catherinebreen/Dropbox/Chapter1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean'
+#labels = '/Users/catherinebreen/code/snow-Dayz/snowpoles_ViT/snowex_sd_withfilenames.csv'
+images = '/datadrive/vmData/SNEX20_TLI_resized_clean'
+labels = '/datadrive/snowex_sd_withfilenames.csv'
 
 split = 'camera' # or traditional (for 75/10/10)
 
