@@ -73,7 +73,6 @@ train_paths = [i for i in image_paths if i.split('/')[-2] in (snex_cams)]
 val_paths = [i for i in image_paths if i.split('/')[-2] in (wa_cams_val)]
 test_paths = [i for i in image_paths if i.split('/')[-2] in (wa_cams_test)]
 
-IPython.embed()
 print(f"Train: {len(train_paths)}, Val: {len(val_paths)}, Test: {len(test_paths)}")
 
 # Create dataset
