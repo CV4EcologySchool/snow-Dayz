@@ -44,7 +44,6 @@ k = set(metadata['image_filename'])
 filenames_from_image_paths =  [p.split('/')[-1] for p in image_paths]
 image_paths = [j for (i, j) in zip(filenames_from_image_paths, image_paths) if i in k]
 
-IPython.embed()
 # Preprocessing
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
