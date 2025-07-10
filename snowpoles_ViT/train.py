@@ -32,7 +32,7 @@ jpg_paths = glob.glob(f"{config.images}/**/*.jpg", recursive=True)
 JPG_paths = glob.glob(f"{config.images}/**/*.JPG", recursive=True)
 image_paths = jpg_paths + JPG_paths
 metadata = pd.read_csv(config.labels)
-IPython.embed()
+
 #snow_depths = snow_depths['snowdepth_cm']
 
 if not os.path.exists(config.output_path):
@@ -44,6 +44,7 @@ k = set(metadata['image_filename'])
 filenames_from_image_paths =  [p.split('/')[-1] for p in image_paths]
 image_paths = [j for (i, j) in zip(filenames_from_image_paths, image_paths) if i in k]
 
+IPython.embed()
 # Preprocessing
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
