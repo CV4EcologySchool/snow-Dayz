@@ -28,7 +28,9 @@ import numpy as np
 import os
 
 
-image_paths = glob.glob(f"{config.images}/**/*.JPG", recursive=True)
+jpg_paths = glob.glob(f"{config.images}/**/*.jpg", recursive=True)
+JPG_paths = glob.glob(f"{config.images}/**/*.JPG", recursive=True)
+image_paths = jpg_paths + JPG_paths
 metadata = pd.read_csv(config.labels)
 #snow_depths = snow_depths['snowdepth_cm']
 
@@ -62,7 +64,6 @@ if config.split == 'traditional':
     val_paths = image_paths[train_size:train_size + val_size]
     test_paths = image_paths[train_size + val_size:]
 
-IPython.embed()
 # split based off of camera # 
 snex_cams = [
     # SnowEx sites
@@ -89,6 +90,7 @@ train_paths = [i for i in image_paths if i.split('/')[-2] in (snex_cams)]
 val_paths = [i for i in image_paths if i.split('/')[-2] in (wa_cams_val)]
 test_paths = [i for i in image_paths if i.split('/')[-2] in (wa_cams_val)]
 
+wa_cams_val
 print(f"Train: {len(train_paths)}, Val: {len(val_paths)}, Test: {len(test_paths)}")
 
 # Create dataset
