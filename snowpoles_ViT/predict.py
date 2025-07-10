@@ -85,11 +85,11 @@ def predict(model, images_path, output_path):
 
 def main():
 
-    model_path = '/Users/catherinebreen/Dropbox/Chapter1/aurora_outputsJul26/ViT_bs64_co_wa_wasplit/model_epoch150.pth'
+    model_path = '/Users/catherinebreen/Dropbox/Chapter1/aurora_outputsJul26/ViT_bs64_co-wa-aksplit_l1loss/model.pth'
     model = load_model(model_path)
 
     images_path = "/Users/catherinebreen/Dropbox/Chapter1/WRRsubmission/data/448res/SNEX20_TLI_resized_clean/CHE6"
-    output_path = "/Users/catherinebreen/Dropbox/Chapter1/aurora_outputsJul26/ViT_bs64_75-15-10split"
+    output_path = "/Users/catherinebreen/Dropbox/Chapter1/aurora_outputsJul26/ViT_bs64_co-wa-aksplit_l1loss"
 
     ## returns a set of images of outputs
     outputs = predict(model, images_path, output_path)  
