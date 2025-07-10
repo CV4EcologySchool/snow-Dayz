@@ -74,14 +74,14 @@ snex_cams = [
     "W8A", "W8C", "W9A", "W9B", "W9C", "W9D", "W9E", "W9G",
 
     # Jaeger Mesa cameras
-    "jaegermesa_nabesna_C01", "jaegermesa_nabesna_C02", "jaegermesa_nabesna_C03",
-    "jaegermesa_nabesna_C04", "jaegermesa_nabesna_C05", "jaegermesa_nabesna_C06",
-    "jaegermesa_nabesna_C07", "jaegermesa_nabesna_C08", "jaegermesa_nabesna_C09",
-    "jaegermesa_nabesna_C10", "jaegermesa_nabesna_C11", "jaegermesa_nabesna_C12",
-    "jaegermesa_nabesna_C13", "jaegermesa_nabesna_C14", "jaegermesa_nabesna_C15",
-    "jaegermesa_nabesna_C16", "jaegermesa_nabesna_C17", "jaegermesa_nabesna_C18",
-    "jaegermesa_nabesna_C19", "jaegermesa_nabesna_C20", "jaegermesa_nabesna_C21",
-    "jaegermesa_nabesna_C22"
+    "jaegermesa_nabesna_c01", "jaegermesa_nabesna_c02", "jaegermesa_nabesna_c03",
+    "jaegermesa_nabesna_c04", "jaegermesa_nabesna_c05", "jaegermesa_nabesna_c06",
+    "jaegermesa_nabesna_c07", "jaegermesa_nabesna_c08", "jaegermesa_nabesna_c09",
+    "jaegermesa_nabesna_c10", "jaegermesa_nabesna_c11", "jaegermesa_nabesna_c12",
+    "jaegermesa_nabesna_c13", "jaegermesa_nabesna_c14", "jaegermesa_nabesna_c15",
+    "jaegermesa_nabesna_c16", "jaegermesa_nabesna_c17", "jaegermesa_nabesna_c18",
+    "jaegermesa_nabesna_c19", "jaegermesa_nabesna_c20", "jaegermesa_nabesna_c21",
+    "jaegermesa_nabesna_c22"
 ]
 wa_cams_val = ['TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02','CEDAR-H-01',
                'CEDAR-L-01', 'CEDAR-M-01','CUB-H-01','CUB-M-01','CUB-U-01', 'BUNKHOUSE-01']
@@ -92,7 +92,6 @@ train_paths = [i for i in image_paths if i.split('/')[-2] in (snex_cams)]
 val_paths = [i for i in image_paths if i.split('/')[-2] in (wa_cams_val)]
 test_paths = [i for i in image_paths if i.split('/')[-2] in (wa_cams_val)]
 
-wa_cams_val
 print(f"Train: {len(train_paths)}, Val: {len(val_paths)}, Test: {len(test_paths)}")
 
 # Create dataset
