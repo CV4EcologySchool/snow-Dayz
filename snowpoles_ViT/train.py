@@ -32,6 +32,7 @@ jpg_paths = glob.glob(f"{config.images}/**/*.jpg", recursive=True)
 JPG_paths = glob.glob(f"{config.images}/**/*.JPG", recursive=True)
 image_paths = jpg_paths + JPG_paths
 metadata = pd.read_csv(config.labels)
+IPython.embed()
 #snow_depths = snow_depths['snowdepth_cm']
 
 if not os.path.exists(config.output_path):
