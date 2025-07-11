@@ -69,25 +69,22 @@ else:
     # split based off of camera # 
     snex_cams = [
         # SnowEx sites
-        "E6A"]
-    
-    # "E6B", "E9A", "E9E", "E9F",
-    #     "W1A", "W2A", "W2B", "W5A", "W6A", "W6B", "W6C",
-    #     "W8A", "W8C", "W9A", "W9B", "W9C", "W9D", "W9E", "W9G",
+        "E6A", "E6B", "E9A", "E9E", "E9F",
+        "W1A", "W2A", "W2B", "W5A", "W6A", "W6B", "W6C",
+        "W8A", "W8C", "W9A", "W9B", "W9C", "W9D", "W9E", "W9G",
 
-    #     # Jaeger Mesa cameras
-    #     "jaegermesa_nabesna_c01", "jaegermesa_nabesna_c02", "jaegermesa_nabesna_c03",
-    #     "jaegermesa_nabesna_c04", "jaegermesa_nabesna_c05", "jaegermesa_nabesna_c06",
-    #     "jaegermesa_nabesna_c07", "jaegermesa_nabesna_c08", "jaegermesa_nabesna_c09",
-    #     "jaegermesa_nabesna_c10", "jaegermesa_nabesna_c11", "jaegermesa_nabesna_c12",
-    #     "jaegermesa_nabesna_c13", "jaegermesa_nabesna_c14", "jaegermesa_nabesna_c15",
-    #     "jaegermesa_nabesna_c16", "jaegermesa_nabesna_c17", "jaegermesa_nabesna_c18",
-    #     "jaegermesa_nabesna_c19", "jaegermesa_nabesna_c20", "jaegermesa_nabesna_c21",
-    #     "jaegermesa_nabesna_c22"
-    # ]
-    wa_cams_val = ['TWISP-U-01']
-    # 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02','CEDAR-H-01',
-    #             'CEDAR-L-01', 'CEDAR-M-01','CUB-H-01','CUB-M-01','CUB-U-01', 'BUNKHOUSE-01']
+        # Jaeger Mesa cameras
+        "jaegermesa_nabesna_c01", "jaegermesa_nabesna_c02", "jaegermesa_nabesna_c03",
+        "jaegermesa_nabesna_c04", "jaegermesa_nabesna_c05", "jaegermesa_nabesna_c06",
+        "jaegermesa_nabesna_c07", "jaegermesa_nabesna_c08", "jaegermesa_nabesna_c09",
+        "jaegermesa_nabesna_c10", "jaegermesa_nabesna_c11", "jaegermesa_nabesna_c12",
+        "jaegermesa_nabesna_c13", "jaegermesa_nabesna_c14", "jaegermesa_nabesna_c15",
+        "jaegermesa_nabesna_c16", "jaegermesa_nabesna_c17", "jaegermesa_nabesna_c18",
+        "jaegermesa_nabesna_c19", "jaegermesa_nabesna_c20", "jaegermesa_nabesna_c21",
+        "jaegermesa_nabesna_c22"
+    ]
+    wa_cams_val = ['TWISP-U-01', 'TWISP-R-01', 'CUB-H-02', 'CUB-L-02', 'CUB-M-02','CEDAR-H-01',
+                'CEDAR-L-01', 'CEDAR-M-01','CUB-H-01','CUB-M-01','CUB-U-01', 'BUNKHOUSE-01']
     wa_cams_test = ['CEDAR-L-01', 'CEDAR-M-01','CUB-H-01','CUB-M-01','CUB-U-01', 'BUNKHOUSE-01']
 
 
