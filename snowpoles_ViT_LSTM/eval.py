@@ -39,11 +39,11 @@ def predict(model, image_path, output_dir, device='cpu', seq_len=5):
 
     # Sort files to maintain sequence order
     #files = sorted(glob.glob(f"{image_path}/**/*.JPG"))
-    files = sorted(glob.glob(f"{image_path}/**/*.JPG"))
+    files = sorted(glob.glob(f"{image_path}/**/*.jpg"))
 
-    files_jpg_upper = glob.glob(f"{image_path}/**/*.JPG", recursive=True)
-    files_jpg_lower = glob.glob(f"{image_path}/**/*.jpg", recursive=True)
-    files = sorted(files_jpg_upper + files_jpg_lower)
+    # files_jpg_upper = glob.glob(f"{image_path}/**/*.JPG", recursive=True)
+    # files_jpg_lower = glob.glob(f"{image_path}/**/*.jpg", recursive=True)
+    # files = sorted(files_jpg_upper + files_jpg_lower)
     #files = sorted(Path(image_path).rglob("*.JPG"))
 
 
@@ -77,7 +77,7 @@ def predict(model, image_path, output_dir, device='cpu', seq_len=5):
             filenames.append(filename)
             predictions.append(pred)
 
-            if i % 50 == 0:
+            if i % 100 == 0:
                 # Load image and true label for visualization
                 img_vis = Image.open(last_file).convert("RGB").resize((224, 224))
                 img_vis = np.array(img_vis)
