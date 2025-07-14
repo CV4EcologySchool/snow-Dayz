@@ -39,7 +39,11 @@ def predict(model, image_path, output_dir, device='cpu', seq_len=5):
 
     # Sort files to maintain sequence order
     #files = sorted(glob.glob(f"{image_path}/**/*.JPG"))
-    files = sorted(glob.glob(f"{image_path}/E9E/*.JPG"))
+    files = sorted(glob.glob(f"{image_path}/**/*.JPG"))
+
+    files_jpg_upper = glob.glob(f"{image_path}/**/*.JPG", recursive=True)
+    files_jpg_lower = glob.glob(f"{image_path}/**/*.jpg", recursive=True)
+    files = sorted(files_jpg_upper + files_jpg_lower)
     #files = sorted(Path(image_path).rglob("*.JPG"))
 
 
